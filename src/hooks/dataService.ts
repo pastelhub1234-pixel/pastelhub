@@ -3,7 +3,7 @@
  * Firebase Hosting으로 전환 시 이 파일만 수정하면 됩니다.
  */
 
-import { config } from '../config/env';
+import { config } from './env';
 
 export interface DataService {
   fetchData<T>(key: string): Promise<T>;
@@ -124,4 +124,5 @@ export async function fetchDataWithRetry<T>(
   
   throw lastError || new Error(`데이터를 가져올 수 없습니다: ${key}`);
 }
+
 
