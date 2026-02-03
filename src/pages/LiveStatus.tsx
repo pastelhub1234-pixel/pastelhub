@@ -1,6 +1,5 @@
 import { Radio, ExternalLink } from "lucide-react";
-// ✅ Hook 교체
-import { useJsonData } from '../../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 
 interface BroadcastItem {
   name: string;

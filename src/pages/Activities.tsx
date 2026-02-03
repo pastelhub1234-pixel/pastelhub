@@ -11,9 +11,9 @@ const EXTERNAL_LINKS = [
   },
   {
     id: 'fansite',
-    title: '공식 팬 커뮤니티',
-    description: '다른 팬들과 소통하고 정보를 공유해요',
-    url: 'https://cafe.daum.net/',
+    title: '유튜브 정상화',
+    description: '검색',
+    url: 'https://stelline.xyz/search/',
     icon: Users,
     gradient: 'from-blue-400 to-cyan-400',
   },
