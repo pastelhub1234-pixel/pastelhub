@@ -3,47 +3,62 @@ import { Calendar, Radio, Twitter, Zap, ShoppingBag, Sparkles } from 'lucide-rea
 import { MEMBERS } from '../constants';
 import MemberCard from './MemberCard';
 
-// 5대 핵심 기능 네비게이션 정의
+// 5대 핵심 기능 네비게이션 정의 (스타일 확장)
 const NAV_ITEMS = [
   { 
     path: '/news/schedule', 
     icon: Calendar, 
     label: '일정',
-    activeColor: 'text-sky-600', 
-    activeBg: 'bg-sky-50 border-sky-100',
-    hoverText: 'group-hover:text-sky-500'
+    // Active 상태: 흰색 배경 + Sky 색상 링/테두리
+    activeContainer: 'bg-white/90 border-sky-200 shadow-sm ring-1 ring-sky-100',
+    // Hover 상태: 연한 배경 + Sky 색상 테두리
+    hoverContainer: 'hover:bg-white/80 hover:border-sky-100 hover:shadow-sm',
+    // Icon Active: 그라데이션 배경 + 흰색 아이콘
+    iconActive: 'bg-gradient-to-br from-sky-400 to-blue-500 shadow-sky-200 text-white shadow-sm',
+    // Icon Inactive: 기본 회색 -> 호버 시 Sky 색상
+    iconInactive: 'bg-transparent text-slate-400 group-hover:text-sky-500 group-hover:bg-sky-50',
+    // Text Active
+    textActive: 'text-sky-900 font-bold'
   },
   { 
     path: '/news/broadcast', 
     icon: Radio, 
     label: '방송',
-    activeColor: 'text-pink-500', 
-    activeBg: 'bg-pink-50 border-pink-100',
-    hoverText: 'group-hover:text-pink-500'
+    activeContainer: 'bg-white/90 border-pink-200 shadow-sm ring-1 ring-pink-100',
+    hoverContainer: 'hover:bg-white/80 hover:border-pink-100 hover:shadow-sm',
+    iconActive: 'bg-gradient-to-br from-pink-400 to-rose-500 shadow-pink-200 text-white shadow-sm',
+    iconInactive: 'bg-transparent text-slate-400 group-hover:text-pink-500 group-hover:bg-pink-50',
+    textActive: 'text-pink-900 font-bold'
   },
   { 
     path: '/news/twitter', 
     icon: Twitter, 
     label: '타임라인',
-    activeColor: 'text-violet-500', 
-    activeBg: 'bg-violet-50 border-violet-100',
-    hoverText: 'group-hover:text-violet-500'
+    activeContainer: 'bg-white/90 border-violet-200 shadow-sm ring-1 ring-violet-100',
+    hoverContainer: 'hover:bg-white/80 hover:border-violet-100 hover:shadow-sm',
+    iconActive: 'bg-gradient-to-br from-violet-400 to-purple-500 shadow-violet-200 text-white shadow-sm',
+    iconInactive: 'bg-transparent text-slate-400 group-hover:text-violet-500 group-hover:bg-violet-50',
+    textActive: 'text-violet-900 font-bold'
   },
   { 
     path: '/activities', 
     icon: Zap, 
     label: '활동',
-    activeColor: 'text-amber-500', 
-    activeBg: 'bg-amber-50 border-amber-100',
-    hoverText: 'group-hover:text-amber-500'
+    activeContainer: 'bg-white/90 border-amber-200 shadow-sm ring-1 ring-amber-100',
+    hoverContainer: 'hover:bg-white/80 hover:border-amber-100 hover:shadow-sm',
+    iconActive: 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-200 text-white shadow-sm',
+    iconInactive: 'bg-transparent text-slate-400 group-hover:text-amber-500 group-hover:bg-amber-50',
+    textActive: 'text-amber-900 font-bold'
   },
   { 
     path: '/others/goods', 
     icon: ShoppingBag, 
     label: '교환소',
-    activeColor: 'text-emerald-500', 
-    activeBg: 'bg-emerald-50 border-emerald-100',
-    hoverText: 'group-hover:text-emerald-500'
+    activeContainer: 'bg-white/90 border-emerald-200 shadow-sm ring-1 ring-emerald-100',
+    hoverContainer: 'hover:bg-white/80 hover:border-emerald-100 hover:shadow-sm',
+    iconActive: 'bg-gradient-to-br from-emerald-400 to-teal-500 shadow-emerald-200 text-white shadow-sm',
+    iconInactive: 'bg-transparent text-slate-400 group-hover:text-emerald-500 group-hover:bg-emerald-50',
+    textActive: 'text-emerald-900 font-bold'
   },
 ];
 
@@ -74,7 +89,7 @@ export default function MainLayout() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-3">
+            <nav className="hidden md:flex items-center gap-2">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname.startsWith(item.path);
@@ -83,15 +98,21 @@ export default function MainLayout() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`group flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 border
-                      ${
-                        isActive
-                          ? `bg-white shadow-sm scale-105 ${item.activeColor} ${item.activeBg}`
-                          : `bg-transparent border-transparent text-slate-500 hover:bg-white/50 ${item.hoverText}`
+                    className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300 border
+                      ${isActive 
+                        ? item.activeContainer 
+                        : `border-transparent ${item.hoverContainer}`
                       }`}
                   >
-                    <Icon className={`size-4 ${isActive ? 'fill-current opacity-20' : ''}`} />
-                    <span className="text-sm font-bold">{item.label}</span>
+                    {/* Icon Wrapper: Active시 그라데이션, Inactive시 투명 */}
+                    <div className={`p-1.5 rounded-lg transition-all duration-300 
+                      ${isActive ? item.iconActive : item.iconInactive}`}>
+                      <Icon className="size-4" strokeWidth={isActive ? 2.5 : 2} />
+                    </div>
+                    
+                    <span className={`text-sm transition-colors duration-300 ${isActive ? item.textActive : 'text-slate-500 group-hover:text-slate-700 font-medium'}`}>
+                      {item.label}
+                    </span>
                   </Link>
                 );
               })}
@@ -103,19 +124,22 @@ export default function MainLayout() {
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname.startsWith(item.path);
+              
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all flex-1 min-w-[60px]
-                    ${
-                      isActive
-                        ? `bg-white shadow-sm ${item.activeColor} ${item.activeBg}`
-                        : 'text-slate-400 hover:bg-white/40 hover:text-slate-600'
+                  className={`flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all flex-1 min-w-[60px] border
+                    ${isActive 
+                      ? item.activeContainer
+                      : `border-transparent ${item.hoverContainer}`
                     }`}
                 >
-                  <Icon className={`size-5 mb-0.5 ${isActive ? 'scale-110' : ''}`} />
-                  <span className="text-[10px] font-medium leading-none">
+                  <div className={`p-1.5 rounded-lg transition-all duration-300 
+                    ${isActive ? item.iconActive : item.iconInactive}`}>
+                    <Icon className={`size-5 mb-0.5 ${isActive ? 'scale-105' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
+                  <span className={`text-[10px] leading-none transition-colors ${isActive ? item.textActive : 'text-slate-400 font-medium'}`}>
                     {item.label}
                   </span>
                 </Link>
@@ -129,7 +153,6 @@ export default function MainLayout() {
       <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 md:px-6 py-6 gap-6">
         
         {/* ✅ Sidebar - Desktop only (Left Side) */}
-        {/* 수정됨: w-72 -> w-64 (비율 축소), 상단 제목(On Air Now) 삭제 */}
         <aside className="hidden lg:flex flex-col w-64 flex-none sticky top-24 h-fit">
           <div className="space-y-3">
             {liveMembers.length > 0 ? (
@@ -137,7 +160,6 @@ export default function MainLayout() {
                 <MemberCard key={member.id} member={member} />
               ))
             ) : (
-              // 방송 중인 멤버가 없을 때 표시 (심플하게 변경)
               <div className="flex flex-col items-center justify-center py-6 rounded-2xl bg-white/40 border border-white/50 text-center backdrop-blur-sm">
                 <Radio className="size-6 text-slate-300 mb-2" />
                 <p className="text-xs text-slate-400 font-medium">현재 방송 중인<br/>멤버가 없습니다</p>
