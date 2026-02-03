@@ -32,7 +32,7 @@ interface TradeItem {
   };
 }
 
-export function GoodsTrade() {
+export default function GoodsTrade() {
   const { data: trades, isLoading } = useJsonData<TradeItem[]>('goodstrade');
 
   // --- State ---
