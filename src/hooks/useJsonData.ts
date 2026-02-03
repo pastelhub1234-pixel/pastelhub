@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { fetchDataWithRetry, dataService } from '../services/dataService';
+import { fetchDataWithRetry, dataService } from './dataService';
 
 export interface UseJsonDataResult<T> {
   data: T | null;
