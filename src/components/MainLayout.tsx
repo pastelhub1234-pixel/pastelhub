@@ -1,74 +1,58 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Calendar, Radio, Twitter, Zap, ShoppingBag, Sparkles } from 'lucide-react';
-import { MEMBERS } from '../constants';
+// import { MEMBERS } from '../constants'; // 제거됨
+import { useJsonData } from '../hooks/useJsonData'; // 추가됨
+import { Member } from '../types'; // 타입 정의 파일 경로에 맞게 수정 필요
 import MemberCard from './MemberCard';
 
-// 5대 핵심 기능 네비게이션 정의 (스타일 확장)
+// 5대 핵심 기능 네비게이션 정의 (CSS 클래스 매핑으로 간소화)
 const NAV_ITEMS = [
   { 
     path: '/news/schedule', 
     icon: Calendar, 
     label: '일정',
-    // Active 상태: 흰색 배경 + Sky 색상 링/테두리
-    activeContainer: 'bg-white/90 border-sky-200 shadow-sm ring-1 ring-sky-100',
-    // Hover 상태: 연한 배경 + Sky 색상 테두리
-    hoverContainer: 'hover:bg-white/80 hover:border-sky-100 hover:shadow-sm',
-    // Icon Active: 그라데이션 배경 + 흰색 아이콘
-    iconActive: 'bg-gradient-to-br from-sky-400 to-blue-500 shadow-sky-200 text-white shadow-sm',
-    // Icon Inactive: 기본 회색 -> 호버 시 Sky 색상
-    iconInactive: 'bg-transparent text-slate-400 group-hover:text-sky-500 group-hover:bg-sky-50',
-    // Text Active
-    textActive: 'text-sky-900 font-bold'
+    theme: 'theme-schedule' // styles.css에 정의된 클래스
   },
   { 
     path: '/news/broadcast', 
     icon: Radio, 
     label: '방송',
-    activeContainer: 'bg-white/90 border-pink-200 shadow-sm ring-1 ring-pink-100',
-    hoverContainer: 'hover:bg-white/80 hover:border-pink-100 hover:shadow-sm',
-    iconActive: 'bg-gradient-to-br from-pink-400 to-rose-500 shadow-pink-200 text-white shadow-sm',
-    iconInactive: 'bg-transparent text-slate-400 group-hover:text-pink-500 group-hover:bg-pink-50',
-    textActive: 'text-pink-900 font-bold'
+    theme: 'theme-broadcast'
   },
   { 
     path: '/news/twitter', 
     icon: Twitter, 
     label: '타임라인',
-    activeContainer: 'bg-white/90 border-violet-200 shadow-sm ring-1 ring-violet-100',
-    hoverContainer: 'hover:bg-white/80 hover:border-violet-100 hover:shadow-sm',
-    iconActive: 'bg-gradient-to-br from-violet-400 to-purple-500 shadow-violet-200 text-white shadow-sm',
-    iconInactive: 'bg-transparent text-slate-400 group-hover:text-violet-500 group-hover:bg-violet-50',
-    textActive: 'text-violet-900 font-bold'
+    theme: 'theme-twitter'
   },
   { 
     path: '/activities', 
     icon: Zap, 
     label: '활동',
-    activeContainer: 'bg-white/90 border-amber-200 shadow-sm ring-1 ring-amber-100',
-    hoverContainer: 'hover:bg-white/80 hover:border-amber-100 hover:shadow-sm',
-    iconActive: 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-200 text-white shadow-sm',
-    iconInactive: 'bg-transparent text-slate-400 group-hover:text-amber-500 group-hover:bg-amber-50',
-    textActive: 'text-amber-900 font-bold'
+    theme: 'theme-activities'
   },
   { 
     path: '/others/goods', 
     icon: ShoppingBag, 
     label: '교환소',
-    activeContainer: 'bg-white/90 border-emerald-200 shadow-sm ring-1 ring-emerald-100',
-    hoverContainer: 'hover:bg-white/80 hover:border-emerald-100 hover:shadow-sm',
-    iconActive: 'bg-gradient-to-br from-emerald-400 to-teal-500 shadow-emerald-200 text-white shadow-sm',
-    iconInactive: 'bg-transparent text-slate-400 group-hover:text-emerald-500 group-hover:bg-emerald-50',
-    textActive: 'text-emerald-900 font-bold'
+    theme: 'theme-goods'
   },
 ];
 
 export default function MainLayout() {
   const location = useLocation();
 
-  // 방송 중인 멤버 필터링
-  const liveMembers = MEMBERS.filter(
-    (member) => member.status && (member.status.includes('LIVE') || member.status.includes('SPACE') || member.status.includes('X_live'))
-  );
+  // ✅ 1. JSON 데이터 Hook 사용 ('status' 키로 데이터 호출)
+  const { data: members } = useJsonData<Member[]>('status');
+
+  // ✅ 2. 방송 중인 멤버 필터링
+  const liveMembers = members?.filter(
+    (member) => member.status && (
+      member.status.includes('LIVE') || 
+      member.status.includes('SPACE') || 
+      member.status.includes('X_live')
+    )
+  ) || [];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-white to-slate-50 font-sans text-slate-900">
@@ -98,19 +82,13 @@ export default function MainLayout() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300 border
-                      ${isActive 
-                        ? item.activeContainer 
-                        : `border-transparent ${item.hoverContainer}`
-                      }`}
+                    // CSS Component 클래스 (.nav-item) + 테마 클래스 (.theme-xxx) 적용
+                    className={`nav-item group ${item.theme} ${isActive ? 'active' : ''}`}
                   >
-                    {/* Icon Wrapper: Active시 그라데이션, Inactive시 투명 */}
-                    <div className={`p-1.5 rounded-lg transition-all duration-300 
-                      ${isActive ? item.iconActive : item.iconInactive}`}>
+                    <div className="nav-icon-wrapper">
                       <Icon className="size-4" strokeWidth={isActive ? 2.5 : 2} />
                     </div>
-                    
-                    <span className={`text-sm transition-colors duration-300 ${isActive ? item.textActive : 'text-slate-500 group-hover:text-slate-700 font-medium'}`}>
+                    <span className="text-sm font-medium transition-colors">
                       {item.label}
                     </span>
                   </Link>
@@ -129,17 +107,17 @@ export default function MainLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all flex-1 min-w-[60px] border
-                    ${isActive 
-                      ? item.activeContainer
-                      : `border-transparent ${item.hoverContainer}`
-                    }`}
+                  // 모바일은 레이아웃이 다르므로 flex-col 등은 유지하되, 색상은 CSS 변수 활용
+                  className={`flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all flex-1 min-w-[60px] border border-transparent 
+                    ${item.theme} 
+                    ${isActive ? 'bg-white shadow-sm' : 'hover:bg-white/40'}`}
                 >
                   <div className={`p-1.5 rounded-lg transition-all duration-300 
-                    ${isActive ? item.iconActive : item.iconInactive}`}>
+                    ${isActive ? 'bg-[var(--theme-hover-bg)] text-[var(--theme-hover-text)]' : 'text-slate-400'}`}>
                     <Icon className={`size-5 mb-0.5 ${isActive ? 'scale-105' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
                   </div>
-                  <span className={`text-[10px] leading-none transition-colors ${isActive ? item.textActive : 'text-slate-400 font-medium'}`}>
+                  <span className={`text-[10px] leading-none transition-colors 
+                    ${isActive ? 'text-[var(--theme-text-active)] font-bold' : 'text-slate-400 font-medium'}`}>
                     {item.label}
                   </span>
                 </Link>
@@ -155,6 +133,7 @@ export default function MainLayout() {
         {/* ✅ Sidebar - Desktop only (Left Side) */}
         <aside className="hidden lg:flex flex-col w-64 flex-none sticky top-24 h-fit">
           <div className="space-y-3">
+            {/* 데이터 로딩 상태 처리 및 리스트 렌더링 */}
             {liveMembers.length > 0 ? (
               liveMembers.map((member) => (
                 <MemberCard key={member.id} member={member} />
@@ -162,7 +141,9 @@ export default function MainLayout() {
             ) : (
               <div className="flex flex-col items-center justify-center py-6 rounded-2xl bg-white/40 border border-white/50 text-center backdrop-blur-sm">
                 <Radio className="size-6 text-slate-300 mb-2" />
-                <p className="text-xs text-slate-400 font-medium">현재 방송 중인<br/>멤버가 없습니다</p>
+                <p className="text-xs text-slate-400 font-medium">
+                  {members ? '현재 방송 중인\n멤버가 없습니다' : '로딩 중...'}
+                </p>
               </div>
             )}
           </div>

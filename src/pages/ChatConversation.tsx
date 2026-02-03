@@ -1,17 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip } from 'lucide-react';
-// ✅ [수정] 경로 변경: ../../../ -> ../
-import { useJsonData } from '../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData'; // ✅ 경로 수정됨
 import { MessageBubble } from './MessageBubble';
 
-// types 파일이 ../types에 있다고 가정하거나 내부에 정의합니다.
-interface ChatMessage {
+// ✅ 타입 정의 (내부 정의로 변경하여 의존성 제거)
+export interface ChatMessage {
   id?: number;
   type: string;
   name?: string;
   profileImg?: string;
   content: string;
   time?: string;
+  createdAt?: string; // 정렬을 위해 날짜 필드가 있다면 추가 권장
 }
 
 interface ChatRoom {
@@ -28,16 +28,17 @@ interface ChatConversationProps {
 const MAX_MESSAGES = 50; 
 
 export function ChatConversation({ roomId }: ChatConversationProps) {
-  // ✅ [수정] 경로 변경
+  // 데이터 훅 사용
   const { data: chatRooms } = useJsonData<ChatRoom[]>('chat_rooms');
   const { data: messages, loading } = useJsonData<ChatMessage[]>(roomId);
   
   const room = chatRooms?.find(r => r.roomId === roomId);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 최신 50개 메시지
+  // 최신 50개 메시지 자르기
   const displayMessages = messages ? messages.slice(-MAX_MESSAGES) : [];
 
+  // 메시지 로드 시 스크롤 하단 이동
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -46,7 +47,8 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
 
   return (
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 min-h-0">
-      {/* 헤더 */}
+      
+      {/* 1. 헤더 */}
       <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
@@ -74,7 +76,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
       </header>
 
-      {/* 스크롤 영역 */}
+      {/* 2. 스크롤 영역 (메시지 리스트) */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-3 py-3 space-y-1 custom-scrollbar"
@@ -84,13 +86,16 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         ) : (
           displayMessages.length > 0 ? (
             <>
+              {/* 메시지가 많을 경우 안내 문구 */}
               {messages && messages.length > MAX_MESSAGES && (
                 <div className="text-center py-4 text-xs text-gray-500 opacity-70">
                   이전 대화 불러오기...
                 </div>
               )}
+              
+              {/* 메시지 렌더링 */}
               {displayMessages.map((m, i) => (
-                 <MessageBubble key={i} msg={m} />
+                 <MessageBubble key={m.id || i} msg={m} />
               ))}
             </>
           ) : (
@@ -101,7 +106,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 입력창 */}
+      {/* 3. 입력창 (Footer) */}
       <div className="bg-white px-3 py-2 flex-shrink-0 border-t border-[#ebebeb]">
         <div className="flex items-center gap-2">
             <div className="flex gap-2 shrink-0 text-gray-400">

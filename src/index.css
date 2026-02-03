@@ -66,6 +66,104 @@
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
     }
+    .theme-schedule {
+    --theme-border: #bae6fd;       /* border-sky-200 */
+    --theme-ring: #e0f2fe;         /* ring-sky-100 */
+    --theme-text-active: #0c4a6e;  /* text-sky-900 */
+    --theme-icon-start: #38bdf8;   /* from-sky-400 */
+    --theme-icon-end: #3b82f6;     /* to-blue-500 */
+    --theme-shadow: #bae6fd;       /* shadow-sky-200 */
+    --theme-hover-text: #0ea5e9;   /* text-sky-500 */
+    --theme-hover-bg: #f0f9ff;     /* bg-sky-50 */
+  }
+
+  /* 방송 (Broadcast) */
+  .theme-broadcast {
+    --theme-border: #fbcfe8;       /* border-pink-200 */
+    --theme-ring: #fce7f3;         /* ring-pink-100 */
+    --theme-text-active: #831843;  /* text-pink-900 */
+    --theme-icon-start: #f472b6;   /* from-pink-400 */
+    --theme-icon-end: #f43f5e;     /* to-rose-500 */
+    --theme-shadow: #fbcfe8;       /* shadow-pink-200 */
+    --theme-hover-text: #ec4899;   /* text-pink-500 */
+    --theme-hover-bg: #fdf2f8;     /* bg-pink-50 */
+  }
+
+  /* 타임라인 (Twitter) */
+  .theme-twitter {
+    --theme-border: #ddd6fe;       /* border-violet-200 */
+    --theme-ring: #ede9fe;         /* ring-violet-100 */
+    --theme-text-active: #4c1d95;  /* text-violet-900 */
+    --theme-icon-start: #a78bfa;   /* from-violet-400 */
+    --theme-icon-end: #a855f7;     /* to-purple-500 */
+    --theme-shadow: #ddd6fe;       /* shadow-violet-200 */
+    --theme-hover-text: #8b5cf6;   /* text-violet-500 */
+    --theme-hover-bg: #f5f3ff;     /* bg-violet-50 */
+  }
+
+  /* 활동 (Activities) */
+  .theme-activities {
+    --theme-border: #fde68a;       /* border-amber-200 */
+    --theme-ring: #fef3c7;         /* ring-amber-100 */
+    --theme-text-active: #78350f;  /* text-amber-900 */
+    --theme-icon-start: #fbbf24;   /* from-amber-400 */
+    --theme-icon-end: #f97316;     /* to-orange-500 */
+    --theme-shadow: #fde68a;       /* shadow-amber-200 */
+    --theme-hover-text: #f59e0b;   /* text-amber-500 */
+    --theme-hover-bg: #fffbeb;     /* bg-amber-50 */
+  }
+
+  /* 교환소 (Goods) */
+  .theme-goods {
+    --theme-border: #a7f3d0;       /* border-emerald-200 */
+    --theme-ring: #d1fae5;         /* ring-emerald-100 */
+    --theme-text-active: #064e3b;  /* text-emerald-900 */
+    --theme-icon-start: #34d399;   /* from-emerald-400 */
+    --theme-icon-end: #14b8a6;     /* to-teal-500 */
+    --theme-shadow: #a7f3d0;       /* shadow-emerald-200 */
+    --theme-hover-text: #10b981;   /* text-emerald-500 */
+    --theme-hover-bg: #ecfdf5;     /* bg-emerald-50 */
+  }
+
+    /* =========================================
+      2. 컴포넌트 클래스 적용
+      ========================================= */
+    
+    .nav-item {
+      @apply flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 border border-transparent text-slate-500 bg-transparent;
+    }
+
+    .nav-item:hover {
+      @apply bg-white/80 shadow-sm;
+      border-color: var(--theme-ring);
+    }
+
+    .nav-item.active {
+      @apply bg-white/90 shadow-sm ring-1;
+      border-color: var(--theme-border);
+      --tw-ring-color: var(--theme-ring);
+      color: var(--theme-text-active);
+      font-weight: 700;
+    }
+
+    /* 아이콘 래퍼 */
+    .nav-icon-wrapper {
+      @apply p-1.5 rounded-lg transition-all duration-300 text-slate-400 bg-transparent;
+    }
+
+    /* 부모(.nav-item) hover 시 아이콘 변화 */
+    .nav-item:hover .nav-icon-wrapper {
+      color: var(--theme-hover-text);
+      background-color: var(--theme-hover-bg);
+    }
+
+    /* 부모(.nav-item) active 시 아이콘 변화 */
+    .nav-item.active .nav-icon-wrapper {
+      @apply text-white shadow-sm;
+      background-image: linear-gradient(to bottom right, var(--theme-icon-start), var(--theme-icon-end));
+      /* 그림자 색상 적용 (Tailwind shadow 유틸리티로는 CSS 변수 적용이 까다로워 직접 작성) */
+      box-shadow: 0 2px 4px var(--theme-shadow);
+    }
   }
 }
 
@@ -644,6 +742,188 @@
 }
 
 @layer utilities {
+  /* --- Background Colors (누락됨) --- */
+  .bg-slate-50 {
+    background-color: var(--color-slate-50);
+  }
+
+  .bg-slate-200 {
+    background-color: var(--color-slate-200);
+  }
+
+  .bg-slate-800 {
+    background-color: var(--color-slate-800);
+  }
+
+  .bg-orange-50 {
+    background-color: var(--color-orange-50);
+  }
+
+  .bg-indigo-50 {
+    background-color: var(--color-indigo-50);
+  }
+  
+  .bg-indigo-50\/60 {
+    background-color: color-mix(in srgb, var(--color-indigo-50) 60%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-indigo-50\/60 {
+      background-color: color-mix(in oklab, var(--color-indigo-50) 60%, transparent);
+    }
+  }
+
+  .bg-indigo-600 {
+    background-color: var(--color-indigo-600);
+  }
+
+  .bg-blue-50 {
+    background-color: var(--color-blue-50);
+  }
+
+  .bg-green-50 {
+    background-color: var(--color-green-50);
+  }
+
+  .bg-green-100 {
+    background-color: var(--color-green-100);
+  }
+
+  .bg-pink-50\/60 {
+    background-color: color-mix(in srgb, var(--color-pink-50) 60%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-pink-50\/60 {
+      background-color: color-mix(in oklab, var(--color-pink-50) 60%, transparent);
+    }
+  }
+
+  .bg-\[\#FAE100\] {
+    background-color: #fae100;
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-indigo-700:hover {
+      background-color: var(--color-indigo-700);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-\[\#FCE620\]:hover {
+      background-color: #fce620;
+    }
+  }
+
+  /* --- Text Colors (누락됨) --- */
+  .text-orange-500 {
+    color: var(--color-orange-500);
+  }
+
+  .text-orange-800 {
+    color: var(--color-orange-800);
+  }
+
+  .text-indigo-500 {
+    color: var(--color-indigo-500);
+  }
+
+  .text-indigo-700 {
+    color: var(--color-indigo-700);
+  }
+
+  .text-indigo-900 {
+    color: var(--color-indigo-900);
+  }
+
+  .text-green-600 {
+    color: var(--color-green-600);
+  }
+
+  .text-green-700 {
+    color: var(--color-green-700);
+  }
+
+  .text-pink-900 {
+    color: var(--color-pink-900);
+  }
+
+  .text-\[\#371D1E\] {
+    color: #371d1e;
+  }
+
+  /* --- Border Colors (누락됨) --- */
+  .border-slate-300 {
+    border-color: var(--color-slate-300);
+  }
+
+  .border-slate-800 {
+    border-color: var(--color-slate-800);
+  }
+
+  .border-orange-100 {
+    border-color: var(--color-orange-100);
+  }
+
+  .border-indigo-50 {
+    border-color: var(--color-indigo-50);
+  }
+
+  .border-indigo-100 {
+    border-color: var(--color-indigo-100);
+  }
+
+  .border-indigo-100\/60 {
+    border-color: color-mix(in srgb, var(--color-indigo-100) 60%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-indigo-100\/60 {
+      border-color: color-mix(in oklab, var(--color-indigo-100) 60%, transparent);
+    }
+  }
+
+  .border-indigo-200 {
+    border-color: var(--color-indigo-200);
+  }
+
+  .border-blue-100 {
+    border-color: var(--color-blue-100);
+  }
+
+  .border-blue-200 {
+    border-color: var(--color-blue-200);
+  }
+
+  .border-green-100 {
+    border-color: var(--color-green-100);
+  }
+
+  .border-pink-50 {
+    border-color: var(--color-pink-50);
+  }
+
+  .border-pink-100\/60 {
+    border-color: color-mix(in srgb, var(--color-pink-100) 60%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-pink-100\/60 {
+      border-color: color-mix(in oklab, var(--color-pink-100) 60%, transparent);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:border-indigo-100:hover {
+      border-color: var(--color-indigo-100);
+    }
+  }
+
+  /* --- Ring Colors (누락됨) --- */
+  .focus\:ring-indigo-200:focus {
+    --tw-ring-color: var(--color-indigo-200);
+  }
+  
   .pointer-events-none {
     pointer-events: none;
   }
