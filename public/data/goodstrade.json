@@ -1,0 +1,50 @@
+[
+    {
+      "id": "1",
+      "userId": "google-oauth2|1029384756",
+      "author": {
+        "name": "파스텔123",
+        "level": "cafe",
+        "profileImg": "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+      },
+      "region": "서울",
+      "isDeliveryAvailable": true,
+      "haveItems": ["유니 1주년 아크릴 (미개봉)", "칸나 2집 앨범 포카 A"],
+      "wantItems": ["리제 생일 굿즈 키링", "마시로 포카 B버전"],
+      "openChatLink": "https://open.kakao.com/o/sample1",
+      "createdAt": "2026-01-29T10:00:00",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "userId": "google-oauth2|1122334455",
+      "author": {
+        "name": "스텔라이브조아",
+        "level": "google",
+        "profileImg": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"
+      },
+      "region": "부산",
+      "isDeliveryAvailable": false,
+      "haveItems": ["히나 3주년 캔뱃지 세트"],
+      "wantItems": ["유니 1주년 아크릴"],
+      "openChatLink": "https://open.kakao.com/o/sample2",
+      "createdAt": "2026-01-29T09:30:00",
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "userId": "google-oauth2|9988776655",
+      "author": {
+        "name": "교환원해요",
+        "level": "cafe",
+        "profileImg": "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob"
+      },
+      "region": "전국",
+      "isDeliveryAvailable": true,
+      "haveItems": ["타비 쿠션", "리제 머그컵"],
+      "wantItems": ["시로 키링", "강지 텀블러"],
+      "openChatLink": "https://open.kakao.com/o/sample3",
+      "createdAt": "2026-01-28T18:20:00",
+      "status": "completed"
+    }
+  ]

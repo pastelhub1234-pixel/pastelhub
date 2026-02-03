@@ -1,0 +1,26 @@
+[
+  {
+    "roomId": "group_stellive_all",
+    "roomName": "✨ 스텔라이브 전체 단톡방 (10)",
+    "roomImg": "https://api.dicebear.com/9.x/initials/svg?seed=ST&backgroundColor=b6e3f4",
+    "todayPostCount": 328,
+    "lastPost": "미안.. 다 하트 달아줄라했는데 오류걸려서 이제못해 안댄대..힝 대신 이거 받아라💚💚💚💚💚",
+    "lastPostTime": "2026-01-23T15:30:00Z" 
+  },
+  {
+    "roomId": "dm_bukki",
+    "roomName": "부키 🦉",
+    "roomImg": "https://api.dicebear.com/9.x/notionists/svg?seed=Bukki&backgroundColor=eaddff",
+    "todayPostCount": 12,
+    "lastPost": "므아아ㅏ아ㅏ아아아아ㅏㅇ아ㅏ악기지개",
+    "lastPostTime": "2026-01-23T04:15:16.692Z"
+  },
+  {
+    "roomId": "dm_rico",
+    "roomName": "리코 🐧",
+    "roomImg": "https://api.dicebear.com/9.x/avataaars/svg?seed=Rico&backgroundColor=c0eddb",
+    "todayPostCount": 45,
+    "lastPost": "미안.. 다 하트 달아줄라했는데 오류걸려서 이제못해 안댄대..힝 대신 이거 받아라💚💚💚💚💚",
+    "lastPostTime": "2026-01-23T14:27:37.601Z"
+  }
+]

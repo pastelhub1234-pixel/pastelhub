@@ -1,0 +1,23 @@
+[
+  {
+    "title": "3월 데뷔 기념일💫",
+    "type": "contents",
+    "imageUrl": "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=400",
+    "url": "https://vote.stella.com/1321",
+    "importance": true
+  },
+  {
+    "title": "2월 트렌드 아티스트⚡️",
+    "type": "game",
+    "imageUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400",
+    "url": "https://vote.stella.com/3200",
+    "importance": false
+  },
+  {
+    "title": "🎂 2월의 생일 퀸 : PART 2",
+    "type": "special",
+    "imageUrl": "https://images.unsplash.com/photo-1541560052-5e137f229371?w=400",
+    "url": "https://vote.stella.com/3205",
+    "importance": true
+  }
+]

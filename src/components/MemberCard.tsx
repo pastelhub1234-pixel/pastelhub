@@ -1,0 +1,64 @@
+import { Member } from '../types';
+
+interface MemberCardProps {
+  member: Member;
+}
+
+export default function MemberCard({ member }: MemberCardProps) {
+  // 1. 상태가 없거나 오프라인이면 렌더링하지 않음
+  if (!member.status || member.status === 'OFFLINE') return null;
+
+  // 2. 플랫폼 구분 로직 (X_live = 스페이스)
+  // status 문자열에 'space'나 'X_live'가 포함되어 있는지 확인
+  const isXSpace = member.status === 'SPACE' || member.status === 'X_live'; 
+  const badgeText = isXSpace ? "SPACE" : "LIVE";
+
+  // 3. 링 색상 설정 (스페이스: 핑크/퍼플, 라이브: 민트/초록)
+  const ringStyle = isXSpace 
+    ? { background: 'linear-gradient(to bottom right, #ec4899, #a855f7)' } // X: Pink/Purple
+    : { background: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)' }; // Chzzk: Mint/Green
+
+  // liveUrl이 없으면 # 처리
+  const liveUrl = member.liveUrl || member.channelUrl || '#'; 
+
+  return (
+    <a 
+      href={liveUrl} 
+      target="_blank" 
+      rel="noreferrer" 
+      className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 cursor-pointer group border bg-white/80 shadow-sm border-purple-100/50 hover:shadow-md hover:border-purple-200 hover:bg-white backdrop-blur-sm"
+    >
+      {/* 프로필 이미지 & 상태 링 */}
+      <div 
+        className="relative rounded-full flex items-center justify-center flex-shrink-0 p-[2px] transition-transform group-hover:scale-105"
+        style={{ 
+          width: '42px', 
+          height: '42px', 
+          ...ringStyle 
+        }} 
+      >
+        <img 
+          src={member.profileImg} 
+          alt={member.name} 
+          className="w-full h-full rounded-full object-cover bg-white border-2 border-white" 
+        />
+      </div>
+      
+      {/* 텍스트 정보 */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-bold truncate text-slate-800">{member.name}</span>
+          {/* LIVE 뱃지: 빨간색 고정 */}
+          <span className="text-[10px] font-extrabold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-full animate-pulse tracking-tight flex-none ml-1 ring-1 ring-red-100">
+            {badgeText}
+          </span>
+        </div>
+        
+        {/* 방송 제목 표시 (없으면 기본 멘트) */}
+        <p className="text-xs text-slate-500 truncate mt-0.5 group-hover:text-slate-700 transition-colors">
+          {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
+        </p>
+      </div>
+    </a>
+  );
+}

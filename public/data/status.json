@@ -1,0 +1,73 @@
+[
+  {
+    "name": "유니",
+    "status": "X_live",
+    "title": "나 지금 이러났어 ㅡ,ㅡ",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/%EC%9C%A0%EB%8B%883.png?alt=media&token=65e362b8-9fa4-4ccf-806b-94fce80f0803",
+    "liveUrl": "https://chzzk.naver.com/video/11550825"
+  },
+  {
+    "name": "후야",
+    "status": "X_live",
+    "title": "리제로 매니아의 에프터 토크",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image.png?alt=media&token=f1971eef-a31e-4552-984b-f32159f668e2",
+    "liveUrl": "https://chzzk.naver.com/video/11550725"
+  },
+  {
+    "name": "리제",
+    "status": "chzzk_live",
+    "title": "요즘 사람들은 단걸 많이 먹어서 화가 많다는데 그래서 제가 화가 많은데요, 절대 제가 나쁜게 아닙니다. 혼자 도넛 2개먹어서 그래요. 동의게임할거임",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image%20(1).png?alt=media&token=b283cd1c-753a-4beb-8522-ae173e06f1ff",
+    "liveUrl": "https://chzzk.naver.com/video/11500857"
+  },
+  {
+    "name": "타비",
+    "status": "chzzk_live",
+    "title": "🐤쪼아요 ~ 쪼아요 ~ 벌목 넘모 쪼아요~ #봉봉팜🐤",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image%20(2).png?alt=media&token=5b429fab-e41e-4c57-b061-36f61ebe2b90",
+    "liveUrl": "https://chzzk.naver.com/video/11553845"
+  },
+  {
+    "name": "히나",
+    "status": "offline",
+    "title": "방송예정",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image.jpg?alt=media&token=a8564830-124a-4061-8c9f-5a5d915e83c6",
+    "liveUrl": "https://chzzk.naver.com/b044e3a3b9259246bc92e863e7d3f3b8"
+  },
+  {
+    "name": "시로",
+    "status": "offline",
+    "title": "방송예정",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image%20(1).jpg?alt=media&token=2f0e9395-19be-4d41-b2b2-a078e0bf0cca",
+    "liveUrl": "https://chzzk.naver.com/4515b179f86b67b4981e16190817c580"
+  },
+  {
+    "name": "부키",
+    "status": "offline",
+    "title": "방송예정",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/%EC%85%80%EC%B9%B41.png?alt=media&token=4d278a02-6344-4ce7-8bb3-10505a51771fhti",
+    "liveUrl": "https://chzzk.naver.com/64d76089fba26b180d9c9e48a32600d9"
+  },
+  {
+    "name": "나나",
+    "status": "offline",
+    "title": "예정없음",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/%EC%BA%A1%EC%B2%98.png?alt=media&token=a3ec8478-a28e-4599-9e97-ba563bfdf0b4",
+    "liveUrl": "hhttps://chzzk.naver.com/4d812b586ff63f8a2946e64fa860bbf5ni"
+  },
+  {
+    "name": "린",
+    "status": "offline",
+    "title": "예정없음",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/STELLIVE_%EB%A6%B0.png?alt=media&token=d07c874a-51e9-4f87-9c07-930dab21687c",
+    "liveUrl": "hhttps://chzzk.naver.com/516937b5f85cbf2249ce31b0ad046b0fni"
+  },
+
+  {
+    "name": "리코",
+    "status": "offline",
+    "title": "휴방",
+    "profileImg": "https://firebasestorage.googleapis.com/v0/b/pastelhub-1aefc.firebasestorage.app/o/image%20(3).png?alt=media&token=79f25728-1c9c-40a9-aa72-ad53b28d8bee",
+    "liveUrl": "https://chzzk.naver.com/8fd39bb8de623317de90654718638b10"
+  }
+]
