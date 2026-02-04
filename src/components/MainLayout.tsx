@@ -54,7 +54,7 @@ export default function Home() {
     (member) => member.status && (
       member.status.includes('chzzk_live') || // ✅ 소문자 chzzk_live 추가 (치지직)
       member.status.includes('X_live') ||     // 스페이스
-      member.status.includes('LIVE') ||       // 대문자 LIVE (혹시 모를 호환성)
+      member.status.includes('LIVE')       // 대문자 LIVE (혹시 모를 호환성)
     )
   ) || [];
 
