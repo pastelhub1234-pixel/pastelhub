@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'; // react-router-dom으로 통일
+import { Link } from 'react-router-dom';
 import { Calendar, Radio, Twitter, Zap, ShoppingBag, Sparkles } from 'lucide-react';
-import { MEMBERS } from '../constants';
 import MemberCard from '../components/MemberCard';
+import { useJsonData } from '../hooks/useJsonData';
+import { Member } from '../types';
 
 const QUICK_MENU_ITEMS = [
   {
@@ -47,10 +48,19 @@ const QUICK_MENU_ITEMS = [
 ];
 
 export default function Home() {
-  // 방송 중인 멤버 필터링
-  const liveMembers = MEMBERS.filter(
-    (member) => member.status && (member.status.includes('LIVE') || member.status.includes('SPACE') || member.status.includes('X_live'))
-  );
+  // ✅ 1. JSON 데이터 Hook 사용 ('status.json' 데이터 호출)
+  // 데이터 로딩 전에는 members가 undefined일 수 있으므로 기본값 처리 주의
+  const { data: members } = useJsonData<Member[]>('status');
+
+  // ✅ 2. 방송 중인 멤버 필터링
+  // members가 로드되지 않았을 때는 빈 배열로 처리하여 에러 방지
+  const liveMembers = members?.filter(
+    (member) => member.status && (
+      member.status.includes('LIVE') || 
+      member.status.includes('SPACE') || 
+      member.status.includes('X_live')
+    )
+  ) || [];
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -67,10 +77,7 @@ export default function Home() {
         </p>
       </div>
 
-      {/* ✅ Live Members Section - 모바일 전용
-        lg:hidden -> PC 화면(Large break point 이상)에서는 숨김처리
-        MainLayout의 Sidebar가 그 역할을 대신하기 때문
-      */}
+      {/* ✅ Live Members Section (모바일 전용) */}
       {liveMembers.length > 0 && (
         <div className="space-y-4 lg:hidden">
           <div className="flex items-center gap-2 px-2">
@@ -84,7 +91,8 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {liveMembers.map((member) => (
-              <MemberCard key={member.id} member={member} />
+              // API 데이터의 고유 ID가 없다면 name을 key로 사용 (데이터 구조에 따라 id 사용 권장)
+              <MemberCard key={member.name} member={member} />
             ))}
           </div>
         </div>
@@ -136,7 +144,8 @@ export default function Home() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
         <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
           <p className="text-2xl md:text-3xl bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-            4
+            {/* ✅ 동적 데이터 적용: 멤버 수 */}
+            {members ? members.length : '-'}
           </p>
           <p className="text-xs md:text-sm text-gray-600 mt-1">멤버</p>
         </div>
@@ -148,6 +157,7 @@ export default function Home() {
         </div>
         <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
           <p className="text-2xl md:text-3xl bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">
+            {/* ✅ 동적 데이터 적용: 현재 방송 중인 수 */}
             {liveMembers.length}
           </p>
           <p className="text-xs md:text-sm text-gray-600 mt-1">LIVE 중</p>

@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 
 interface ChatRoom {
@@ -15,9 +16,10 @@ interface ChatRoomListProps {
 }
 
 export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
-  // ✅ [수정] 경로 변경: ../../../ -> ../
+  // 경로: hooks 폴더 위치에 맞게 수정해주세요.
   const { data: chatRooms, loading } = useJsonData<ChatRoom[]>('chat_rooms');
 
+  // 시간 포맷팅 함수
   const formatTime = (isoString: string) => {
     try {
       const date = new Date(isoString);
@@ -27,6 +29,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
     }
   };
 
+  // 텍스트 말줄임 함수
   const truncateText = (text: string | undefined, limit: number) => {
     if (!text) return "대화 내용이 없습니다.";
     return text.length > limit ? text.substring(0, limit) + "..." : text;
@@ -34,18 +37,27 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
 
   if (loading) {
     return (
-      <div className="w-[240px] h-full bg-white border-r border-gray-100 flex items-center justify-center shrink-0">
+      <div className="w-full h-full bg-white flex items-center justify-center">
         <span className="text-xs text-gray-400">로딩 중...</span>
       </div>
     );
   }
 
   return (
-    <div className="w-[240px] h-full flex flex-col bg-white border-r border-[#ececec] min-h-0 shrink-0">
-      <div className="px-4 py-3 border-b border-[#ececec] flex-shrink-0 bg-white z-10">
-        <h2 className="font-bold text-gray-800 text-base">채팅</h2>
+    <div className="h-full flex flex-col bg-white">
+      {/* 검색창 영역 */}
+      <div className="p-3 pb-2 flex-none">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+          <input
+            type="text"
+            placeholder="이름 검색"
+            className="w-full pl-9 pr-3 py-1.5 bg-[#f5f5f5] border-none rounded-[12px] text-sm placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-200 transition-all"
+          />
+        </div>
       </div>
 
+      {/* 채팅방 리스트 */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {chatRooms?.map((room) => {
           const isSelected = current === room.roomId;
@@ -54,9 +66,15 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
             <button
               key={room.roomId}
               onClick={() => onSelect(room.roomId)}
-              className={`w-full flex items-center px-3 py-2.5 transition-colors text-left group
-                ${isSelected ? "bg-[#eaeaec]" : "hover:bg-[#f5f5f5] bg-white"}`}
+              className={`
+                w-full px-3 py-3 flex items-center gap-3 transition-colors relative
+                ${isSelected 
+                  ? 'bg-[#ececec]' // 선택됨: 진한 회색
+                  : 'hover:bg-[#f7f7f7] bg-white' // 호버: 연한 회색
+                }
+              `}
             >
+              {/* 프로필 이미지 */}
               <div className="relative shrink-0">
                 <img 
                   src={room.roomImg} 
@@ -65,23 +83,25 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 />
               </div>
 
-              <div className="flex-1 ml-3 min-w-0">
-                <div className="flex justify-between items-center mb-0.5">
+              {/* 텍스트 정보 */}
+              <div className="flex-1 min-w-0 text-left self-stretch flex flex-col justify-center gap-0.5">
+                <div className="flex justify-between items-center w-full">
                   <span className={`text-[13px] truncate ${isSelected ? "font-bold text-gray-900" : "font-semibold text-gray-800"}`}>
                     {room.roomName}
                   </span>
-                  <span className="text-[10px] text-gray-400 ml-1 shrink-0">
+                  <span className="text-[10px] text-gray-400 ml-1 shrink-0 font-normal">
                     {formatTime(room.lastPostTime)}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center">
-                  <p className="text-[11px] text-gray-500 truncate pr-2">
-                    {truncateText(room.lastPost, 21)}
+                <div className="flex justify-between items-center w-full">
+                  <p className="text-[11px] text-gray-500 truncate pr-2 font-medium">
+                    {truncateText(room.lastPost, 20)}
                   </p>
                   
+                  {/* 안 읽은 메시지 뱃지 (빨간색) */}
                   {room.todayPostCount > 0 && (
-                    <span className="bg-[#fe4e4e] text-white text-[9px] font-bold px-1.5 h-[16px] flex items-center justify-center rounded-full min-w-[16px] shrink-0">
+                    <span className="bg-[#fe4e4e] text-white text-[9px] font-bold px-1.5 h-[16px] flex items-center justify-center rounded-full min-w-[16px] shrink-0 shadow-sm">
                       {room.todayPostCount > 300 ? "300+" : room.todayPostCount}
                     </span>
                   )}
