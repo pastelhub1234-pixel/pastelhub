@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChatRoomList } from "./ChatRoomList";
 import { ChatConversation } from "./ChatConversation";
 
-export function Timeline() {
+export default function Timeline() {
   const [roomId, setRoomId] = useState("group_stellive_all");
 
   return (
