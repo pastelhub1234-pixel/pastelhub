@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip, Send } from 'lucide-react';
-import { useJsonData } from '../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 import { MessageBubble, ChatMessage } from './MessageBubble';
 
 interface ChatRoom {
