@@ -3562,6 +3562,70 @@ html {
   font-size: var(--font-size);
 }
 
+@layer components {
+  /* =========================================
+     1. 네비게이션 아이템 공통 스타일 (PC/모바일 통합)
+     ========================================= */
+  .nav-item {
+    @apply flex flex-col items-center justify-center rounded-xl transition-all duration-200 border border-transparent cursor-pointer;
+    /* 모바일 터치 반응 속도 개선 */
+    -webkit-tap-highlight-color: transparent; 
+  }
+
+  /* 기본 상태 (비활성) */
+  .nav-item {
+    @apply text-slate-400 bg-transparent;
+  }
+
+  /* Hover (마우스 올림 - PC) & Active (터치 누름 - 모바일) */
+  .nav-item:hover,
+  .nav-item:active {
+    @apply bg-slate-50 text-slate-600;
+  }
+
+  /* =========================================
+     2. 테마별 Active (선택됨) 색상 정의
+     ========================================= */
+  
+  /* 일정 (Schedule): Blue */
+  .nav-item.theme-schedule.active {
+    @apply bg-blue-50 text-blue-600 border-blue-100 shadow-sm;
+  }
+  
+  /* 방송 (Broadcast): Rose/Pink */
+  .nav-item.theme-broadcast.active {
+    @apply bg-rose-50 text-rose-600 border-rose-100 shadow-sm;
+  }
+
+  /* 타임라인 (Twitter): Violet */
+  .nav-item.theme-twitter.active {
+    @apply bg-violet-50 text-violet-600 border-violet-100 shadow-sm;
+  }
+
+  /* 활동 (Activities): Amber (노란색/주황색 계열) - 색상 안나오던 문제 해결 */
+  .nav-item.theme-activities.active {
+    @apply bg-amber-50 text-amber-600 border-amber-100 shadow-sm;
+  }
+
+  /* 교환소 (Goods): Emerald (초록색 계열) - 색상 안나오던 문제 해결 */
+  .nav-item.theme-goods.active {
+    @apply bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm;
+  }
+
+  /* =========================================
+     3. 아이콘 크기 및 애니메이션
+     ========================================= */
+  .nav-icon {
+    @apply size-6 mb-1 transition-transform duration-300;
+  }
+
+  /* 선택되었을 때 아이콘 살짝 커짐 */
+  .nav-item.active .nav-icon {
+    @apply scale-110;
+    stroke-width: 2.5px;
+  }
+}
+
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
