@@ -1,158 +1,157 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Calendar, Radio, Twitter, Zap, ShoppingBag, Sparkles } from 'lucide-react';
-import { useJsonData } from '../hooks/useJsonData'; 
 import MemberCard from '../components/MemberCard';
+import { useJsonData } from '../hooks/useJsonData';
 
-export interface Member {
-  id: string;
-  name: string;
-  status?: string;
-  profileImg: string;
-  liveUrl?: string;
-  channelUrl?: string;
-  title?: string;
-}
-
-// ✅ 네비게이션 설정: CSS 클래스명(theme-xxx)만 지정하면 됩니다.
-const NAV_ITEMS = [
-  { 
-    path: '/news/schedule', 
-    icon: Calendar, 
-    label: '일정',
-    theme: 'theme-schedule' 
+const QUICK_MENU_ITEMS = [
+  {
+    path: '/news/schedule',
+    icon: Calendar,
+    title: '일정',
+    description: '다가오는 이벤트와 일정을 확인하세요',
+    gradient: 'from-blue-400 to-cyan-400',
+    size: 'col-span-1 row-span-1',
   },
-  { 
-    path: '/news/broadcast', 
-    icon: Radio, 
-    label: '방송',
-    theme: 'theme-broadcast'
+  {
+    path: '/news/broadcast',
+    icon: Radio,
+    title: '방송',
+    description: '실시간 방송 현황',
+    gradient: 'from-red-400 to-pink-400',
+    size: 'col-span-1 row-span-1',
   },
-  { 
-    path: '/news/twitter', 
-    icon: Twitter, 
-    label: '타임라인',
-    theme: 'theme-twitter'
+  {
+    path: '/news/twitter',
+    icon: Twitter,
+    title: '타임라인',
+    description: '멤버들의 최신 소식',
+    gradient: 'from-purple-400 to-indigo-400',
+    size: 'col-span-2 row-span-1 md:col-span-1',
   },
-  { 
-    path: '/activities', 
-    icon: Zap, 
-    label: '활동',
-    theme: 'theme-activities'
+  {
+    path: '/activities',
+    icon: Zap,
+    title: '활동',
+    description: '투표하고 함께 즐겨요',
+    gradient: 'from-yellow-400 to-orange-400',
+    size: 'col-span-1 row-span-1',
   },
-  { 
-    path: '/others/goods', 
-    icon: ShoppingBag, 
-    label: '교환소',
-    theme: 'theme-goods'
+  {
+    path: '/others/goods',
+    icon: ShoppingBag,
+    title: '교환소',
+    description: '굿즈 교환 정보',
+    gradient: 'from-green-400 to-emerald-400',
+    size: 'col-span-1 row-span-1',
   },
 ];
 
-export default function MainLayout() {
-  const location = useLocation();
+export default function Home() {
   const { data: members } = useJsonData<Member[]>('status');
 
-  // ✅ 치지직(chzzk_live) 포함 필터링 유지
+  // ✅ 방송 중인 멤버 필터링 (수정됨)
   const liveMembers = members?.filter(
     (member) => member.status && (
-      member.status.includes('chzzk_live') || 
-      member.status.includes('X_live') || 
-      member.status.includes('LIVE') || 
-      member.status.includes('SPACE')
+      member.status.includes('chzzk_live') || // ✅ 소문자 chzzk_live 추가 (치지직)
+      member.status.includes('X_live') ||     // 스페이스
+      member.status.includes('LIVE') ||       // 대문자 LIVE (혹시 모를 호환성)
     )
   ) || [];
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-transparent">
-      
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/80 shadow-sm">
-        <div className="max-w-[1200px] mx-auto px-4 h-[72px] flex items-center justify-between">
-          
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <Sparkles className="size-7 text-indigo-500 transition-transform duration-500 group-hover:rotate-180" />
-            <h1 className="font-extrabold text-2xl tracking-tighter">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500">pastel</span>
-              <span className="text-slate-700">hub</span>
-            </h1>
-          </Link>
-
-          {/* Desktop Navigation (원래대로 복구: 아이콘 위, 텍스트 아래) */}
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname.startsWith(item.path);
-              
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  // index.css에 정의된 .nav-item 및 테마 클래스 적용
-                  className={`nav-item w-[72px] h-[64px] ${item.theme} ${isActive ? 'active' : ''}`}
-                >
-                  <Icon className="nav-icon" />
-                  <span className={`text-[11px] font-bold mt-0.5 ${isActive ? '' : 'font-medium'}`}>
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-          </nav>
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Welcome Section */}
+      <div className="text-center space-y-4 py-8">
+        <div className="flex items-center justify-center gap-3">
+          <Sparkles className="size-12 text-purple-500 animate-pulse" />
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+            Pastelhub
+          </h1>
         </div>
+        <p className="text-gray-600 text-lg">
+          팬덤을 위한 모든 정보가 한곳에 ✨
+        </p>
+      </div>
 
-        {/* Mobile Navigation (헤더 하단 고정 가로 스크롤) */}
-        <div className="md:hidden border-t border-slate-100 bg-white/95 backdrop-blur px-1 py-1">
-          <nav className="flex items-center justify-between px-2 gap-1">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname.startsWith(item.path);
-              
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  // 모바일에서도 동일한 클래스 사용 (터치 시 반응하도록 active 상태 CSS에 추가함)
-                  className={`nav-item flex-1 py-2 ${item.theme} ${isActive ? 'active' : ''}`}
-                >
-                  <Icon className="nav-icon size-5 mb-0.5" />
-                  <span className="text-[10px] font-bold">
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-          </nav>
+      {/* ✅ Live Members Section (모바일 전용) */}
+      {liveMembers.length > 0 && (
+        <div className="space-y-4 lg:hidden">
+          <div className="flex items-center gap-2 px-2">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            </span>
+            <h2 className="text-lg font-bold text-slate-700">
+              현재 방송 중
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {liveMembers.map((member) => (
+              <MemberCard key={member.name} member={member} />
+            ))}
+          </div>
         </div>
-      </header>
+      )}
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex justify-center w-full px-4 py-6">
-        <div className="flex w-full max-w-[1200px] gap-6">
-          
-          {/* Sidebar - Desktop only */}
-          <aside className="hidden lg:flex flex-col w-[280px] flex-none sticky top-24 h-fit gap-4">
-            <div className="flex flex-col gap-3">
-              {liveMembers.length > 0 ? (
-                liveMembers.map((member) => (
-                  <MemberCard key={member.id} member={member} />
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center py-10 rounded-3xl bg-white/60 border border-white shadow-sm text-center backdrop-blur-sm">
-                  <div className="bg-slate-100 p-3 rounded-full mb-3">
-                    <Radio className="size-6 text-slate-400" />
-                  </div>
-                  <p className="text-xs text-slate-500 font-medium">
-                    지금은 방송 중인 멤버가 없어요
+      {/* Bento Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {QUICK_MENU_ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`${item.size} group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1`}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-90 group-hover:opacity-100 transition-opacity`} />
+              <div className="absolute inset-0 backdrop-blur-sm bg-white/10" />
+              <div className="relative h-full p-6 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <Icon className="size-8 md:size-10 text-white drop-shadow-lg" />
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 blur-2xl" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-xl md:text-2xl text-white drop-shadow-lg">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs md:text-sm text-white/90 drop-shadow">
+                    {item.description}
                   </p>
                 </div>
-              )}
-            </div>
-          </aside>
+              </div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+              </div>
+            </Link>
+          );
+        })}
+      </div>
 
-          {/* Main Content */}
-          <main className="flex-1 min-w-0">
-            <Outlet />
-          </main>
+      {/* Stats Section */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
+          <p className="text-2xl md:text-3xl bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+            {members ? members.length : '-'}
+          </p>
+          <p className="text-xs md:text-sm text-gray-600 mt-1">멤버</p>
+        </div>
+        <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
+          <p className="text-2xl md:text-3xl bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+            5
+          </p>
+          <p className="text-xs md:text-sm text-gray-600 mt-1">다가오는 일정</p>
+        </div>
+        <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
+          <p className="text-2xl md:text-3xl bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">
+            {liveMembers.length}
+          </p>
+          <p className="text-xs md:text-sm text-gray-600 mt-1">LIVE 중</p>
+        </div>
+        <div className="bg-white/50 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg">
+          <p className="text-2xl md:text-3xl bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+            6
+          </p>
+          <p className="text-xs md:text-sm text-gray-600 mt-1">교환 게시글</p>
         </div>
       </div>
     </div>
