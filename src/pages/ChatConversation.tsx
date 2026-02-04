@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useJsonData } from '../../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 import { MessageBubble } from './MessageBubble';
 import { Search, Menu, Smile, Paperclip } from 'lucide-react';
-import { ChatMessage } from '../../../types'; 
+import { ChatMessage } from '../types'; 
 
 interface ChatRoom {
   roomId: string;
