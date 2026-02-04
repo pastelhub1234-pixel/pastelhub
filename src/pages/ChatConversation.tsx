@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip, Send } from 'lucide-react';
+// ✅ 경로 수정됨: ../hooks
 import { useJsonData } from '../hooks/useJsonData';
 import { MessageBubble, ChatMessage } from './MessageBubble';
 
@@ -7,7 +8,6 @@ interface ChatRoom {
   roomId: string;
   roomName: string;
   roomImg: string;
-  todayPostCount: number;
 }
 
 interface ChatConversationProps {
@@ -32,10 +32,10 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
   }, [messages, roomId]);
 
   return (
-    // ✅ 배경색 강제 적용 (#b2c7da)
+    // ✅ 배경색 #b2c7da 적용
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
-      {/* 1. 헤더: 흰색 배경 */}
+      {/* 헤더 */}
       <header className="flex-none h-[64px] bg-white/95 backdrop-blur-sm px-5 flex justify-between items-center border-b border-[#dcdcdc] z-20">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
@@ -64,7 +64,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
       </header>
 
-      {/* 2. 스크롤 영역 */}
+      {/* 대화 내용 */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 py-4 space-y-1 custom-scrollbar"
@@ -91,24 +91,21 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 3. 입력창 (Footer): 흰색 배경 위 회색 박스 */}
+      {/* 입력창 */}
       <div className="flex-none bg-white p-4 border-t border-[#ececec] z-20">
         <div className="flex flex-col bg-[#f5f5f5] rounded-[20px] px-4 py-3 border border-transparent focus-within:bg-white focus-within:border-[#dcdcdc] transition-all shadow-sm">
-            
             <textarea 
                 className="w-full resize-none text-[14px] text-[#1e1e1e] placeholder:text-[#999] bg-transparent border-none focus:ring-0 p-0 min-h-[60px] max-h-[150px] leading-relaxed custom-scrollbar mb-2"
                 placeholder="메시지 입력"
                 rows={2}
             />
-
             <div className="flex justify-between items-center">
                 <div className="flex gap-4 text-[#777]">
                     <Smile size={22} strokeWidth={1.5} className="cursor-pointer hover:text-black transition-colors" />
                     <Paperclip size={22} strokeWidth={1.5} className="cursor-pointer hover:text-black transition-colors" />
                 </div>
-                
                 <button 
-                    className="bg-[#FEE500] hover:bg-[#fdd835] text-[#1e1e1e] px-4 py-1.5 rounded-[12px] text-[12px] font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-[#FEE500] hover:bg-[#fdd835] text-[#1e1e1e] px-4 py-1.5 rounded-[12px] text-[12px] font-semibold transition-colors shadow-sm"
                 >
                     전송
                 </button>

@@ -56,9 +56,10 @@ export default function Home() {
   // members가 로드되지 않았을 때는 빈 배열로 처리하여 에러 방지
   const liveMembers = members?.filter(
     (member) => member.status && (
-      member.status.includes('LIVE') || 
-      member.status.includes('SPACE') || 
-      member.status.includes('X_live')
+      member.status.includes('chzzk_live') || // 👈 치지직 (소문자 live 주의!)
+      member.status.includes('X_live') ||     // X 스페이스
+      member.status.includes('live')
+
     )
   ) || [];
 

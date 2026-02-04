@@ -688,7 +688,7 @@
   }
 
   body {
-    background-color: var(--background);
+    background: var(--background);
     color: var(--foreground);
   }
 
@@ -778,6 +778,35 @@
   }
   .bg-\[\#555\]\/20 {
     background-color: rgba(85, 85, 85, 0.2); /* 날짜 구분선 배경 */
+  }
+  .text-\[\#1e1e1e\] {
+    color: #1e1e1e; /* 메인 타이틀, 진한 검정 */
+  }
+  .text-\[\#333\] {
+    color: #333; /* 아이콘, 서브 타이틀 */
+  }
+  .text-\[\#555\] {
+    color: #555; /* 내 이름, 메시지 시간 */
+  }
+  .text-\[\#777\] {
+    color: #777; /* 입력창 아이콘 */
+  }
+  .text-\[\#999\] {
+    color: #999; /* 날짜, 플레이스홀더, 연한 텍스트 */
+  }
+  .text-\[\#9b9b9b\] {
+    color: #9b9b9b; /* 목록의 시간 텍스트 */
+  }
+  .text-\[\#707070\] {
+    color: #707070; /* 목록의 마지막 메시지 미리보기 */
+  }
+
+  /* ✅ 테두리색 (Border Colors) - 누락됨 */
+  .border-\[\#dcdcdc\] {
+    border-color: #dcdcdc; /* 전체 창 외곽선, 헤더 하단선 */
+  }
+  .border-\[\#ececec\] {
+    border-color: #ececec; /* 사이드바 오른쪽 경계선, 입력창 상단선 */
   }
 
   /* ✅ [글자색] */
