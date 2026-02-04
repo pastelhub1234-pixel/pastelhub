@@ -12,22 +12,19 @@ export default function MemberCard({ member }: MemberCardProps) {
   const isXSpace = member.status === 'X_live';
   const badgeText = isXSpace ? "SPACE" : "LIVE";
 
-  // 3. 링 색상 설정 (스페이스: 핑크/퍼플, 라이브: 민트/초록)
+  // 3. 링 색상 설정
   const ringStyle = isXSpace 
-    ? { background: 'linear-gradient(to bottom right, #ec4899, #a855f7)' } // X: Pink/Purple
-    : { background: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)' }; // Chzzk: Mint/Green
-
-  // liveUrl이 없으면 # 처리
-  const liveUrl = member.liveUrl || member.channelUrl || '#'; 
+    ? { background: 'linear-gradient(to bottom right, #ec4899, #a855f7)' } // Pink/Purple
+    : { background: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)' }; // Mint/Green
 
   return (
     <a 
-      href={liveUrl} 
+      href={member.liveUrl} 
       target="_blank" 
       rel="noreferrer" 
       className="flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300 cursor-pointer group border bg-white shadow-sm border-purple-100 hover:shadow-md hover:border-purple-200"
     >
-      {/* 프로필 이미지 & 상태 링 */}
+      {/* 이미지 영역 (40px) & 상태 링 */}
       <div 
         className="relative rounded-full flex items-center justify-center flex-shrink-0 p-[2px] transition-transform group-hover:scale-105"
         style={{ 

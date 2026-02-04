@@ -1,3 +1,23 @@
+// src/types/index.ts
+
+// ============================================
+// Member & Live Status (Previous Context)
+// ============================================
+export interface Member {
+  name: string;
+  status: string;        // "X_live", "chzzk_live", "offline" 등
+  title: string;
+  profileImg: string;
+  liveUrl: string;
+}
+
+// 네비게이션 아이템 타입
+export interface NavItem {
+  path: string;
+  icon: React.ElementType;
+  label: string;
+}
+
 
 // ============================================
 // Chat Types (Updated)
@@ -60,6 +80,7 @@ export interface FeedItem {
   time: string;
 }
 
+
 // ============================================
 // Schedule Types
 // ============================================
@@ -104,4 +125,3 @@ export interface TradeItem {
   openChatLink: string; // 카카오톡 오픈채팅방 링크
   createdAt: string; // 작성일 (ISO String)
 }
-
