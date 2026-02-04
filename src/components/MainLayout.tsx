@@ -5,7 +5,6 @@ import { useJsonData } from '../hooks/useJsonData';
 import MemberCard from './MemberCard';
 import { Member } from '../types';
 
-// 네비게이션 설정
 const NAV_ITEMS = [
   { path: '/news/schedule', icon: Calendar, label: '일정', themeColor: 'blue' },
   { path: '/news/broadcast', icon: Radio, label: '방송', themeColor: 'rose' },
@@ -27,20 +26,20 @@ export default function MainLayout() {
   return (
     <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-gray-50/50">
       
-      {/* ================= Header ================= */}
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
         <div className="max-w-[1200px] mx-auto px-4 h-[72px] flex items-center justify-between">
           
-          {/* ✅ Logo 복구 (기존 스타일: Sparkles 아이콘 + 그라데이션 텍스트) */}
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <Sparkles className="size-7 text-indigo-500 transition-transform duration-500 group-hover:rotate-180" />
-            <h1 className="font-extrabold text-2xl tracking-tighter">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500">pastel</span>
+          {/* ✅ 로고 영역: 요청하신 코드로 교체 완료 */}
+          <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
+            <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
+            <h1 className="font-extrabold text-2xl tracking-tight">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-pink-400">pastel</span>
               <span className="text-slate-700">hub</span>
             </h1>
           </Link>
 
-          {/* ✅ Desktop Navigation (Hover 강화 & Active 텍스트 제거) */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
@@ -60,7 +59,6 @@ export default function MainLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  // ✅ Hover 반응 강화: hover:bg-slate-100 (배경색 변경)
                   className={`
                     flex items-center gap-3 px-2 py-1.5 rounded-2xl transition-all duration-200 group border
                     ${isActive 
@@ -69,7 +67,6 @@ export default function MainLayout() {
                   `}
                   style={{ minWidth: '100px', height: '52px' }} 
                 >
-                  {/* 아이콘 박스 */}
                   <div 
                     className={`
                       flex items-center justify-center w-[36px] h-[36px] rounded-xl flex-shrink-0 transition-all duration-200
@@ -81,7 +78,6 @@ export default function MainLayout() {
                     <Icon className="size-5" />
                   </div>
 
-                  {/* 텍스트 영역 (Active 글자 제거됨) */}
                   <div className="flex flex-col justify-center min-w-0 pr-1">
                     <span className={`text-[13px] font-bold leading-tight ${isActive ? currentTheme.activeText : 'text-slate-500 group-hover:text-slate-700'}`}>
                       {item.label}
@@ -94,11 +90,11 @@ export default function MainLayout() {
         </div>
       </header>
 
-      {/* ================= Main Content ================= */}
+      {/* Main Content */}
       <div className="flex-1 flex justify-center w-full px-4 py-6">
         <div className="flex w-full max-w-[1200px] gap-6">
           
-          {/* Sidebar (Left) */}
+          {/* Sidebar */}
           <aside 
             className="hidden lg:flex flex-col flex-none sticky top-24 h-[calc(100vh-120px)]"
             style={{ width: '260px', minWidth: '260px' }} 
@@ -126,7 +122,6 @@ export default function MainLayout() {
             </div>
           </aside>
 
-          {/* Center Content */}
           <main className="flex-1 min-w-0">
             <Outlet />
           </main>
