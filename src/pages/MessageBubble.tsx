@@ -1,11 +1,11 @@
+// ✅ ChatMessage 타입을 여기에서 정의하고 export 합니다.
 export interface ChatMessage {
   id?: number;
-  type: string; 
+  type: string; // "TEXT", "IMAGE", "date"
   name?: string;
   profileImg?: string;
   content: string;
   time?: string;
-  createdAt?: string;
 }
 
 interface MessageBubbleProps {
@@ -13,64 +13,63 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ msg }: MessageBubbleProps) {
-  // 날짜 구분선 (type === "date" 인 경우)
+  // 날짜 구분선
   if (msg.type === "date") {
     return (
-      <div className="flex justify-center my-3">
-        <span className="px-3 py-1 text-[10px] text-white/90 bg-black/10 rounded-full backdrop-blur-sm">
+      <div className="flex justify-center my-5">
+        <span className="px-3 py-1 text-[11px] text-white/90 bg-black/10 rounded-full backdrop-blur-[2px] shadow-sm">
           {msg.content}
         </span>
       </div>
     );
   }
 
-  // 예시: 'Me'라는 이름이나 특정 ID로 본인 확인 (여기서는 name='Me'로 가정)
-  // 실제 사용 시에는 로그인한 유저 정보와 비교해야 합니다.
+  // 본인 확인 (이름이 'Me' 또는 '나'인 경우)
   const isMe = msg.name === 'Me' || msg.name === '나';
 
   const formatTime = (isoString?: string) => {
     if (!isoString) return '';
     try {
       const date = new Date(isoString);
-      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: true });
     } catch {
       return '';
     }
   };
-
-  // 시간이 있으면 쓰고, 없으면 현재 시간 포맷팅 (예시)
   const timeString = msg.time || formatTime(new Date().toISOString());
 
   return (
-    <div className={`flex mb-3 items-start gap-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex w-full mb-3 ${isMe ? 'justify-end' : 'justify-start'}`}>
       
-      {/* 상대방 프로필 이미지 */}
+      {/* 상대방 프로필: 완전 원형 */}
       {!isMe && (
-        <div className="flex flex-col items-center mt-1">
+        <div className="flex flex-col items-center mr-2.5 shrink-0 self-start mt-0.5">
           {msg.profileImg ? (
-            <img src={msg.profileImg} alt={msg.name} className="w-[38px] h-[38px] rounded-[14px] object-cover shadow-sm" />
+            <img 
+              src={msg.profileImg} 
+              alt={msg.name} 
+              className="w-[42px] h-[42px] rounded-full object-cover shadow-[0_1px_2px_rgba(0,0,0,0.1)] border border-black/5 hover:opacity-90 cursor-pointer" 
+            />
           ) : (
-            <div className="w-[38px] h-[38px] rounded-[14px] bg-slate-200"></div>
+            <div className="w-[42px] h-[42px] rounded-full bg-slate-200" />
           )}
         </div>
       )}
 
-      <div className={`flex flex-col max-w-[70%] ${isMe ? 'items-end' : 'items-start'}`}>
+      <div className={`flex flex-col max-w-[65%] ${isMe ? 'items-end' : 'items-start'}`}>
         {/* 상대방 이름 */}
-        {!isMe && <span className="text-[11px] text-gray-600 mb-1 ml-1">{msg.name}</span>}
+        {!isMe && <span className="text-[12px] text-[#555] mb-1.5 ml-1 font-medium">{msg.name}</span>}
 
-        <div className="flex items-end gap-1.5">
-          {/* 내 메시지 시간 (왼쪽) */}
-          {isMe && <span className="text-[9px] text-slate-500 min-w-max mb-0.5">{timeString}</span>}
-
+        <div className={`flex items-end gap-1.5 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+          
           {/* 말풍선 */}
           {msg.type === "TEXT" && (
             <div 
               className={`
-                px-3.5 py-2 text-[13px] leading-snug shadow-sm whitespace-pre-wrap break-words
+                relative px-3.5 py-2 text-[14px] leading-snug shadow-[0_1px_1px_rgba(0,0,0,0.08)] whitespace-pre-wrap break-words
                 ${isMe 
-                  ? 'bg-[#FEE500] text-black rounded-l-xl rounded-tr-sm rounded-br-xl' // 나: 노란색
-                  : 'bg-white text-slate-900 rounded-r-xl rounded-tl-sm rounded-bl-xl' // 상대: 흰색
+                  ? 'bg-[#FEE500] text-[#1e1e1e] rounded-[16px] rounded-tr-[2px]' // 나: 노란색, 우상단 뾰족
+                  : 'bg-white text-[#1e1e1e] rounded-[16px] rounded-tl-[2px]' // 상대: 흰색, 좌상단 뾰족
                 }
               `}
             >
@@ -78,16 +77,17 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
             </div>
           )}
           
-          {/* 이미지 메시지 등 다른 타입 처리 (필요시 확장) */}
+          {/* 이미지 메시지 */}
           {msg.type === "IMAGE" && (
-             <div className="rounded-xl overflow-hidden shadow-sm border border-black/5 max-w-[200px]">
-               {/* 이미지 렌더링 로직 추가 가능 */}
-               <div className="bg-slate-200 w-[200px] h-[200px] flex items-center justify-center text-xs text-slate-500">이미지</div>
+             <div className="rounded-[16px] overflow-hidden shadow-sm border border-black/5 max-w-[240px]">
+               <img src={msg.content} alt="image" className="w-full h-auto object-cover" />
              </div>
           )}
 
-          {/* 상대방 메시지 시간 (오른쪽) */}
-          {!isMe && <span className="text-[9px] text-slate-500 min-w-max mb-0.5">{timeString}</span>}
+          {/* 시간 표시 */}
+          <span className="text-[10px] text-[#555] min-w-max mb-0.5 leading-none tracking-tight">
+            {timeString}
+          </span>
         </div>
       </div>
     </div>
