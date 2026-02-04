@@ -5,68 +5,64 @@ interface MemberCardProps {
 }
 
 export default function MemberCard({ member }: MemberCardProps) {
-  // 방어 코드: 상태가 없거나 오프라인이면 렌더링하지 않음
+  // 1. 방어 코드
   if (!member.status || member.status === 'OFFLINE' || member.status === 'offline') return null;
 
+  // 2. 플랫폼 구분
   const isXSpace = member.status === 'X_live';
   const badgeText = isXSpace ? "SPACE" : "LIVE";
   
-  // 링 그라데이션 설정: 스페이스는 핑크/퍼플, 라이브는 민트/초록
-  const ringGradient = isXSpace 
-    ? 'from-pink-400 to-purple-400' 
-    : 'from-emerald-400 to-teal-400';
+  // 3. 링 색상 설정 (Inline Style 방식 - 가장 확실하게 적용됨)
+  const ringStyle = isXSpace 
+    ? { background: 'linear-gradient(to bottom right, #ec4899, #a855f7)' } // 핑크/퍼플
+    : { background: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)' }; // 민트/초록
 
   return (
     <a 
       href={member.liveUrl} 
       target="_blank" 
       rel="noreferrer" 
-      // ✅ 카드 스타일 강화: bg-white, shadow-sm, border 추가 및 호버 효과 정의
       className="
-        group flex items-center gap-2.5 px-2.5 py-2 w-full mb-1.5
-        rounded-xl transition-all duration-200 cursor-pointer
-        bg-white shadow-sm border border-purple-100/50
-        hover:shadow-md hover:border-purple-200 hover:bg-purple-50/30
-        active:scale-[0.98]
+        group flex items-center gap-3 px-3 py-2 w-full mb-2
+        rounded-xl border border-purple-100 transition-all duration-300
+        bg-white shadow-sm hover:shadow-md hover:border-purple-200
+        cursor-pointer
       "
     >
-      {/* ✅ 이미지와 링 사이 틈 없애기: 패딩 제거 및 이미지 자체 테두리 적용 */}
+      {/* ✅ 핵심 수정: 
+        1. flex-shrink-0: 절대 찌그러지지 않게 함
+        2. style={{ width, height, minWidth }}: 크기를 강력하게 고정
+      */}
       <div 
-        className={`
-          flex-none relative flex items-center justify-center 
-          w-[32px] h-[32px] min-w-[32px] rounded-full 
-          bg-gradient-to-br ${ringGradient} 
-          transition-transform duration-300 group-hover:rotate-3
-        `}
+        className="relative rounded-full flex items-center justify-center flex-shrink-0 p-[2px] transition-transform group-hover:scale-105"
+        style={{ 
+          width: '40px', 
+          height: '40px', 
+          minWidth: '40px', // 공간이 좁아져도 절대 줄어들지 않음
+          ...ringStyle 
+        }} 
       >
-        {/* 이미지 자체에 흰색 테두리를 주어 그라데이션 링 안에 꽉 차게 만듦 */}
         <img 
           src={member.profileImg} 
           alt={member.name} 
-          className="w-full h-full rounded-full object-cover border-[1.5px] border-white" 
+          className="w-full h-full rounded-full object-cover bg-white border-2 border-white" 
         />
-        
-        {/* 상태 점: 우측 하단에 위치 */}
-        <span className={`absolute bottom-0 right-0 size-2 border-[1.5px] border-white rounded-full ${isXSpace ? 'bg-purple-500' : 'bg-green-500'}`}></span>
       </div>
       
-      <div className="flex flex-col justify-center flex-1 min-w-0 text-left">
-        <div className="flex items-center justify-between w-full">
-          {/* 이름 폰트 text-xs로 설정 */}
-          <span className="text-xs font-bold text-slate-700 truncate group-hover:text-slate-900 transition-colors">
+      {/* 텍스트 영역 */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-bold truncate text-gray-900">
             {member.name}
           </span>
-          {/* LIVE/SPACE 뱃지 */}
-          <span className={`
-            text-[8px] font-extrabold px-1 py-[1px] rounded-[4px] tracking-wide ml-1 flex-none
-            ${isXSpace ? 'bg-purple-50 text-purple-600' : 'bg-red-50 text-red-600 animate-pulse'}
-          `}>
+          {/* LIVE 뱃지 */}
+          <span className="text-[10px] font-extrabold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-full animate-pulse tracking-tight flex-none ml-1">
             {badgeText}
           </span>
         </div>
         
-        {/* 방송 제목: 말줄임 처리 및 폰트 크기 조정 */}
-        <p className="text-[10px] text-gray-400 mt-0.5 truncate group-hover:text-gray-500 transition-colors font-medium">
+        {/* 방송 제목 */}
+        <p className="text-xs text-gray-400 truncate mt-0.5 group-hover:text-gray-500 transition-colors">
           {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
         </p>
       </div>
