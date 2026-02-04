@@ -5,6 +5,7 @@ interface MemberCardProps {
 }
 
 export default function MemberCard({ member }: MemberCardProps) {
+  // 방어 코드
   if (!member.status || member.status === 'OFFLINE' || member.status === 'offline') return null;
 
   const isXSpace = member.status === 'X_live';
@@ -26,11 +27,15 @@ export default function MemberCard({ member }: MemberCardProps) {
         active:scale-[0.98]
       "
     >
-      {/* ✅ 이미지 크기 축소: 40px -> 36px */}
+      {/* ✅ [문제 해결 포인트]
+        1. flex-none: Flexbox 안에서 크기가 변하는 것을 막습니다.
+        2. min-w-[36px]: 최소 너비를 강제하여 찌그러짐을 방지합니다.
+        3. w-[36px] h-[36px]: 고정 크기를 지정합니다.
+      */}
       <div 
         className={`
-          relative flex items-center justify-center flex-shrink-0 
-          w-[36px] h-[36px] rounded-full p-[2px] 
+          flex-none relative flex items-center justify-center 
+          w-[36px] h-[36px] min-w-[36px] rounded-full p-[2px] 
           bg-gradient-to-br ${ringGradient} 
           transition-transform duration-300 group-hover:rotate-3
         `}
@@ -41,10 +46,11 @@ export default function MemberCard({ member }: MemberCardProps) {
           className="w-full h-full rounded-full object-cover bg-white border-[1.5px] border-white" 
         />
         
-        {/* 우측 하단 점도 비율에 맞춰 약간 축소 (size-3 -> size-2.5) */}
+        {/* 상태 점 */}
         <span className={`absolute bottom-0 right-0 size-2.5 border-2 border-white rounded-full ${isXSpace ? 'bg-purple-500' : 'bg-green-500'}`}></span>
       </div>
       
+      {/* 텍스트 영역 */}
       <div className="flex flex-col justify-center flex-1 min-w-0 text-left">
         <div className="flex items-center justify-between w-full">
           <span className="text-sm font-bold text-slate-700 truncate group-hover:text-slate-900 transition-colors">
