@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip, Send } from 'lucide-react';
-import { useJsonData } from '../hooks/useJsonData';
+import { useJsonData } from '../../hooks/useJsonData';
 import { MessageBubble, ChatMessage } from './MessageBubble';
 
 interface ChatRoom {
@@ -32,9 +32,10 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
   }, [messages, roomId]);
 
   return (
+    // ✅ 배경색 강제 적용 (#b2c7da)
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
-      {/* 1. 헤더: 흰색 배경, 그림자 없음, 하단 보더만 */}
+      {/* 1. 헤더: 흰색 배경 */}
       <header className="flex-none h-[64px] bg-white/95 backdrop-blur-sm px-5 flex justify-between items-center border-b border-[#dcdcdc] z-20">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
@@ -90,7 +91,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 3. 입력창 (Footer): 흰색 배경 + 회색 입력 박스 */}
+      {/* 3. 입력창 (Footer): 흰색 배경 위 회색 박스 */}
       <div className="flex-none bg-white p-4 border-t border-[#ececec] z-20">
         <div className="flex flex-col bg-[#f5f5f5] rounded-[20px] px-4 py-3 border border-transparent focus-within:bg-white focus-within:border-[#dcdcdc] transition-all shadow-sm">
             

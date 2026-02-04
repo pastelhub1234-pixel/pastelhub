@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import { useJsonData } from '../hooks/useJsonData';
+import { useJsonData } from '../../hooks/useJsonData';
 
 interface ChatRoom {
   roomId: string;
@@ -63,7 +63,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 ${isSelected ? "bg-[#ececec]" : "hover:bg-[#f6f6f6] bg-white"}
               `}
             >
-              {/* 프로필: Squarcle (둥근 사각형) */}
+              {/* 프로필: 둥근 사각형 (Squarcle) */}
               <div className="relative shrink-0">
                 <img 
                   src={room.roomImg} 
@@ -87,6 +87,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                     {room.lastPost || "대화 내용이 없습니다."}
                   </p>
                   
+                  {/* 빨간색 뱃지 */}
                   {room.todayPostCount > 0 && (
                     <span className="bg-[#ff3b3b] text-white text-[10px] font-bold h-[18px] min-w-[18px] px-1.5 flex items-center justify-center rounded-full shadow-sm shrink-0 pb-[1px]">
                       {room.todayPostCount > 300 ? "300+" : room.todayPostCount}

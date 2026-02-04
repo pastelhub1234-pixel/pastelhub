@@ -1,7 +1,7 @@
-// ✅ ChatMessage 타입을 여기에서 정의하고 export 합니다.
+// ✅ 내부 타입 정의
 export interface ChatMessage {
   id?: number;
-  type: string; // "TEXT", "IMAGE", "date"
+  type: string;
   name?: string;
   profileImg?: string;
   content: string;
@@ -24,7 +24,6 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
     );
   }
 
-  // 본인 확인 (이름이 'Me' 또는 '나'인 경우)
   const isMe = msg.name === 'Me' || msg.name === '나';
 
   const formatTime = (isoString?: string) => {
@@ -68,8 +67,8 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
               className={`
                 relative px-3.5 py-2 text-[14px] leading-snug shadow-[0_1px_1px_rgba(0,0,0,0.08)] whitespace-pre-wrap break-words
                 ${isMe 
-                  ? 'bg-[#FEE500] text-[#1e1e1e] rounded-[16px] rounded-tr-[2px]' // 나: 노란색, 우상단 뾰족
-                  : 'bg-white text-[#1e1e1e] rounded-[16px] rounded-tl-[2px]' // 상대: 흰색, 좌상단 뾰족
+                  ? 'bg-[#FEE500] text-[#1e1e1e] rounded-[16px] rounded-tr-[2px]' // 나: 노란색, 우상단 뾰족 (꼬리 효과)
+                  : 'bg-white text-[#1e1e1e] rounded-[16px] rounded-tl-[2px]' // 상대: 흰색, 좌상단 뾰족 (꼬리 효과)
                 }
               `}
             >

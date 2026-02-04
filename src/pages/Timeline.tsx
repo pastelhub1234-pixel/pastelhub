@@ -7,16 +7,18 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // 전체 컨테이너: 카톡 창 느낌 (둥근 모서리, 그림자, 테두리)
-    <div className="flex justify-center items-center h-[calc(100vh-80px)] p-4 font-sans antialiased">
-      <div className="w-full max-w-[1100px] h-full bg-white rounded-[20px] shadow-xl border border-[#dcdcdc] overflow-hidden flex">
+    // 전체 화면 중앙 정렬 및 배경색 설정
+    <div className="flex justify-center items-center h-[calc(100vh-60px)] w-full p-4 font-sans bg-slate-50">
+      
+      {/* 메신저 메인 창: 고정 비율, 둥근 모서리, 그림자 */}
+      <div className="w-full max-w-[1100px] h-full max-h-[800px] bg-white rounded-[20px] shadow-2xl border border-[#dcdcdc] overflow-hidden flex">
         
         {/* 왼쪽: 채팅방 목록 (고정 너비 320px) */}
         <div className="w-[320px] border-r border-[#ececec] flex-none bg-white z-10 flex flex-col">
           <ChatRoomList current={roomId} onSelect={setRoomId} />
         </div>
         
-        {/* 오른쪽: 대화 내용 (배경색 #b2c7da - 카톡 기본 테마) */}
+        {/* 오른쪽: 대화 내용 (배경색 #b2c7da 강제 적용) */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#b2c7da] relative">
           {roomId ? (
             <ChatConversation key={roomId} roomId={roomId} />

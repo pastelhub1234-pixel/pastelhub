@@ -430,6 +430,7 @@
 }
 
 @layer base {
+  
   *, :after, :before, ::backdrop {
     box-sizing: border-box;
     border: 0 solid;
@@ -703,11 +704,11 @@
   }
 
   body {
-    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: linear-gradient(135deg, #ebf4ff 0%, #f3e8ff 50%, #fce7f3 100%) fixed;
     min-height: 100vh;
+    color: #1e1e1e; /* 기본 글자색 지정 */
   }
 
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) h1 {
@@ -742,6 +743,76 @@
 }
 
 @layer utilities {
+  .bg-\[\#b2c7da\] {
+    background-color: #b2c7da; /* 채팅방 메인 배경 */
+  }
+  .bg-\[\#ececec\] {
+    background-color: #ececec; /* 선택된 채팅방, 사이드바 경계 */
+  }
+  .bg-\[\#f2f2f2\] {
+    background-color: #f2f2f2; /* 검색창 배경 */
+  }
+  .bg-\[\#eaeaec\] {
+    background-color: #eaeaec; /* 검색창 포커스 배경 */
+  }
+  .bg-\[\#f6f6f6\] {
+    background-color: #f6f6f6; /* 채팅방 호버 배경 */
+  }
+  .bg-\[\#f7f7f7\] {
+    background-color: #f7f7f7; /* 채팅방 호버 배경 (연함) */
+  }
+  .bg-\[\#ff3b3b\] {
+    background-color: #ff3b3b; /* 알림 뱃지 (빨강) */
+  }
+  .bg-\[\#f5f5f5\] {
+    background-color: #f5f5f5; /* 입력창 내부 박스 */
+  }
+  .bg-\[\#FEE500\] {
+    background-color: #FEE500; /* 내 말풍선 (노랑) */
+  }
+  .hover\:bg-\[\#fdd835\]:hover {
+    background-color: #fdd835; /* 전송 버튼 호버 */
+  }
+  .bg-\[\#bbb\] {
+    background-color: #bbb; /* 참여자 수 구분점 */
+  }
+  .bg-\[\#555\]\/20 {
+    background-color: rgba(85, 85, 85, 0.2); /* 날짜 구분선 배경 */
+  }
+
+  /* ✅ [글자색] */
+  .text-\[\#1e1e1e\] {
+    color: #1e1e1e; /* 메인 타이틀, 이름 */
+  }
+  .text-\[\#999\] {
+    color: #999; /* 시간, 플레이스홀더 */
+  }
+  .text-\[\#9b9b9b\] {
+    color: #9b9b9b; /* 목록 시간 */
+  }
+  .text-\[\#707070\] {
+    color: #707070; /* 메시지 미리보기 */
+  }
+  .text-\[\#333\] {
+    color: #333; /* 아이콘 기본 */
+  }
+  .text-\[\#555\] {
+    color: #555; /* 내 이름, 시간 등 */
+  }
+  .text-\[\#777\] {
+    color: #777; /* 입력창 아이콘 */
+  }
+  .text-\[\#fff\]\/90 {
+    color: rgba(255, 255, 255, 0.9); /* 날짜 텍스트 */
+  }
+
+  /* ✅ [테두리색] */
+  .border-\[\#dcdcdc\] {
+    border-color: #dcdcdc; /* 전체 창 테두리, 헤더 경계 */
+  }
+  .border-\[\#ececec\] {
+    border-color: #ececec; /* 사이드바/입력창 경계 */
+  }
   /* --- Background Colors (누락됨) --- */
   .bg-slate-50 {
     background-color: var(--color-slate-50);
