@@ -1,45 +1,32 @@
-import { Sparkles, Radio } from 'lucide-react';
+import { Radio } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { Member } from '../types';
 
 export default function Home() {
   const { data: members } = useJsonData<Member[]>('status');
 
-  // 방송 중인 멤버 필터링
   const liveMembers = members?.filter(
     (member) => member.status && member.status.toLowerCase().includes('live')
   ) || [];
 
   return (
-    <div className="max-w-4xl mx-auto min-h-[70vh] flex flex-col items-center justify-center space-y-10 animate-in fade-in duration-500">
+    <div className="w-full min-h-[60vh] flex flex-col items-center justify-center space-y-10 animate-in fade-in duration-500">
       
-      {/* 1. Welcome Section (공통) */}
-      <div className="text-center space-y-6">
-        <div className="relative inline-block">
-          {/* 로고 아이콘 뒤에 은은한 빛 효과 */}
-          <div className="absolute -inset-4 bg-indigo-500/20 blur-2xl rounded-full" />
-          <div className="relative flex items-center justify-center gap-3">
-            <Sparkles className="size-10 md:size-14 text-indigo-500 animate-pulse" />
-            <h1 className="text-4xl md:text-6xl font-extrabold text-slate-800 tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">Pastel</span>
-              hub
-            </h1>
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <p className="text-slate-600 text-lg md:text-xl font-medium">
-            팬덤을 위한 모든 정보가 한곳에 ✨
-          </p>
-          <p className="text-slate-400 text-sm md:text-base">
-            상단 메뉴나 사이드바를 통해 원하는 정보를 확인하세요.
-          </p>
-        </div>
+      {/* 1. Welcome Section (로고 삭제됨) */}
+      <div className="text-center space-y-4">
+        {/* ✅ [수정] 로고 삭제, 텍스트만 깔끔하게 유지 */}
+        <p className="text-slate-600 text-lg md:text-xl font-medium">
+          팬덤을 위한 모든 정보가 한곳에 ✨
+        </p>
+        <p className="text-slate-400 text-sm md:text-base">
+          상단 메뉴나 사이드바를 통해 원하는 정보를 확인하세요.
+        </p>
       </div>
 
-      {/* 2. Mobile Live Section (모바일 전용) */}
-      {/* PC(lg 이상)에서는 사이드바가 있으므로 이 부분은 숨김(hidden) */}
-      <div className="w-full lg:hidden px-4">
+      {/* 2. Mobile Live Section */}
+      {/* ✅ [수정] md:hidden -> 768px 미만(모바일)에서만 보임. 
+          (노트북에선 사이드바가 보이니까 이건 숨김) */}
+      <div className="w-full max-w-md md:hidden px-4">
         {liveMembers.length > 0 ? (
           <div className="space-y-4">
             <div className="flex items-center justify-center gap-2">
@@ -52,7 +39,7 @@ export default function Home() {
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               {liveMembers.map((member, idx) => {
                 const isXSpace = member.status === 'X_live';
                 const badgeText = isXSpace ? "SPACE" : "LIVE";
@@ -64,7 +51,7 @@ export default function Home() {
                     href={member.liveUrl} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-transparent active:scale-[0.98] transition-all"
+                    className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-sm border border-slate-100 active:scale-[0.98] transition-all"
                   >
                     <div className={`relative flex-none w-[44px] h-[44px] rounded-full p-[2px] bg-gradient-to-br ${ringGradient}`}>
                       <img src={member.profileImg} alt={member.name} className="w-full h-full rounded-full object-cover bg-white" />
@@ -86,14 +73,12 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          /* 모바일에서 방송 없을 때 보여줄 문구 */
           <div className="flex flex-col items-center justify-center py-8 text-slate-400 space-y-2 opacity-70">
             <Radio className="size-6 mb-1" />
             <span className="text-xs">현재 방송 중인 멤버가 없습니다</span>
           </div>
         )}
       </div>
-
     </div>
   );
 }
