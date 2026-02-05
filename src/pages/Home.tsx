@@ -12,9 +12,8 @@ export default function Home() {
   return (
     <div className="w-full min-h-[60vh] flex flex-col items-center justify-center space-y-10 animate-in fade-in duration-500">
       
-      {/* 1. Welcome Section (로고 삭제됨) */}
+      {/* 1. 환영 문구 (로고 없이 텍스트만) */}
       <div className="text-center space-y-4">
-        {/* ✅ [수정] 로고 삭제, 텍스트만 깔끔하게 유지 */}
         <p className="text-slate-600 text-lg md:text-xl font-medium">
           팬덤을 위한 모든 정보가 한곳에 ✨
         </p>
@@ -23,9 +22,8 @@ export default function Home() {
         </p>
       </div>
 
-      {/* 2. Mobile Live Section */}
-      {/* ✅ [수정] md:hidden -> 768px 미만(모바일)에서만 보임. 
-          (노트북에선 사이드바가 보이니까 이건 숨김) */}
+      {/* 2. 모바일 전용 Live 리스트 
+          ✅ [수정] md:hidden -> 768px 미만에서만 보임 (사이드바와 기준 통일) */}
       <div className="w-full max-w-md md:hidden px-4">
         {liveMembers.length > 0 ? (
           <div className="space-y-4">
