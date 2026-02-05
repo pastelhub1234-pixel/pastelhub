@@ -19,53 +19,71 @@ export function TopNavigation() {
   }, [location.pathname]);
 
   const getThemeStyles = (theme: string, isActive: boolean) => {
-    const base = "transition-all duration-200 ease-out group active:scale-95 rounded-xl border flex items-center justify-center";
-    
+    const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
+    // ✅ 모바일 베이스: flex-col로 아이콘/텍스트 상하 정렬, w-full로 그리드 셀 채움
+    const mobileBase = "flex flex-col items-center justify-center gap-1.5 py-3 rounded-xl border transition-all duration-200 active:scale-95 w-full";
+
+    // 색상 하드코딩 (Tailwind 인식 보장)
     const styles: Record<string, any> = {
       blue: {
-        container: isActive 
-          ? `${base} bg-white/90 border-blue-200 shadow-md ring-1 ring-blue-100 scale-[1.02]` 
-          : `${base} bg-transparent border-transparent hover:bg-white/80 hover:shadow-sm active:bg-blue-50`,
+        pc: isActive 
+          ? `${base} bg-white/90 border-blue-200 shadow-md ring-1 ring-blue-100` 
+          : `${base} bg-transparent border-transparent hover:bg-blue-50 hover:text-blue-600 text-gray-500`,
+        mobile: isActive 
+          ? `${mobileBase} bg-blue-50 border-blue-100 text-blue-600` 
+          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
         icon: isActive 
           ? "bg-gradient-to-br from-blue-400 to-cyan-400 text-white shadow-blue-200" 
-          : "bg-white text-gray-300 border border-slate-100 group-hover:border-blue-200 group-hover:text-blue-400",
-        text: isActive ? "text-blue-900" : "text-gray-500 group-hover:text-blue-900"
+          : "bg-white text-gray-400 group-hover:text-blue-500 group-hover:border-blue-200 border border-slate-100",
+        text: isActive ? "text-blue-900" : "group-hover:text-blue-700"
       },
       pink: {
-        container: isActive 
-          ? `${base} bg-white/90 border-pink-200 shadow-md ring-1 ring-pink-100 scale-[1.02]` 
-          : `${base} bg-transparent border-transparent hover:bg-white/80 hover:shadow-sm active:bg-pink-50`,
+        pc: isActive 
+          ? `${base} bg-white/90 border-pink-200 shadow-md ring-1 ring-pink-100` 
+          : `${base} bg-transparent border-transparent hover:bg-pink-50 hover:text-pink-600 text-gray-500`,
+        mobile: isActive 
+          ? `${mobileBase} bg-pink-50 border-pink-100 text-pink-600` 
+          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
         icon: isActive 
           ? "bg-gradient-to-br from-pink-400 to-rose-400 text-white shadow-pink-200" 
-          : "bg-white text-gray-300 border border-slate-100 group-hover:border-pink-200 group-hover:text-pink-400",
-        text: isActive ? "text-pink-900" : "text-gray-500 group-hover:text-pink-900"
+          : "bg-white text-gray-400 group-hover:text-pink-500 group-hover:border-pink-200 border border-slate-100",
+        text: isActive ? "text-pink-900" : "group-hover:text-pink-700"
       },
       purple: {
-        container: isActive 
-          ? `${base} bg-white/90 border-purple-200 shadow-md ring-1 ring-purple-100 scale-[1.02]` 
-          : `${base} bg-transparent border-transparent hover:bg-white/80 hover:shadow-sm active:bg-purple-50`,
+        pc: isActive 
+          ? `${base} bg-white/90 border-purple-200 shadow-md ring-1 ring-purple-100` 
+          : `${base} bg-transparent border-transparent hover:bg-purple-50 hover:text-purple-600 text-gray-500`,
+        mobile: isActive 
+          ? `${mobileBase} bg-purple-50 border-purple-100 text-purple-600` 
+          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
         icon: isActive 
           ? "bg-gradient-to-br from-purple-400 to-violet-400 text-white shadow-purple-200" 
-          : "bg-white text-gray-300 border border-slate-100 group-hover:border-purple-200 group-hover:text-purple-400",
-        text: isActive ? "text-purple-900" : "text-gray-500 group-hover:text-purple-900"
+          : "bg-white text-gray-400 group-hover:text-purple-500 group-hover:border-purple-200 border border-slate-100",
+        text: isActive ? "text-purple-900" : "group-hover:text-purple-700"
       },
       indigo: {
-        container: isActive 
-          ? `${base} bg-white/90 border-indigo-200 shadow-md ring-1 ring-indigo-100 scale-[1.02]` 
-          : `${base} bg-transparent border-transparent hover:bg-white/80 hover:shadow-sm active:bg-indigo-50`,
+        pc: isActive 
+          ? `${base} bg-white/90 border-indigo-200 shadow-md ring-1 ring-indigo-100` 
+          : `${base} bg-transparent border-transparent hover:bg-indigo-50 hover:text-indigo-600 text-gray-500`,
+        mobile: isActive 
+          ? `${mobileBase} bg-indigo-50 border-indigo-100 text-indigo-600` 
+          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
         icon: isActive 
           ? "bg-gradient-to-br from-indigo-400 to-violet-400 text-white shadow-indigo-200" 
-          : "bg-white text-gray-300 border border-slate-100 group-hover:border-indigo-200 group-hover:text-indigo-400",
-        text: isActive ? "text-indigo-900" : "text-gray-500 group-hover:text-indigo-900"
+          : "bg-white text-gray-400 group-hover:text-indigo-500 group-hover:border-indigo-200 border border-slate-100",
+        text: isActive ? "text-indigo-900" : "group-hover:text-indigo-700"
       },
       emerald: {
-        container: isActive 
-          ? `${base} bg-white/90 border-emerald-200 shadow-md ring-1 ring-emerald-100 scale-[1.02]` 
-          : `${base} bg-transparent border-transparent hover:bg-white/80 hover:shadow-sm active:bg-emerald-50`,
+        pc: isActive 
+          ? `${base} bg-white/90 border-emerald-200 shadow-md ring-1 ring-emerald-100` 
+          : `${base} bg-transparent border-transparent hover:bg-emerald-50 hover:text-emerald-600 text-gray-500`,
+        mobile: isActive 
+          ? `${mobileBase} bg-emerald-50 border-emerald-100 text-emerald-600` 
+          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
         icon: isActive 
           ? "bg-gradient-to-br from-emerald-400 to-teal-400 text-white shadow-emerald-200" 
-          : "bg-white text-gray-300 border border-slate-100 group-hover:border-emerald-200 group-hover:text-emerald-400",
-        text: isActive ? "text-emerald-900" : "text-gray-500 group-hover:text-emerald-900"
+          : "bg-white text-gray-400 group-hover:text-emerald-500 group-hover:border-emerald-200 border border-slate-100",
+        text: isActive ? "text-emerald-900" : "group-hover:text-emerald-700"
       },
     };
 
@@ -77,7 +95,7 @@ export function TopNavigation() {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[80px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
-          {/* ✅ [수정] 요청하신 로고 코드로 교체 */}
+          {/* ✅ [수정] 요청하신 로고 코드로 원복 */}
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
@@ -86,22 +104,18 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* PC 메뉴 (md: 768px 이상에서 보임) */}
+          {/* PC 메뉴 */}
           <nav className="hidden md:flex items-center gap-3">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
 
               return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`gap-2.5 px-5 py-2.5 ${themeStyle.container}`}
-                >
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 shadow-sm ${themeStyle.icon}`}>
+                <Link key={item.path} to={item.path} className={themeStyle.pc}>
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-sm font-bold transition-colors duration-200 ${themeStyle.text}`}>
+                  <span className={`text-sm font-bold ${themeStyle.text}`}>
                     {item.label}
                   </span>
                 </Link>
@@ -109,10 +123,9 @@ export function TopNavigation() {
             })}
           </nav>
 
-          {/* 모바일 햄버거 버튼 (md 미만에서만 보임) */}
+          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
-            style={{ WebkitTapHighlightColor: 'transparent' }}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
@@ -120,10 +133,11 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 드롭다운 (가로 Grid 배치) */}
+      {/* ✅ [수정] 모바일 메뉴 가로 배치 (Grid 5열) */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[80px] left-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xl z-40 animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 grid grid-cols-5 gap-2"> 
+        <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+          {/* w-full과 grid-cols-5로 가로 꽉 찬 5개 배치 */}
+          <div className="p-4 w-full grid grid-cols-5 gap-2"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
@@ -132,14 +146,13 @@ export function TopNavigation() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex-col gap-1.5 py-3 ${themeStyle.container}`}
-                  style={{ WebkitTapHighlightColor: 'transparent' }}
-                  onClick={() => setIsMobileMenuOpen(false)} // 메뉴 클릭 시 닫힘
+                  className={themeStyle.mobile} // 여기에 w-full이 포함됨
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={`flex items-center justify-center w-10 h-10 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
                     <item.icon className="size-5" />
                   </div>
-                  <span className={`text-[10px] font-bold ${themeStyle.text}`}>{item.label}</span>
+                  <span className={`text-[10px] font-bold mt-1`}>{item.label}</span>
                 </Link>
               );
             })}
