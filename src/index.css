@@ -952,7 +952,6 @@
     color: #371d1e;
   }
 
-  /* --- Border Colors (누락됨) --- */
   .border-slate-300 {
     border-color: var(--color-slate-300);
   }
@@ -1864,6 +1863,53 @@
     border-left-color: var(--color-violet-500);
   }
 
+  .bg-blue-50    { background-color: #eff6ff; }
+  .bg-rose-50    { background-color: #fff1f2; }
+  .bg-violet-50  { background-color: #f5f3ff; }
+  .bg-amber-50   { background-color: #fffbeb; }
+  .bg-emerald-50 { background-color: #ecfdf5; }
+  
+  /* Hover 배경 (연하게) */
+  .hover-bg-blue-50:hover    { background-color: #eff6ff; }
+  .hover-bg-rose-50:hover    { background-color: #fff1f2; }
+  .hover-bg-violet-50:hover  { background-color: #f5f3ff; }
+  .hover-bg-amber-50:hover   { background-color: #fffbeb; }
+  .hover-bg-emerald-50:hover { background-color: #ecfdf5; }
+
+
+  /* =========================================
+     [2] 텍스트 색상 (Text Colors)
+     ========================================= */
+  /* 기본 텍스트 (Active) */
+  .text-blue-600    { color: #2563eb; }
+  .text-rose-600    { color: #e11d48; }
+  .text-violet-600  { color: #7c3aed; }
+  .text-amber-600   { color: #d97706; }
+  .text-emerald-600 { color: #059669; }
+
+  /* 진한 텍스트 (Title) */
+  .text-blue-900    { color: #1e3a8a; }
+  .text-rose-900    { color: #881337; }
+  .text-violet-900  { color: #4c1d95; }
+  .text-amber-900   { color: #78350f; }
+  .text-emerald-900 { color: #064e3b; }
+
+
+  /* =========================================
+     [3] 테두리 색상 (Border Colors)
+     ========================================= */
+  .border-blue-100    { border-color: #dbeafe; }
+  .border-rose-100    { border-color: #ffe4e6; }
+  .border-violet-100  { border-color: #ede9fe; }
+  .border-amber-100   { border-color: #fef3c7; }
+  .border-emerald-100 { border-color: #d1fae5; }
+  
+  .border-blue-200    { border-color: #bfdbfe; }
+  .border-rose-200    { border-color: #fecdd3; }
+  .border-violet-200  { border-color: #ddd6fe; }
+  .border-amber-200   { border-color: #fde68a; }
+  .border-emerald-200 { border-color: #a7f3d0; }
+
   .bg-\[\#FEE500\] {
     background-color: #fee500;
   }
@@ -2114,6 +2160,50 @@
     .bg-white\/80 {
       background-color: color-mix(in oklab, var(--color-white) 80%, transparent);
     }
+  }
+
+  .icon-blue {
+    @apply bg-gradient-to-br text-white shadow-sm;
+    --tw-gradient-from: #60a5fa; /* Blue-400 */
+    --tw-gradient-to: #22d3ee;   /* Cyan-400 */
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    box-shadow: 0 1px 2px 0 rgba(191, 219, 254, 0.5);
+  }
+
+  /* Rose */
+  .icon-rose {
+    @apply bg-gradient-to-br text-white shadow-sm;
+    --tw-gradient-from: #fb7185; /* Rose-400 */
+    --tw-gradient-to: #f472b6;   /* Pink-400 */
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    box-shadow: 0 1px 2px 0 rgba(254, 205, 211, 0.5);
+  }
+
+  /* Violet */
+  .icon-violet {
+    @apply bg-gradient-to-br text-white shadow-sm;
+    --tw-gradient-from: #a78bfa; /* Violet-400 */
+    --tw-gradient-to: #c084fc;   /* Purple-400 */
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    box-shadow: 0 1px 2px 0 rgba(221, 214, 254, 0.5);
+  }
+
+  /* Amber */
+  .icon-amber {
+    @apply bg-gradient-to-br text-white shadow-sm;
+    --tw-gradient-from: #fbbf24; /* Amber-400 */
+    --tw-gradient-to: #fb923c;   /* Orange-400 */
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    box-shadow: 0 1px 2px 0 rgba(253, 230, 138, 0.5);
+  }
+
+  /* Emerald */
+  .icon-emerald {
+    @apply bg-gradient-to-br text-white shadow-sm;
+    --tw-gradient-from: #34d399; /* Emerald-400 */
+    --tw-gradient-to: #2dd4bf;   /* Teal-400 */
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    box-shadow: 0 1px 2px 0 rgba(167, 243, 208, 0.5);
   }
 
   .bg-gradient-to-br {
@@ -2790,6 +2880,10 @@
 
   .text-violet-700 {
     color: var(--color-violet-700);
+  }
+
+  .text-indigo-300 {
+    color: var(--color-indigo-300);
   }
 
   .text-warning {
