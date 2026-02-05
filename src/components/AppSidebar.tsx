@@ -16,7 +16,7 @@ export function AppSidebar() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* 1. 헤더 */}
+      {/* 헤더 */}
       <div className="flex items-center justify-between mb-4 px-1 flex-none">
         <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
           Live Now
@@ -27,8 +27,8 @@ export function AppSidebar() {
         </span>
       </div>
 
-      {/* 2. 멤버 리스트 */}
-      <div className="flex-1 overflow-y-auto space-y-2 pb-10 pr-2 no-scrollbar">
+      {/* 리스트 */}
+      <div className="flex-1 space-y-2 pb-10 pr-2">
         {liveMembers.length > 0 ? (
           liveMembers.map((member, idx) => {
             const isXSpace = member.status === 'X_live';
@@ -49,13 +49,16 @@ export function AppSidebar() {
                   bg-white border border-purple-100 shadow-sm 
                   transition-all duration-300 group
                   hover:shadow-md hover:border-purple-200 hover:-translate-y-0.5
+                  max-w-full
                 "
               >
-                {/* 프로필 이미지 (40px 고정, 링 채움) */}
-                <div className="relative flex-none">
+                {/* ✅ [수정] 이미지 크기 강제 고정 (w-10 h-10) 
+                    - shrink-0: 공간이 부족해도 절대 찌그러지지 않음
+                */}
+                <div className="relative flex-none shrink-0">
                   <div 
                     className={`
-                      w-[40px] h-[40px] rounded-full p-[2px] 
+                      w-10 h-10 rounded-full p-[2px] 
                       bg-gradient-to-br ${ringGradient}
                     `}
                   >
@@ -67,10 +70,10 @@ export function AppSidebar() {
                   </div>
                 </div>
 
-                {/* 텍스트 정보 */}
-                <div className="flex-1 min-w-0">
+                {/* 텍스트 정보 (min-w-0 필수) */}
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-sm font-bold text-slate-800 truncate">
+                    <span className="text-sm font-bold text-slate-800 truncate block">
                       {member.name}
                     </span>
                     
@@ -82,8 +85,8 @@ export function AppSidebar() {
                     </span>
                   </div>
 
-                  {/* ✅ [수정 완료] JS 대신 CSS truncate 사용 */}
-                  <p className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors truncate">
+                  {/* ✅ [수정] 방송 제목 말줄임 (truncate) */}
+                  <p className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors truncate block">
                     {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
                   </p>
                 </div>
@@ -91,7 +94,6 @@ export function AppSidebar() {
             );
           })
         ) : (
-          /* 방송 없음 */
           <div className="flex flex-col items-center justify-center h-20 bg-white rounded-xl border border-dashed border-slate-200 text-slate-400 text-xs">
             <span>방송 중인 멤버가 없습니다</span>
           </div>

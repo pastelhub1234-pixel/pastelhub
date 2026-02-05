@@ -19,12 +19,9 @@ export function TopNavigation() {
   }, [location.pathname]);
 
   const getThemeStyles = (theme: string, isActive: boolean) => {
-    // PC 스타일
     const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
     
-    // ✅ 모바일 스타일 (중요)
-    // w-full이나 flex-1을 주지 않고, 부모(flex 컨테이너)가 알아서 늘리게 둡니다.
-    // flex-col: 아이콘과 텍스트는 상하 정렬
+    // ✅ 모바일 버튼 내부 스타일: 아이콘 위, 텍스트 아래 (이건 flex-col 맞음)
     const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
 
     const styles: Record<string, any> = {
@@ -122,6 +119,7 @@ export function TopNavigation() {
             })}
           </nav>
 
+          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -131,11 +129,10 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ 모바일 메뉴 (Grid -> Flex 가로 정렬 변경) */}
+      {/* ✅ [수정] Grid를 사용하여 가로 배치 강제 (grid-cols-5) */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          {/* grid 대신 flex를 쓰고, justify-between으로 간격 벌리기 */}
-          <div className="p-4 w-full flex items-center justify-between gap-2"> 
+          <div className="p-4 w-full grid grid-cols-5 gap-2"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
@@ -143,14 +140,13 @@ export function TopNavigation() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  // w-full 대신 flex-1로 균등 분할
-                  className={`${themeStyle.mobile} flex-1`}
+                  className={themeStyle.mobile}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={`flex items-center justify-center w-9 h-9 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-[10px] font-bold mt-1`}>{item.label}</span>
+                  <span className={`text-[10px] font-bold mt-0.5`}>{item.label}</span>
                 </Link>
               );
             })}

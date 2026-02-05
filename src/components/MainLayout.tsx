@@ -4,17 +4,13 @@ import { TopNavigation } from './TopNavigation';
 import { AppSidebar } from './AppSidebar';
 
 export default function MainLayout() {
-  // ✅ [전략 변경] "모바일인지 아닌지"만 판단합니다.
-  // 초기값: 현재 창 너비가 768px보다 작으면 true (모바일)
+  // 모바일 여부 확인 (768px 미만)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => {
-      // 768px 미만이면 모바일(true), 아니면 PC(false)
       setIsMobile(window.innerWidth < 768);
     };
-
-    // 창 크기 바뀔 때마다 감시
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -25,12 +21,12 @@ export default function MainLayout() {
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto">
         
-        {/* ✅ [강제 렌더링] 
-            "모바일이 아니면(!isMobile)" 무조건 사이드바를 보여줍니다.
-            CSS 클래스(hidden)에 의존하지 않으므로 무조건 뜹니다.
+        {/* ✅ [수정] 너비를 표준 클래스 w-80 (320px)으로 고정 
+            - 이전: w-[280px] (인식 실패 가능성 있음)
+            - 변경: w-80 (확실하게 고정됨 -> 텍스트 말줄임 작동)
         */}
         {!isMobile && (
-          <aside className="flex-none w-[280px] xl:w-[300px] border-r border-transparent">
+          <aside className="flex-none w-80 border-r border-transparent">
             <div className="sticky top-[80px] h-[calc(100vh-80px)] py-8 pl-8 pr-4 overflow-hidden hover:overflow-y-auto no-scrollbar">
               <AppSidebar />
             </div>
