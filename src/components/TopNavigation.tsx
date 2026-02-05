@@ -19,10 +19,11 @@ export function TopNavigation() {
   }, [location.pathname]);
 
   const getThemeStyles = (theme: string, isActive: boolean) => {
+    // PC 스타일
     const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
     
-    // ✅ 모바일 버튼: w-full 제거, h-[60px] 고정
-    const mobileBase = "flex flex-col items-center justify-center gap-1 py-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
+    // 모바일 스타일 (내부 아이콘+텍스트 정렬은 세로가 맞음)
+    const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
 
     const styles: Record<string, any> = {
       blue: {
@@ -94,7 +95,6 @@ export function TopNavigation() {
     <>
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[80px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
-          
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
@@ -129,10 +129,14 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 모바일 메뉴 가로 배치: Grid 사용 (무조건 5열) */}
+      {/* ✅ [수정] 인라인 스타일로 가로 배치 강제 (CSS 무시 방지) */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 grid grid-cols-5 gap-2 w-full"> 
+          <div 
+            className="p-4 w-full gap-2"
+            // 👇 여기가 핵심입니다. flex-row를 직접 박아넣었습니다.
+            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+          > 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
@@ -141,6 +145,8 @@ export function TopNavigation() {
                   key={item.path}
                   to={item.path}
                   className={themeStyle.mobile}
+                  // flex: 1을 주어 균등하게 공간을 차지하게 함
+                  style={{ flex: 1 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={`flex items-center justify-center w-9 h-9 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>

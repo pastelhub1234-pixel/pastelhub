@@ -13,29 +13,23 @@ export function AppSidebar() {
     ) || [];
   }, [members]);
 
-  // ✅ 제목 글자수 자르기 (혹시 CSS truncate가 안 먹힐 때를 대비한 안전장치)
   const formatTitle = (title: string) => {
     if (!title) return '';
-    return title.length > 20 ? title.slice(0, 20) + '...' : title;
+    return title.length > 18 ? title.slice(0, 18) + '...' : title;
   };
 
   return (
     <div className="h-full flex flex-col pt-2">
-      {/* ❌ [삭제됨] Live Now 헤더 및 빨간점 제거 
-         요청하신 대로 바로 리스트가 나옵니다.
-      */}
-
       <div className="flex-1 space-y-3 pb-10 pr-2">
         {liveMembers.length > 0 ? (
           liveMembers.map((member, idx) => {
             const isXSpace = member.status === 'X_live';
             const badgeText = isXSpace ? "SPACE" : "LIVE";
             
-            // ✅ [수정] 링 색상 설정 (Inline Style 사용)
-            // Tailwind 클래스 인식이 안 될 경우를 대비해 직접 스타일 주입
-            const ringStyle = isXSpace 
-             ? { background: 'linear-gradient(to bottom right, #ec4899, #a855f7)' } // 핑크/퍼플
-             : { background: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)' }; // 민트/초록
+            // 링 색상 스타일
+            const ringGradient = isXSpace 
+              ? 'linear-gradient(to bottom right, #ec4899, #a855f7)' 
+              : 'linear-gradient(to bottom right, #00ffa3, #00c7a9)';
 
             return (
               <a 
@@ -50,26 +44,28 @@ export function AppSidebar() {
                   hover:shadow-md hover:border-purple-100 hover:-translate-y-0.5
                 "
               >
-                {/* ✅ [수정] 프로필 이미지 & 링 
-                    - w-[42px] h-[42px]: 크기 고정
-                    - p-[2px]: 링 두께
-                    - flex-none: 찌그러짐 방지
-                */}
-                <div className="relative flex-none">
+                {/* ✅ [수정] 크기 강제 고정 (Inline Style 사용) */}
+                {/* min-width를 줘서 절대 찌그러지거나 커지지 않음 */}
+                <div 
+                  className="relative flex-none" 
+                  style={{ width: '42px', height: '42px', minWidth: '42px' }}
+                >
                   <div 
-                    className="w-[42px] h-[42px] rounded-full p-[2px]"
-                    style={ringStyle} // 👈 여기서 스타일 직접 적용
+                    className="w-full h-full rounded-full flex items-center justify-center"
+                    style={{ 
+                      background: ringGradient,
+                      padding: '2px' // 이 패딩값이 링의 두께가 됩니다.
+                    }}
                   >
+                    {/* ✅ [수정] border-white 제거 -> 링과 이미지가 딱 붙음 */}
                     <img 
                       src={member.profileImg} 
                       alt={member.name} 
-                      className="w-full h-full rounded-full object-cover bg-white border-2 border-white"
+                      className="w-full h-full rounded-full object-cover bg-white block"
                     />
                   </div>
                 </div>
 
-                {/* 텍스트 정보 */}
-                {/* min-w-0: Flex 자식요소가 부모보다 커지는 것을 방지 (Truncate 필수조건) */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     <span className="text-sm font-bold text-slate-800 truncate">
@@ -84,9 +80,7 @@ export function AppSidebar() {
                     </span>
                   </div>
 
-                  {/* 방송 제목 */}
                   <p className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors truncate">
-                    {/* CSS truncate와 JS 자르기를 이중으로 적용 */}
                     {formatTitle(member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기'))}
                   </p>
                 </div>
