@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Calendar, Radio, Twitter, Zap, ShoppingBag, Sparkles } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
-import MemberCard from '../components/MemberCard';
+import MemberCard from './MemberCard';
 import { Member } from '../types';
 
 // 네비게이션 데이터
