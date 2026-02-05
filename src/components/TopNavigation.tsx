@@ -90,8 +90,8 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [수정] 높이 90px로 확대 */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[90px]">
+      {/* ✅ [수정] 높이 100px로 확대 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
@@ -125,9 +125,9 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 모바일 메뉴 top 위치도 90px로 조정 */}
+      {/* ✅ [수정] 모바일 메뉴 top 위치 100px로 조정 */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[90px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+        <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
             className="p-4 w-full gap-2"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
