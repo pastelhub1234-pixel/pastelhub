@@ -19,11 +19,14 @@ export function TopNavigation() {
   }, [location.pathname]);
 
   const getThemeStyles = (theme: string, isActive: boolean) => {
+    // PC 스타일
     const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
-    // ✅ 모바일 베이스: flex-col로 아이콘/텍스트 상하 정렬, w-full로 그리드 셀 채움
-    const mobileBase = "flex flex-col items-center justify-center gap-1.5 py-3 rounded-xl border transition-all duration-200 active:scale-95 w-full";
+    
+    // ✅ 모바일 스타일 (중요)
+    // w-full이나 flex-1을 주지 않고, 부모(flex 컨테이너)가 알아서 늘리게 둡니다.
+    // flex-col: 아이콘과 텍스트는 상하 정렬
+    const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
 
-    // 색상 하드코딩 (Tailwind 인식 보장)
     const styles: Record<string, any> = {
       blue: {
         pc: isActive 
@@ -95,7 +98,6 @@ export function TopNavigation() {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[80px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
-          {/* ✅ [수정] 요청하신 로고 코드로 원복 */}
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
@@ -109,21 +111,17 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
-
               return (
                 <Link key={item.path} to={item.path} className={themeStyle.pc}>
                   <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-sm font-bold ${themeStyle.text}`}>
-                    {item.label}
-                  </span>
+                  <span className={`text-sm font-bold ${themeStyle.text}`}>{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -133,24 +131,24 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 모바일 메뉴 가로 배치 (Grid 5열) */}
+      {/* ✅ 모바일 메뉴 (Grid -> Flex 가로 정렬 변경) */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          {/* w-full과 grid-cols-5로 가로 꽉 찬 5개 배치 */}
-          <div className="p-4 w-full grid grid-cols-5 gap-2"> 
+          {/* grid 대신 flex를 쓰고, justify-between으로 간격 벌리기 */}
+          <div className="p-4 w-full flex items-center justify-between gap-2"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
-
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={themeStyle.mobile} // 여기에 w-full이 포함됨
+                  // w-full 대신 flex-1로 균등 분할
+                  className={`${themeStyle.mobile} flex-1`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
-                    <item.icon className="size-5" />
+                  <div className={`flex items-center justify-center w-9 h-9 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
+                    <item.icon className="size-4" />
                   </div>
                   <span className={`text-[10px] font-bold mt-1`}>{item.label}</span>
                 </Link>
