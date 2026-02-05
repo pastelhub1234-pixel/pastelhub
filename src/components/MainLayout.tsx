@@ -20,14 +20,11 @@ export default function MainLayout() {
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto">
         
-        {/* ✅ [수정] 사이드바 너비 강력 고정
-            - flex-none: 늘어나지 않음
-            - w-[300px]: 300px로 고정 (w-80은 320px이라 너무 넓을 수 있음)
-        */}
+        {/* ✅ [수정] 너비 250px로 축소 (레퍼런스 이미지 비율) */}
         {!isMobile && (
-          <aside className="flex-none w-[300px] border-r border-transparent">
-            {/* sticky 컨테이너에도 동일한 너비 제한 적용 */}
-            <div className="sticky top-[80px] h-[calc(100vh-80px)] w-[300px] py-8 pl-6 pr-4 overflow-hidden hover:overflow-y-auto no-scrollbar">
+          <aside className="flex-none w-[250px] border-r border-slate-200 bg-transparent">
+            {/* sticky 컨테이너도 250px 고정 */}
+            <div className="sticky top-[80px] h-[calc(100vh-80px)] w-[250px] py-6 pl-4 pr-3 overflow-hidden hover:overflow-y-auto no-scrollbar">
               <AppSidebar />
             </div>
           </aside>
