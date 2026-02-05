@@ -20,11 +20,13 @@ export default function MainLayout() {
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto">
         
-        {/* ✅ [수정] 너비 250px로 축소 (레퍼런스 이미지 비율) */}
         {!isMobile && (
           <aside className="flex-none w-[250px] border-r border-slate-200 bg-transparent">
-            {/* sticky 컨테이너도 250px 고정 */}
-            <div className="sticky top-[80px] h-[calc(100vh-80px)] w-[250px] py-6 pl-4 pr-3 overflow-hidden hover:overflow-y-auto no-scrollbar">
+            {/* ✅ [수정] 
+                - top-[90px]: 상단바 90px에 맞춤
+                - pl-6: 왼쪽 여백을 4(16px) -> 6(24px)으로 늘려 벽과의 간격 확보
+            */}
+            <div className="sticky top-[90px] h-[calc(100vh-90px)] w-[250px] py-6 pl-6 pr-3 overflow-hidden hover:overflow-y-auto no-scrollbar">
               <AppSidebar />
             </div>
           </aside>

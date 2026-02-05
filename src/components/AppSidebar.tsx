@@ -15,7 +15,6 @@ export function AppSidebar() {
 
   const formatTitle = (title: string) => {
     if (!title) return '';
-    // 너비가 좁아졌으므로 글자수 제한도 15자로 줄여서 디자인 깨짐 방지
     return title.length > 15 ? title.slice(0, 15) + '...' : title;
   };
 
@@ -37,14 +36,14 @@ export function AppSidebar() {
                 href={member.liveUrl} 
                 target="_blank" 
                 rel="noreferrer" 
+                // ✅ [수정] hover:-translate-y-0.5 제거 (위로 들썩이지 않음)
                 className="
                   flex items-center gap-2.5 px-2.5 py-2 rounded-xl 
                   bg-white border border-slate-100 shadow-sm 
                   transition-all duration-300 group
-                  hover:shadow-md hover:border-purple-200 hover:-translate-y-0.5
+                  hover:shadow-md hover:border-purple-200
                 "
               >
-                {/* ✅ 프로필 이미지 (40px) */}
                 <div 
                   className="relative flex-none transition-transform duration-300 group-hover:scale-105" 
                   style={{ width: '40px', height: '40px', minWidth: '40px' }}
@@ -53,10 +52,9 @@ export function AppSidebar() {
                     className="w-full h-full rounded-full flex items-center justify-center"
                     style={{ 
                       background: ringGradient,
-                      padding: '2px' // 링 두께 (여기 색상이 보임)
+                      padding: '2px'
                     }}
                   >
-                    {/* ✅ [핵심] border-white 완전 제거 -> 틈 없이 딱 붙음 */}
                     <img 
                       src={member.profileImg} 
                       alt={member.name} 

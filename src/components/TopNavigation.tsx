@@ -19,10 +19,7 @@ export function TopNavigation() {
   }, [location.pathname]);
 
   const getThemeStyles = (theme: string, isActive: boolean) => {
-    // PC 스타일
     const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
-    
-    // 모바일 스타일 (내부 아이콘+텍스트 정렬은 세로가 맞음)
     const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
 
     const styles: Record<string, any> = {
@@ -93,7 +90,8 @@ export function TopNavigation() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[80px]">
+      {/* ✅ [수정] 높이 90px로 확대 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[90px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
@@ -103,7 +101,6 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* PC 메뉴 */}
           <nav className="hidden md:flex items-center gap-3">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
@@ -119,7 +116,6 @@ export function TopNavigation() {
             })}
           </nav>
 
-          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -129,12 +125,11 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 인라인 스타일로 가로 배치 강제 (CSS 무시 방지) */}
+      {/* ✅ [수정] 모바일 메뉴 top 위치도 90px로 조정 */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+        <div className="md:hidden fixed top-[90px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
             className="p-4 w-full gap-2"
-            // 👇 여기가 핵심입니다. flex-row를 직접 박아넣었습니다.
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
           > 
             {NAV_ITEMS.map((item) => {
@@ -145,7 +140,6 @@ export function TopNavigation() {
                   key={item.path}
                   to={item.path}
                   className={themeStyle.mobile}
-                  // flex: 1을 주어 균등하게 공간을 차지하게 함
                   style={{ flex: 1 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
