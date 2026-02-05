@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout"; // 👈 components -> layouts로 경로 확인!
+import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
 import Schedule from "./pages/Schedule";
 import LiveStatus from "./pages/LiveStatus"; // 방송 페이지
