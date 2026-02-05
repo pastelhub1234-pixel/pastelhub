@@ -4,7 +4,6 @@ import { TopNavigation } from './TopNavigation';
 import { AppSidebar } from './AppSidebar';
 
 export default function MainLayout() {
-  // 모바일 여부 확인 (768px 미만)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -21,13 +20,14 @@ export default function MainLayout() {
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto">
         
-        {/* ✅ [수정] 너비를 표준 클래스 w-80 (320px)으로 고정 
-            - 이전: w-[280px] (인식 실패 가능성 있음)
-            - 변경: w-80 (확실하게 고정됨 -> 텍스트 말줄임 작동)
+        {/* ✅ [수정] 사이드바 너비 강력 고정
+            - flex-none: 늘어나지 않음
+            - w-[300px]: 300px로 고정 (w-80은 320px이라 너무 넓을 수 있음)
         */}
         {!isMobile && (
-          <aside className="flex-none w-80 border-r border-transparent">
-            <div className="sticky top-[80px] h-[calc(100vh-80px)] py-8 pl-8 pr-4 overflow-hidden hover:overflow-y-auto no-scrollbar">
+          <aside className="flex-none w-[300px] border-r border-transparent">
+            {/* sticky 컨테이너에도 동일한 너비 제한 적용 */}
+            <div className="sticky top-[80px] h-[calc(100vh-80px)] w-[300px] py-8 pl-6 pr-4 overflow-hidden hover:overflow-y-auto no-scrollbar">
               <AppSidebar />
             </div>
           </aside>

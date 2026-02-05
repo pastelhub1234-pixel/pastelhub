@@ -21,8 +21,8 @@ export function TopNavigation() {
   const getThemeStyles = (theme: string, isActive: boolean) => {
     const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
     
-    // ✅ 모바일 버튼 내부 스타일: 아이콘 위, 텍스트 아래 (이건 flex-col 맞음)
-    const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
+    // ✅ 모바일 버튼: w-full 제거, h-[60px] 고정
+    const mobileBase = "flex flex-col items-center justify-center gap-1 py-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
 
     const styles: Record<string, any> = {
       blue: {
@@ -129,10 +129,10 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] Grid를 사용하여 가로 배치 강제 (grid-cols-5) */}
+      {/* ✅ [수정] 모바일 메뉴 가로 배치: Grid 사용 (무조건 5열) */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 w-full grid grid-cols-5 gap-2"> 
+          <div className="p-4 grid grid-cols-5 gap-2 w-full"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               const themeStyle = getThemeStyles(item.theme, isActive);
@@ -146,7 +146,7 @@ export function TopNavigation() {
                   <div className={`flex items-center justify-center w-9 h-9 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-[10px] font-bold mt-0.5`}>{item.label}</span>
+                  <span className={`text-[10px] font-bold mt-1`}>{item.label}</span>
                 </Link>
               );
             })}
