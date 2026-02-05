@@ -90,7 +90,7 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [수정] 높이 100px로 확대 */}
+      {/* ✅ [수정] 높이 100px로 확실히 키움 */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
@@ -125,7 +125,7 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 모바일 메뉴 top 위치 100px로 조정 */}
+      {/* ✅ [수정] 모바일 메뉴 위치 100px로 조정 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
