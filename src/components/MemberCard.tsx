@@ -26,7 +26,7 @@ export default function MemberCard({ member }: MemberCardProps) {
         cursor-pointer
       "
     >
-      {/* ✅ 프로필 이미지 크기 확대: 40px -> 44px */}
+      {/* ✅ 4. 이미지 찌그러짐 방지 (flex-shrink-0) & 크기 44px 고정 */}
       <div 
         className={`
           relative flex items-center justify-center flex-shrink-0 
@@ -42,8 +42,8 @@ export default function MemberCard({ member }: MemberCardProps) {
         />
       </div>
       
-      {/* 텍스트 영역 */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center h-[44px]"> {/* 높이 고정으로 정렬 유지 */}
+      {/* 텍스트 영역: 높이를 이미지와 맞춰서 중앙 정렬 */}
+      <div className="flex-1 min-w-0 flex flex-col justify-center h-[44px]">
         <div className="flex items-center justify-between mb-0.5">
           <span className="text-sm font-bold truncate text-gray-900">
             {member.name}
@@ -54,8 +54,8 @@ export default function MemberCard({ member }: MemberCardProps) {
           </span>
         </div>
         
-        {/* ✅ 방송 제목: max-w 설정으로 글자 수 제한 효과 강화 */}
-        <p className="text-xs text-gray-400 truncate group-hover:text-gray-500 transition-colors max-w-[130px]">
+        {/* 방송 제목 글자수 제한 */}
+        <p className="text-xs text-gray-400 truncate group-hover:text-gray-500 transition-colors max-w-[120px]">
           {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
         </p>
       </div>
