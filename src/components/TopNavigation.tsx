@@ -20,17 +20,15 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [핵심] style={{ height: '100px' }} 추가 */}
-      {/* Tailwind 클래스가 씹히는 경우를 대비해 인라인 스타일로 높이를 강제합니다. */}
+      {/* ✅ [수정] 높이를 80px로 조정 (가장 이상적인 비율) */}
       <header 
         className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm flex items-center justify-center"
-        style={{ height: '100px' }} 
+        style={{ height: '80px' }} 
       >
         
-        {/* 내부 컨테이너: h-full로 100px 꽉 채우기 */}
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
-          {/* 🟦 [로고] */}
+          {/* 로고 */}
           <Link to="/" className="shrink-0 group flex items-center gap-1.5 transition-opacity hover:opacity-80">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
@@ -39,14 +37,14 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴 - 플로팅 캡슐] */}
-          {/* self-center로 100px 높이 정중앙에 배치 */}
+          {/* 🟧 [메뉴] */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // 캡슐 높이 42px -> 100px 헤더 내에서 위아래 29px 여백 발생
-              const baseLayout = "flex items-center gap-2 h-[42px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정] 버튼 높이 h-[40px]
+              // 80px 헤더 안에 40px 버튼 = 위아래 20px 여백 (완벽한 밸런스)
+              const baseLayout = "flex items-center gap-2 h-[40px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -79,10 +77,9 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 */}
+      {/* 모바일 메뉴 (위치 조정: top-[80px]) */}
       {isMobileMenuOpen && (
-        // top-[100px]로 메뉴 시작 위치 맞춤
-        <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+        <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
