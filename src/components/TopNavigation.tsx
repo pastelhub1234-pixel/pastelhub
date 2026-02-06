@@ -35,16 +35,16 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 황금비율 적용 */}
+          {/* 🟧 [메뉴] 다시 커진 버튼 (54px) */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [최종 튜닝]
-              // 1. h-[48px]: 64px 헤더 내에서 가장 안정적인 높이 (위아래 8px 여백)
-              // 2. px-5.5: 가로를 늘려서 시원시원하게
-              // 3. rounded-xl: 2xl보다 살짝 더 네모난, 단단하고 세련된 모서리
-              const baseLayout = "flex items-center gap-2.5 h-[48px] px-5.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정] h-[54px]
+              // - 64px 헤더 - 54px 버튼 = 위아래 5px 여백 (꽉 찬 느낌 복구!)
+              // - px-6: 가로 너비를 넓혀서 시원하게
+              // - rounded-xl: 너무 둥글지 않은 세련된 네모
+              const baseLayout = "flex items-center gap-2.5 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -59,11 +59,11 @@ export function TopNavigation() {
                     flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* ✅ 아이콘 크기 축소: size-4 (16px) */}
-                    <item.icon className="size-4" />
+                    {/* ✅ 아이콘 크기 복구: size-5 (20px) */}
+                    <item.icon className="size-5" />
                   </div>
-                  {/* 글자 크기: 14px (text-sm) */}
-                  <span className="text-sm">{item.label}</span>
+                  {/* 글자 크기: 15px */}
+                  <span className="text-[15px]">{item.label}</span>
                 </Link>
               );
             })}
