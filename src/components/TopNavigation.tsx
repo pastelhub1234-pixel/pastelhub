@@ -20,17 +20,12 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [폰트 추가] 프리텐다드(Pretendard) 폰트 불러오기 */}
-      <style>{`
-        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-        .font-pretendard { font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; }
-      `}</style>
-
-      {/* ✅ [수정 1] 헤더 높이 64px (웹 표준 높이로 슬림하게) */}
+      {/* ✅ [수정] 헤더 높이 64px (가장 슬림하고 표준적인 크기) */}
       <header 
-        className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-white/60 shadow-sm font-pretendard"
+        className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm flex items-center justify-center"
         style={{ height: '64px' }} 
       >
+        
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
           {/* 로고 */}
@@ -47,10 +42,10 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정 2] 버튼 크기 확대 (h-[40px])
-              // 헤더 64px - 버튼 40px = 위아래 12px 여백 (가장 안정적인 비율)
-              // px-3.5: 좌우 여백을 살짝 늘려서 시원하게
-              const baseLayout = "flex items-center gap-2 h-[40px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정] 버튼 크기 확대 (h-[40px])
+              // 헤더(64px) - 버튼(40px) = 위아래 12px 여백 (밀도 높은 깔끔함)
+              // px-3.5: 좌우 여백도 살짝 늘림
+              const baseLayout = "flex items-center gap-2 h-[40px] px-3.5 rounded-lg border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -62,15 +57,14 @@ export function TopNavigation() {
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
                   <div className={`
-                    flex items-center justify-center w-5 h-5 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* ✅ [수정 3] 아이콘 아주 작게 (size-3 = 12px) */}
-                    <item.icon className="size-3" />
+                    {/* 아이콘 크기 확대: size-3 -> size-4 */}
+                    <item.icon className="size-4" />
                   </div>
-                  
-                  {/* 글자 크기: 13px (폰트가 바뀌어서 가독성이 좋아짐) */}
-                  <span className="text-[13px] tracking-tight">{item.label}</span>
+                  {/* 글자 크기 확대: 12px -> 13px */}
+                  <span className="text-[13px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -86,9 +80,9 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 (top-[64px]) */}
+      {/* 모바일 메뉴 (위치 조정: top-[64px]) */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[64px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200 font-pretendard">
+        <div className="md:hidden fixed top-[64px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div className="p-3 w-full gap-1.5" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
@@ -97,8 +91,8 @@ export function TopNavigation() {
 
               return (
                 <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
-                    <item.icon className="size-3" />
+                  <div className={`flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
+                    <item.icon className="size-4" />
                   </div>
                   <span className="text-[11px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
