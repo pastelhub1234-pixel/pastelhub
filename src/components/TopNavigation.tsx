@@ -20,10 +20,9 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* 1. 헤더 높이 h-[100px] 유지 (배경 공간 확보) */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
-        
-        {/* h-full과 items-center 덕분에 내부 요소는 무조건 '수직 중앙'에 배치됩니다. */}
+      {/* ✅ [핵심 수정] sticky -> fixed (Flex 간섭 없이 무조건 고정) */}
+      {/* left-0 top-0 w-full 추가하여 화면 상단에 꽉 차게 고정 */}
+      <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
           {/* 로고 */}
@@ -35,21 +34,15 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🖥️ PC 메뉴 */}
+          {/* 🖥️ PC 메뉴 (콤팩트 캡슐 스타일 유지) */}
           <nav className="hidden md:flex items-center gap-2"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [핵심 수정] 플로팅 캡슐 스타일
-              // 1. h-[42px]: 높이를 강제로 고정합니다. (헤더 100px - 버튼 42px = 58px 여백 발생)
-              // 2. px-4: 좌우 너비만 확보
-              // 3. rounded-xl: 알약 모양 둥글기
-              const baseLayout = "flex items-center gap-2 h-[42px] px-4 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // 콤팩트 버튼 레이아웃 (px-3.5 py-1.5)
+              const baseLayout = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
-              // 색상 클래스
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
-              
-              // 비활성 상태일 때 배경 투명, 테두리 투명 -> 공중에 떠 있는 글씨 느낌
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
 
               return (
@@ -58,7 +51,6 @@ export function TopNavigation() {
                   to={item.path} 
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  {/* 아이콘 박스: w-6 h-6 (24px) */}
                   <div className={`
                     flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive 
@@ -66,11 +58,9 @@ export function TopNavigation() {
                       : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`
                     }
                   `}>
-                    <item.icon className="size-3.5" />
+                    <item.icon className="size-3" />
                   </div>
-                  
-                  {/* 글자 크기: 13px */}
-                  <span className="text-[13px]">{item.label}</span>
+                  <span className="text-[12px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -95,9 +85,7 @@ export function TopNavigation() {
           > 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              
-              // 모바일 버튼 높이 고정 (h-[56px])
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[56px]";
+              const mobileLayout = "flex flex-col items-center justify-center gap-1 py-2 rounded-lg border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive 
                 ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900`
                 : `bg-transparent border-transparent text-gray-500`;
@@ -116,7 +104,7 @@ export function TopNavigation() {
                   `}>
                     <item.icon className="size-3.5" />
                   </div>
-                  <span className="text-[11px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
+                  <span className="text-[10px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
