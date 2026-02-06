@@ -18,18 +18,16 @@ export default function MainLayout() {
     <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-[#f8f9fa]">
       <TopNavigation />
 
-      {/* mx-auto만 유지하고 padding 제거 (내부에서 처리) */}
+      {/* ✅ [수정] pl-6 제거 (AppSidebar 내부 px-3에 맡김) */}
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto">
         
         {!isMobile && (
-          // ✅ [수정] 사이드바 너비를 270px로 살짝 늘림 (여백 포함)
-          <aside className="flex-none w-[270px] border-r border-slate-200 bg-transparent">
-            {/* ✅ [핵심 수정]
-                - top-[100px]: 상단바 100px에 맞춤
-                - pl-6: 왼쪽 안쪽 여백을 24px로 주어, 카드가 벽에서 확실히 떨어짐
-                - pr-3: 오른쪽 스크롤바와의 간격
+          <aside className="flex-none w-[250px] border-r border-slate-200 bg-transparent">
+            {/* ✅ [수정] 
+                - py, pl 제거: AppSidebar 내부 padding과 충돌 방지 
+                - h-[calc(100vh-100px)]: 높이만 잡아주고 내부는 AppSidebar에 위임
             */}
-            <div className="sticky top-[100px] h-[calc(100vh-100px)] w-[270px] py-6 pl-6 pr-3 overflow-hidden hover:overflow-y-auto no-scrollbar">
+            <div className="sticky top-[100px] h-[calc(100vh-100px)] w-[250px] overflow-hidden">
               <AppSidebar />
             </div>
           </aside>

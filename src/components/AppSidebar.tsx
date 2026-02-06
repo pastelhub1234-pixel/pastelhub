@@ -20,13 +20,8 @@ export function AppSidebar() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* ✅ [수정 포인트] 간격 문제 해결
-         - px-4: 좌우 여백 16px 추가 (왼쪽 벽에 안 붙음)
-         - pt-2: 상단바와 살짝 띄움
-         - pb-4: 하단 여백 확보
-         - space-y-2.5: 카드 간 간격
-      */}
-      <div className="flex-1 px-4 pt-2 pb-4 space-y-2.5">
+      {/* ✅ [요청 수치 적용] 전체 리스트 여백: px-3 py-4 */}
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 custom-scrollbar">
         
         {liveMembers.length > 0 ? (
           liveMembers.map((member, idx) => {
@@ -43,15 +38,18 @@ export function AppSidebar() {
                 href={member.liveUrl} 
                 target="_blank" 
                 rel="noreferrer" 
-                // hover:-translate-y-0.5 제거됨 (확인 완료)
                 className="
-                  flex items-center gap-2.5 px-2.5 py-2 rounded-xl 
+                  /* ✅ [요청 수치 적용] 
+                     - flex items-center gap-3: 이미지와 텍스트 사이 12px
+                     - px-3 py-2: 카드 내부 여백 (좌우 12px, 상하 8px)
+                  */
+                  flex items-center gap-3 px-3 py-2 rounded-xl 
                   bg-white border border-slate-100 shadow-sm 
                   transition-all duration-300 group
                   hover:shadow-md hover:border-purple-200
                 "
               >
-                {/* 프로필 이미지 영역 */}
+                {/* 프로필 이미지 (40px 고정) */}
                 <div 
                   className="relative flex-none transition-transform duration-300 group-hover:scale-105" 
                   style={{ width: '40px', height: '40px', minWidth: '40px' }}
@@ -71,7 +69,6 @@ export function AppSidebar() {
                   </div>
                 </div>
 
-                {/* 텍스트 영역 */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     <span className="text-sm font-bold text-slate-800 truncate">
