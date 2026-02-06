@@ -20,86 +20,48 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* h-[100px] flex flex-col: 100px 높이 내에서 세로 배치 */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px] flex flex-col">
+      {/* 🔴 [진단 1] 헤더 영역 전체에 빨간 테두리 + 배경색 */}
+      {/* sticky가 문제인지 확인하기 위해 잠시 relative로 변경할 수도 있지만, 일단 sticky 유지 */}
+      <header className="sticky top-0 z-50 h-[100px] flex flex-col border-4 border-red-600 bg-gray-100">
         
-        {/* ⬛ [위쪽 스페이서] 30px 강제 고정 (검은색) */}
-        <div className="h-[30px] w-full bg-black shrink-0" />
-
-        {/* ⬜ [중간 콘텐츠] 40px 강제 고정 */}
-        {/* h-[40px]를 줘서 버튼 높이와 딱 맞춥니다. */}
-        <div className="h-[40px] shrink-0 w-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between bg-white/90">
-          
-          <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
-            <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
-            <h1 className="font-extrabold text-2xl tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-pink-400">pastel</span>
-              <span className="text-slate-700">hub</span>
-            </h1>
-          </Link>
-
-          {/* PC 메뉴 (높이 40px, 버튼 내부 높이 100% 채움) */}
-          <nav className="hidden md:flex items-center gap-2 h-full"> 
-            {NAV_ITEMS.map((item) => {
-              const isActive = location.pathname.startsWith(item.path);
-              
-              // h-full로 부모(40px) 높이 꽉 채움
-              const baseLayout = "flex items-center gap-2 h-full px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
-              
-              const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
-              const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
-
-              return (
-                <Link 
-                  key={item.path} 
-                  to={item.path} 
-                  className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
-                >
-                  <div className={`
-                    flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
-                    ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
-                  `}>
-                    <item.icon className="size-3" />
-                  </div>
-                  <span className="text-[12px]">{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          <button 
-            className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
-          </button>
+        {/* 디버깅 라벨 */}
+        <div className="absolute top-0 left-0 bg-red-600 text-white text-[10px] px-1 z-50">
+          HEADER AREA (100px)
         </div>
 
-        {/* ⬛ [아래쪽 스페이서] 30px 강제 고정 (검은색) */}
-        <div className="h-[30px] w-full bg-black shrink-0" />
+        {/* 🟢 [진단 2] 위쪽 스페이서 (초록색) */}
+        {/* shrink-0을 줘서 절대 찌그러지지 않게 함 */}
+        <div className="h-[30px] w-full bg-green-400 shrink-0 flex items-center justify-center border-b border-black">
+          <span className="text-xs font-bold text-black">TOP SPACER (30px)</span>
+        </div>
 
-      </header>
+        {/* 🔵 [진단 3] 중간 콘텐츠 (파란색) */}
+        {/* h-[40px] 강제 지정 */}
+        <div className="h-[40px] w-full bg-blue-300 shrink-0 flex items-center px-4">
+          <div className="w-full max-w-[1700px] mx-auto flex items-center justify-between">
+            
+            {/* 로고 */}
+            <div className="bg-white px-2">로고</div>
 
-      {/* 모바일 메뉴 (위치는 그대로) */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
-            {NAV_ITEMS.map((item) => {
-              const isActive = location.pathname.startsWith(item.path);
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
-              const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
-              return (
-                <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
-                    <item.icon className="size-3.5" />
-                  </div>
-                  <span className="text-[10px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
-                </Link>
-              );
-            })}
+            {/* PC 메뉴 */}
+            <nav className="hidden md:flex items-center gap-2 h-full bg-white/50 px-2"> 
+              {NAV_ITEMS.map((item) => (
+                <div key={item.path} className="border border-black px-2 h-[30px] flex items-center bg-white text-xs">
+                  {item.label}
+                </div>
+              ))}
+            </nav>
+
+            <div className="md:hidden bg-white">메뉴</div>
           </div>
         </div>
-      )}
+
+        {/* 🟡 [진단 4] 아래쪽 스페이서 (노란색) */}
+        <div className="h-[30px] w-full bg-yellow-400 shrink-0 flex items-center justify-center border-t border-black">
+          <span className="text-xs font-bold text-black">BOTTOM SPACER (30px)</span>
+        </div>
+
+      </header>
     </>
   );
 }
