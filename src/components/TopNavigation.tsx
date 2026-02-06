@@ -20,10 +20,18 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* 1. 상단바 고정 (fixed) */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
-        <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      {/* 1. Sticky 복구, 전체 높이 100px */}
+      {/* 2. flex-col 적용: 위/중간/아래 구조를 만들기 위함 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px] flex flex-col">
+        
+        {/* ✅ [Top Spacer] 위쪽 투명 공간 (자동으로 높이 차지) */}
+        <div className="flex-1 min-h-0" />
+
+        {/* ✅ [Middle Row] 실제 콘텐츠가 들어가는 중앙 줄 */}
+        {/* shrink-0을 줘서 이 영역은 절대 찌그러지지 않게 함 */}
+        <div className="shrink-0 w-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
+          {/* 로고 */}
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
@@ -37,10 +45,8 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [최종 수정] 더 작고 귀여운 '플로팅 캡슐'
-              // - h-[42px]: 높이 고정 (헤더 100px 내에서 둥둥 뜸)
-              // - px-3.5: 좌우 여백 축소
-              const baseLayout = "flex items-center gap-2 h-[42px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ 캡슐 디자인 유지 (h-[40px]로 더 콤팩트하게)
+              const baseLayout = "flex items-center gap-2 h-[40px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -51,21 +57,19 @@ export function TopNavigation() {
                   to={item.path} 
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  {/* 아이콘 박스: w-6 h-6 (24px) - 더 작게 */}
                   <div className={`
                     flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    <item.icon className="size-3" /> {/* 아이콘 사이즈 12px */}
+                    <item.icon className="size-3" />
                   </div>
-                  
-                  {/* 글자 크기: 12px - 더 작게 */}
                   <span className="text-[12px]">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
+          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -73,16 +77,26 @@ export function TopNavigation() {
             {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
           </button>
         </div>
+
+        {/* ✅ [Bottom Spacer] 아래쪽 투명 공간 (자동으로 높이 차지) */}
+        {/* 위아래 Spacer가 남은 공간을 나눠가지면서 가운데 줄을 띄워줍니다. */}
+        <div className="flex-1 min-h-0" />
+
       </header>
 
       {/* 📱 모바일 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
+          <div 
+            className="p-4 w-full gap-2"
+            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+          > 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[56px]";
-              const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
+              const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
+              const mobileColor = isActive 
+                ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` 
+                : `bg-transparent border-transparent text-gray-500`;
 
               return (
                 <Link
