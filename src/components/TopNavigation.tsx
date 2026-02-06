@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calendar, Zap, Radio, Twitter, ShoppingBag, Sparkles, Menu, X } from 'lucide-react';
 
+// ✅ id 값은 CSS 클래스 중간 이름(blue, pink 등)과 정확히 일치해야 합니다.
 const NAV_ITEMS = [
-  { path: '/schedule', icon: Calendar, label: '일정', theme: 'blue' },
-  { path: '/activities', icon: Zap, label: '활동', theme: 'pink' },
-  { path: '/broadcast', icon: Radio, label: '방송', theme: 'purple' },
-  { path: '/timeline', icon: Twitter, label: '타임라인', theme: 'indigo' },
-  { path: '/goods', icon: ShoppingBag, label: '교환소', theme: 'emerald' },
+  { path: '/schedule', icon: Calendar, label: '일정', id: 'blue' },
+  { path: '/activities', icon: Zap, label: '활동', id: 'pink' },
+  { path: '/broadcast', icon: Radio, label: '방송', id: 'purple' },
+  { path: '/timeline', icon: Twitter, label: '타임라인', id: 'indigo' },
+  { path: '/goods', icon: ShoppingBag, label: '교환소', id: 'emerald' },
 ];
 
 export function TopNavigation() {
@@ -18,79 +19,8 @@ export function TopNavigation() {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const getThemeStyles = (theme: string, isActive: boolean) => {
-    const base = "flex items-center gap-2.5 px-5 py-2.5 rounded-xl border transition-all duration-200 group active:scale-95";
-    const mobileBase = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
-
-    const styles: Record<string, any> = {
-      blue: {
-        pc: isActive 
-          ? `${base} bg-white/90 border-blue-200 shadow-md ring-1 ring-blue-100` 
-          : `${base} bg-transparent border-transparent hover:bg-blue-50 hover:text-blue-600 text-gray-500`,
-        mobile: isActive 
-          ? `${mobileBase} bg-blue-50 border-blue-100 text-blue-600` 
-          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
-        icon: isActive 
-          ? "bg-gradient-to-br from-blue-400 to-cyan-400 text-white shadow-blue-200" 
-          : "bg-white text-gray-400 group-hover:text-blue-500 group-hover:border-blue-200 border border-slate-100",
-        text: isActive ? "text-blue-900" : "group-hover:text-blue-700"
-      },
-      pink: {
-        pc: isActive 
-          ? `${base} bg-white/90 border-pink-200 shadow-md ring-1 ring-pink-100` 
-          : `${base} bg-transparent border-transparent hover:bg-pink-50 hover:text-pink-600 text-gray-500`,
-        mobile: isActive 
-          ? `${mobileBase} bg-pink-50 border-pink-100 text-pink-600` 
-          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
-        icon: isActive 
-          ? "bg-gradient-to-br from-pink-400 to-rose-400 text-white shadow-pink-200" 
-          : "bg-white text-gray-400 group-hover:text-pink-500 group-hover:border-pink-200 border border-slate-100",
-        text: isActive ? "text-pink-900" : "group-hover:text-pink-700"
-      },
-      purple: {
-        pc: isActive 
-          ? `${base} bg-white/90 border-purple-200 shadow-md ring-1 ring-purple-100` 
-          : `${base} bg-transparent border-transparent hover:bg-purple-50 hover:text-purple-600 text-gray-500`,
-        mobile: isActive 
-          ? `${mobileBase} bg-purple-50 border-purple-100 text-purple-600` 
-          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
-        icon: isActive 
-          ? "bg-gradient-to-br from-purple-400 to-violet-400 text-white shadow-purple-200" 
-          : "bg-white text-gray-400 group-hover:text-purple-500 group-hover:border-purple-200 border border-slate-100",
-        text: isActive ? "text-purple-900" : "group-hover:text-purple-700"
-      },
-      indigo: {
-        pc: isActive 
-          ? `${base} bg-white/90 border-indigo-200 shadow-md ring-1 ring-indigo-100` 
-          : `${base} bg-transparent border-transparent hover:bg-indigo-50 hover:text-indigo-600 text-gray-500`,
-        mobile: isActive 
-          ? `${mobileBase} bg-indigo-50 border-indigo-100 text-indigo-600` 
-          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
-        icon: isActive 
-          ? "bg-gradient-to-br from-indigo-400 to-violet-400 text-white shadow-indigo-200" 
-          : "bg-white text-gray-400 group-hover:text-indigo-500 group-hover:border-indigo-200 border border-slate-100",
-        text: isActive ? "text-indigo-900" : "group-hover:text-indigo-700"
-      },
-      emerald: {
-        pc: isActive 
-          ? `${base} bg-white/90 border-emerald-200 shadow-md ring-1 ring-emerald-100` 
-          : `${base} bg-transparent border-transparent hover:bg-emerald-50 hover:text-emerald-600 text-gray-500`,
-        mobile: isActive 
-          ? `${mobileBase} bg-emerald-50 border-emerald-100 text-emerald-600` 
-          : `${mobileBase} bg-transparent border-transparent text-gray-500`,
-        icon: isActive 
-          ? "bg-gradient-to-br from-emerald-400 to-teal-400 text-white shadow-emerald-200" 
-          : "bg-white text-gray-400 group-hover:text-emerald-500 group-hover:border-emerald-200 border border-slate-100",
-        text: isActive ? "text-emerald-900" : "group-hover:text-emerald-700"
-      },
-    };
-
-    return styles[theme] || styles['blue'];
-  };
-
   return (
     <>
-      {/* ✅ [수정] 높이 100px로 확실히 키움 */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
@@ -101,16 +31,31 @@ export function TopNavigation() {
             </h1>
           </Link>
 
+          {/* PC 메뉴 */}
           <nav className="hidden md:flex items-center gap-3">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const themeStyle = getThemeStyles(item.theme, isActive);
+              
+              // ✅ [핵심] CSS 파일에 정의된 클래스 이름 조립
+              // 예: activeClass = "bg-blue-50 border-blue-200 ..."
+              const activeClass = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
+              
+              // 예: inactiveClass = "hover-bg-blue-50 hover-text-blue-600"
+              const inactiveClass = `hover-bg-${item.id}-50 hover-text-${item.id}-600`;
+
               return (
-                <Link key={item.path} to={item.path} className={themeStyle.pc}>
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
+                <Link 
+                  key={item.path} 
+                  to={item.path} 
+                  className={`nav-item-base ${isActive ? activeClass : inactiveClass}`}
+                >
+                  <div className={`nav-icon w-8 h-8 ${isActive 
+                    ? `active-icon-${item.id}` // CSS에 정의된 그라데이션 클래스
+                    : `group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`
+                  }`}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-sm font-bold ${themeStyle.text}`}>{item.label}</span>
+                  <span className="text-sm font-bold">{item.label}</span>
                 </Link>
               );
             })}
@@ -125,7 +70,7 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* ✅ [수정] 모바일 메뉴 위치 100px로 조정 */}
+      {/* 모바일 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
@@ -134,19 +79,22 @@ export function TopNavigation() {
           > 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const themeStyle = getThemeStyles(item.theme, isActive);
+              
+              // 모바일용 활성 클래스 조립
+              const activeClass = `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-600`;
+              
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={themeStyle.mobile}
+                  className={`nav-item-mobile ${isActive ? activeClass : ''}`}
                   style={{ flex: 1 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <div className={`flex items-center justify-center w-9 h-9 rounded-lg shadow-sm transition-all duration-300 ${themeStyle.icon}`}>
+                  <div className="nav-icon w-9 h-9">
                     <item.icon className="size-4" />
                   </div>
-                  <span className={`text-[10px] font-bold mt-1`}>{item.label}</span>
+                  <span className="text-[10px] font-bold mt-1">{item.label}</span>
                 </Link>
               );
             })}
