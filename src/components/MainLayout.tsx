@@ -16,31 +16,27 @@ export default function MainLayout() {
 
   return (
     // ✅ 1. 전체 화면 고정 (h-screen, overflow-hidden)
-    // pt-[100px]로 상단바 공간 확보
+    // ✅ 2. 상단바 공간 확보 (pt-[100px])
     <div className="h-screen w-full overflow-hidden flex flex-col font-sans text-slate-900 bg-[#f8f9fa] pt-[100px]">
       
-      {/* 상단바 (fixed 상태임) */}
+      {/* 상단바 (fixed 상태이므로 공간 차지 안 함 -> pt로 공간 확보) */}
       <TopNavigation />
 
-      {/* 내부 레이아웃 컨테이너 */}
-      {/* h-full을 줘서 남은 높이(100vh - 100px)를 꽉 채움 */}
+      {/* 내부 레이아웃 컨테이너: 남은 높이를 꽉 채움 (h-full) */}
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto h-full overflow-hidden">
         
         {/* 사이드바 영역 */}
         {!isMobile && (
+          // h-full로 높이 채우고, sticky 대신 독립 스크롤 적용 가능
           <aside className="flex-none w-[250px] border-r border-slate-200 bg-transparent h-full">
-            {/* ✅ 2. 사이드바도 독립 스크롤 (sticky 필요 없음) */}
-            {/* h-full로 높이 채우고, 내용 많으면 overflow-y-auto */}
             <div className="h-full w-full overflow-y-auto custom-scrollbar">
               <AppSidebar />
             </div>
           </aside>
         )}
 
-        {/* ✅ 3. 메인 콘텐츠 영역 (여기에만 스크롤 적용) */}
-        {/* flex-1: 남은 너비 차지 */}
-        {/* h-full: 남은 높이 차지 */}
-        {/* overflow-y-auto: 내용이 길어지면 여기서만 스크롤 생김 */}
+        {/* ✅ 3. 메인 콘텐츠 영역 (이 부분만 스크롤 됨) */}
+        {/* overflow-y-auto: 내용이 길어지면 여기서만 스크롤 발생 */}
         <main className="flex-1 min-w-0 h-full overflow-y-auto px-4 py-8 md:px-10 custom-scrollbar">
           <Outlet />
         </main>
