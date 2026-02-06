@@ -20,7 +20,8 @@ export function TopNavigation() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
+      {/* 헤더 높이도 살짝 줄여서(80px -> 70px) 더 날렵하게 만듦 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[70px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
@@ -31,14 +32,14 @@ export function TopNavigation() {
           </Link>
 
           {/* 🖥️ PC 메뉴 */}
-          <nav className="hidden md:flex items-center gap-3">
+          <nav className="hidden md:flex items-center gap-2">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정] 레이아웃(모양)을 직접 정의하여 뭉개짐 방지
-              const baseLayout = "flex items-center gap-3 px-5 py-3 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정] 콤팩트한 레이아웃 (px-4 py-2, rounded-xl)
+              const baseLayout = "flex items-center gap-2.5 px-4 py-2 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
-              // ✅ 색상 클래스 (CSS 파일과 연결)
+              // 색상 클래스 (유지)
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
 
@@ -48,19 +49,19 @@ export function TopNavigation() {
                   to={item.path} 
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  {/* 아이콘 박스: shrink-0으로 찌그러짐 방지 */}
+                  {/* 아이콘 박스 */}
                   <div className={`
-                    flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border shrink-0
+                    flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border shrink-0
                     ${isActive 
-                      ? `active-icon-${item.id} border-transparent` // Active: 그라데이션
-                      : `bg-white border-slate-100 text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200` // Inactive
+                      ? `active-icon-${item.id} border-transparent` 
+                      : `bg-white border-slate-100 text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`
                     }
                   `}>
-                    <item.icon className="size-4" />
+                    <item.icon className="size-3.5" />
                   </div>
                   
-                  {/* 텍스트: 줄바꿈 방지 */}
-                  <span className="text-sm">{item.label}</span>
+                  {/* 텍스트 크기 살짝 조정 (text-sm 유지하되 폰트가 너무 커보이지 않게) */}
+                  <span className="text-[13px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -71,23 +72,23 @@ export function TopNavigation() {
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
+            {isMobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
         </div>
       </header>
 
       {/* 📱 모바일 메뉴 */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+        <div className="md:hidden fixed top-[70px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
-            className="p-4 w-full gap-2"
+            className="p-3 w-full gap-1.5"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
           > 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // 모바일 레이아웃 & 색상
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 py-3 rounded-xl border transition-all duration-200 active:scale-95 h-[72px]";
+              // ✅ [수정] 모바일도 더 콤팩트하게 (h-64px, rounded-lg)
+              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 py-2 rounded-lg border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive 
                 ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900`
                 : `bg-transparent border-transparent text-gray-500`;
@@ -101,12 +102,12 @@ export function TopNavigation() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={`
-                    flex items-center justify-center w-10 h-10 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}
                   `}>
-                    <item.icon className="size-5" />
+                    <item.icon className="size-4" />
                   </div>
-                  <span className="text-[11px] font-bold mt-1 whitespace-nowrap">{item.label}</span>
+                  <span className="text-[10px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
