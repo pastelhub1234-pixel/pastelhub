@@ -20,7 +20,7 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ 헤더 높이 h-[100px] 유지 (공간 확보) */}
+      {/* 헤더 높이 h-[100px] 유지 (배경 공간 확보) */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
@@ -38,12 +38,12 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [핵심 수정] 버튼 크기를 줄여서 헤더 내부에 여백 만들기
-              // 1. px-4 py-2: 패딩을 줄여서 버튼 높이를 납작하게 만듦 -> 위아래 공백 확보
-              // 2. rounded-xl: 버튼 크기에 맞는 둥글기
-              const baseLayout = "flex items-center gap-2.5 px-4 py-2 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [핵심 수정] 버튼을 아주 콤팩트하게 줄여서 "떠 있는 느낌" 강조
+              // py-1.5: 위아래 패딩을 최소화하여 버튼 높이를 낮춤 -> 상단바와 간격 확보
+              // rounded-lg: 작아진 버튼에 어울리는 둥글기
+              const baseLayout = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
-              // 색상 클래스 (기존 유지)
+              // 색상 클래스
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
 
@@ -53,19 +53,19 @@ export function TopNavigation() {
                   to={item.path} 
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  {/* 아이콘 박스 크기 축소: w-8 -> w-7 */}
+                  {/* 아이콘 박스 크기 축소: w-6 h-6 (24px) */}
                   <div className={`
-                    flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive 
                       ? `active-icon-${item.id} border-transparent` 
                       : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`
                     }
                   `}>
-                    <item.icon className="size-3.5" /> {/* 아이콘 크기도 살짝 줄임 */}
+                    <item.icon className="size-3" /> {/* 아이콘 사이즈 12px */}
                   </div>
                   
-                  {/* 글자 크기 축소: text-[13px] */}
-                  <span className="text-[13px]">{item.label}</span>
+                  {/* 글자 크기 축소: text-[12px] */}
+                  <span className="text-[12px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -81,7 +81,7 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 📱 모바일 메뉴 (헤더 높이 100px에 맞춰 top 조정) */}
+      {/* 📱 모바일 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
@@ -91,8 +91,8 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // 모바일 버튼도 비율에 맞춰 살짝 콤팩트하게 수정
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 py-2 rounded-xl border transition-all duration-200 active:scale-95 h-[64px]";
+              // 모바일 버튼도 비율에 맞춰 축소 (h-60px)
+              const mobileLayout = "flex flex-col items-center justify-center gap-1 py-2 rounded-lg border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive 
                 ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900`
                 : `bg-transparent border-transparent text-gray-500`;
@@ -106,12 +106,12 @@ export function TopNavigation() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={`
-                    flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}
                   `}>
-                    <item.icon className="size-4" />
+                    <item.icon className="size-3.5" />
                   </div>
-                  <span className="text-[10px] font-bold mt-1 whitespace-nowrap">{item.label}</span>
+                  <span className="text-[10px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
