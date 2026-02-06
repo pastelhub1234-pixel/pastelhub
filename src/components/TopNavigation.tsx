@@ -20,10 +20,10 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [수정] 높이를 80px로 조정 (가장 이상적인 비율) */}
+      {/* ✅ [수정] 헤더 높이 70px로 슬림하게 변경 */}
       <header 
         className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm flex items-center justify-center"
-        style={{ height: '80px' }} 
+        style={{ height: '70px' }} 
       >
         
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -37,14 +37,16 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] */}
+          {/* 🟧 [메뉴 - 깔쌈한 비율 적용] */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정] 버튼 높이 h-[40px]
-              // 80px 헤더 안에 40px 버튼 = 위아래 20px 여백 (완벽한 밸런스)
-              const baseLayout = "flex items-center gap-2 h-[40px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [핵심 수정] 버튼 비율 조정
+              // h-[36px]: 높이를 줄여서 날렵하게
+              // px-3: 좌우 패딩을 줄여서 단단하게
+              // rounded-lg: 크기에 맞는 둥글기
+              const baseLayout = "flex items-center gap-2 h-[36px] px-3 rounded-lg border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -72,18 +74,19 @@ export function TopNavigation() {
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
+            {isMobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
         </div>
       </header>
 
-      {/* 모바일 메뉴 (위치 조정: top-[80px]) */}
+      {/* 모바일 메뉴 (위치 조정: top-[70px]) */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[80px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
+        <div className="md:hidden fixed top-[70px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+          <div className="p-3 w-full gap-1.5" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
+              // 모바일 버튼도 살짝 더 콤팩트하게 (h-[56px])
+              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 rounded-lg border transition-all duration-200 active:scale-95 h-[56px]";
               const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
 
               return (
