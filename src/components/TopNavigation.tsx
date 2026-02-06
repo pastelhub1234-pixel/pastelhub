@@ -35,16 +35,16 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 깔쌈한 '둥근 사각형' 비율 완성 */}
+          {/* 🟧 [메뉴] 황금비율 적용 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [디테일 수정]
-              // h-[46px]: 높이를 살짝 줄여서 핏하게 만듦 (위아래 9px 여백)
-              // px-5.5: 가로를 늘려서 안정감 있는 직사각형 형태
-              // rounded-xl: 2xl보다 덜 둥글게 하여 '네모난' 느낌 추가
-              const baseLayout = "flex items-center gap-2 h-[46px] px-5.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [최종 튜닝]
+              // 1. h-[48px]: 64px 헤더 내에서 가장 안정적인 높이 (위아래 8px 여백)
+              // 2. px-5.5: 가로를 늘려서 시원시원하게
+              // 3. rounded-xl: 2xl보다 살짝 더 네모난, 단단하고 세련된 모서리
+              const baseLayout = "flex items-center gap-2.5 h-[48px] px-5.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -56,13 +56,13 @@ export function TopNavigation() {
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
                   <div className={`
-                    flex items-center justify-center w-6 h-6 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* ✅ 아이콘 크기 축소: size-[18px] -> size-4 (16px) */}
+                    {/* ✅ 아이콘 크기 축소: size-4 (16px) */}
                     <item.icon className="size-4" />
                   </div>
-                  {/* 글자 크기 유지: 14px (균형 맞춤) */}
+                  {/* 글자 크기: 14px (text-sm) */}
                   <span className="text-sm">{item.label}</span>
                 </Link>
               );
@@ -85,13 +85,13 @@ export function TopNavigation() {
           <div className="p-3 w-full gap-1.5" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 rounded-lg border transition-all duration-200 active:scale-95 h-[60px]";
+              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
 
               return (
                 <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
-                    <item.icon className="size-3.5" />
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
+                    <item.icon className="size-4" />
                   </div>
                   <span className="text-[11px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
