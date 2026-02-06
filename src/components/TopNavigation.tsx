@@ -36,16 +36,15 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 꽉 찬 56px 버튼 */}
+          {/* 🟧 [메뉴] 상단바를 꽉 채우는 60px 버튼 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [계산 적용] h-[56px]
-              // 64px(헤더) - 56px(버튼) = 8px 여백 (위 4px / 아래 4px)
-              // px-5: 버튼 높이에 비례해 너비도 확보
-              // rounded-2xl: 버튼이 클수록 둥글기도 커야 예쁩니다.
-              const baseLayout = "flex items-center gap-2.5 h-[56px] px-5 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [최종 수정] h-[60px]
+              // 64px(헤더) - 60px(버튼) = 4px 여백 (위 2px / 아래 2px)
+              // px-6: 버튼이 아주 크므로 좌우도 넉넉하게
+              const baseLayout = "flex items-center gap-3 h-[60px] px-6 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -60,11 +59,11 @@ export function TopNavigation() {
                     flex items-center justify-center w-8 h-8 rounded-xl shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* 아이콘 size-5 (20px) */}
-                    <item.icon className="size-5" />
+                    {/* 아이콘 size-[22px]로 확대 */}
+                    <item.icon className="size-[22px]" />
                   </div>
-                  {/* 글자 크기 15px로 확대 */}
-                  <span className="text-[15px]">{item.label}</span>
+                  {/* 글자 크기 text-[16px]로 확대 */}
+                  <span className="text-[16px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -92,7 +91,7 @@ export function TopNavigation() {
               return (
                 <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
                   <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
-                    <item.icon className="size-4" />
+                    <item.icon className="size-5" />
                   </div>
                   <span className="text-[11px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
