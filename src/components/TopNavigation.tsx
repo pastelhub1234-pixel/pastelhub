@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calendar, Zap, Radio, Twitter, ShoppingBag, Sparkles, Menu, X } from 'lucide-react';
 
-// ✅ id 값은 CSS 클래스 중간 이름(blue, pink 등)과 정확히 일치해야 합니다.
 const NAV_ITEMS = [
   { path: '/schedule', icon: Calendar, label: '일정', id: 'blue' },
   { path: '/activities', icon: Zap, label: '활동', id: 'pink' },
@@ -31,36 +30,43 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* PC 메뉴 */}
+          {/* 🖥️ PC 메뉴 */}
           <nav className="hidden md:flex items-center gap-3">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [핵심] CSS 파일에 정의된 클래스 이름 조립
-              // 예: activeClass = "bg-blue-50 border-blue-200 ..."
-              const activeClass = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
+              // ✅ [수정] 레이아웃(모양)을 직접 정의하여 뭉개짐 방지
+              const baseLayout = "flex items-center gap-3 px-5 py-3 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
-              // 예: inactiveClass = "hover-bg-blue-50 hover-text-blue-600"
-              const inactiveClass = `hover-bg-${item.id}-50 hover-text-${item.id}-600`;
+              // ✅ 색상 클래스 (CSS 파일과 연결)
+              const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
+              const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
 
               return (
                 <Link 
                   key={item.path} 
                   to={item.path} 
-                  className={`nav-item-base ${isActive ? activeClass : inactiveClass}`}
+                  className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  <div className={`nav-icon w-8 h-8 ${isActive 
-                    ? `active-icon-${item.id}` // CSS에 정의된 그라데이션 클래스
-                    : `group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`
-                  }`}>
+                  {/* 아이콘 박스: shrink-0으로 찌그러짐 방지 */}
+                  <div className={`
+                    flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border shrink-0
+                    ${isActive 
+                      ? `active-icon-${item.id} border-transparent` // Active: 그라데이션
+                      : `bg-white border-slate-100 text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200` // Inactive
+                    }
+                  `}>
                     <item.icon className="size-4" />
                   </div>
-                  <span className="text-sm font-bold">{item.label}</span>
+                  
+                  {/* 텍스트: 줄바꿈 방지 */}
+                  <span className="text-sm">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
+          {/* 모바일 햄버거 버튼 */}
           <button 
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -70,7 +76,7 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 */}
+      {/* 📱 모바일 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div 
@@ -80,21 +86,27 @@ export function TopNavigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // 모바일용 활성 클래스 조립
-              const activeClass = `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-600`;
-              
+              // 모바일 레이아웃 & 색상
+              const mobileLayout = "flex flex-col items-center justify-center gap-1 py-3 rounded-xl border transition-all duration-200 active:scale-95 h-[72px]";
+              const mobileColor = isActive 
+                ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900`
+                : `bg-transparent border-transparent text-gray-500`;
+
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`nav-item-mobile ${isActive ? activeClass : ''}`}
+                  className={`${mobileLayout} ${mobileColor}`}
                   style={{ flex: 1 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <div className="nav-icon w-9 h-9">
-                    <item.icon className="size-4" />
+                  <div className={`
+                    flex items-center justify-center w-10 h-10 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}
+                  `}>
+                    <item.icon className="size-5" />
                   </div>
-                  <span className="text-[10px] font-bold mt-1">{item.label}</span>
+                  <span className="text-[11px] font-bold mt-1 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
