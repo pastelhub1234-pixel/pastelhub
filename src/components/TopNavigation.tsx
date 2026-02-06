@@ -20,18 +20,15 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ [수정 1] flex-row (가로 배치) + items-center (수직 중앙 정렬)
-        - 이제 로고와 메뉴가 서로의 높이에 영향을 주지 않습니다.
-        - 100px 높이 안에서 각자 중앙에 배치됩니다.
-      */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px] flex items-center justify-center">
+      {/* ✅ 헤더 높이 h-[100px] 확실하게 고정 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm h-[100px]">
         
-        {/* 내부 컨테이너: 최대 너비 제한 & 양끝 정렬 */}
+        {/* ✅ h-full: 내부 컨테이너가 100px을 다 쓰도록 함 */}
+        {/* items-center: 로고와 메뉴를 100px 높이의 정중앙에 배치 */}
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
-          {/* 🟦 [로고 영역] */}
-          {/* shrink-0을 줘서 메뉴가 밀려도 로고는 찌그러지지 않게 함 */}
-          <Link to="/" className="shrink-0 group flex items-center gap-1.5 transition-opacity hover:opacity-80">
+          {/* 로고 */}
+          <Link to="/" className="group flex items-center gap-1.5 transition-opacity hover:opacity-80 min-w-max">
             <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-pink-400">pastel</span>
@@ -39,15 +36,13 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴 영역 - 캡슐 스타일] */}
-          {/* self-center: 로고 높이와 무관하게 스스로 수직 중앙 정렬 */}
-          <nav className="hidden md:flex items-center gap-2 self-center"> 
+          {/* 🖥️ PC 메뉴 */}
+          <nav className="hidden md:flex items-center gap-2"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [핵심] h-[42px] 강제 고정
-              // 헤더가 100px이고 버튼이 42px이므로, 자동으로 위아래 29px씩 공백이 생깁니다.
-              // items-center(부모) 덕분에 무조건 중앙에 뜹니다.
+              // ✅ 캡슐 버튼 (높이 42px)
+              // 헤더가 100px이므로, 위아래로 (100-42)/2 = 29px의 여백이 자동으로 생김
               const baseLayout = "flex items-center gap-2 h-[42px] px-3.5 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
@@ -81,7 +76,7 @@ export function TopNavigation() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 */}
+      {/* 📱 모바일 메뉴 */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-[100px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
           <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
@@ -89,9 +84,19 @@ export function TopNavigation() {
               const isActive = location.pathname.startsWith(item.path);
               const mobileLayout = "flex flex-col items-center justify-center gap-1 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
+
               return (
-                <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`${mobileLayout} ${mobileColor}`}
+                  style={{ flex: 1 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className={`
+                    flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}
+                  `}>
                     <item.icon className="size-3.5" />
                   </div>
                   <span className="text-[10px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
