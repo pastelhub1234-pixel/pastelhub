@@ -70,7 +70,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                   </p>
                   
                   {room.todayPostCount > 0 && (
-                    <span className="bg-[#ff4b4b] text-white text-[10px] font-bold h-[18px] min-w-[18px] px-1.5 flex items-center justify-center rounded-full shrink-0 shadow-sm">
+                    <span className="bg-red-500 text-white text-[10px] font-bold h-[18px] min-w-[18px] px-1.5 flex items-center justify-center rounded-full shrink-0 shadow-sm">
                       {room.todayPostCount > 300 ? "300+" : room.todayPostCount}
                     </span>
                   )}
