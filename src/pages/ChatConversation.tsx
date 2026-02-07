@@ -35,14 +35,15 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
+      <header className="flex-none h-[60px] bg-[#b2c7da]/95 backdrop-blur-sm px-4 flex justify-between items-center z-10 border-b border-black/5">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ w-9 h-9 (36px) 유지
-              className="w-9 h-9 rounded-[13px] object-cover shadow-sm cursor-pointer hover:opacity-90"
+              // ✅ [핵심 수정] style 속성으로 크기 36px 강제 고정 (절대 안 커짐)
+              style={{ width: '36px', height: '36px', minWidth: '36px', borderRadius: '13px', objectFit: 'cover' }}
+              className="shadow-sm cursor-pointer hover:opacity-90"
             />
           )}
           <div className="min-w-0">
@@ -66,7 +67,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
       {/* 대화 내용 */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-3 space-y-1 custom-scrollbar"
+        className="flex-1 overflow-y-auto px-4 py-3 custom-scrollbar"
       >
         {loading ? (
           <div className="text-center text-gray-500 py-10 text-xs">로딩 중...</div>
