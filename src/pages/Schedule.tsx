@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
-// ✅ [수정] index.ts에 정의된 타입 사용
 import { ScheduleItem } from '../types';
 
 const monthNames = [
@@ -78,24 +77,19 @@ export default function Schedule() {
   };
 
   return (
-    // 배경색 추가: bg-gray-50
-    <div className="w-full h-full p-6 overflow-x-auto overflow-y-hidden bg-gray-50 flex items-center justify-center">
+    // ✅ [수정] MainLayout에서 패딩을 처리하므로 여기서는 제거 (p-6 삭제)
+    // h-full로 부모 높이를 꽉 채움
+    <div className="w-full h-full flex gap-6">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [핵심 수정] Grid 대신 Flex 사용 (가로 배치 강제)
-         - min-w-[1200px]: 화면이 줄어들어도 절대 찌그러지지 않게 최소 너비 확보
-         - gap-6: 패널 사이 간격
-         - h-[700px]: 높이 고정 (화면에 꽉 차보이게)
-      */}
-      <div className="flex gap-6 min-w-[1200px] w-full max-w-[1600px] h-[700px]">
-        
         {/* =======================
-            1. [Left] Details Panel (25%)
+            1. [Left] Details Panel
+            ✅ w-[320px] flex-none: 너비 320px로 강제 고정 (내용물에 따라 변하지 않음)
            ======================= */}
-        <div className="w-[25%] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col relative overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col relative overflow-hidden h-full">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full">
                
@@ -147,9 +141,11 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            2. [Center] Calendar (50%)
+            2. [Center] Calendar
+            ✅ flex-1: 남은 공간을 모두 차지
+            ✅ min-w-0: Flex 자식이 부모 너비를 무시하고 튀어나가는 현상 방지 (중요)
            ======================= */}
-        <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white/80 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col overflow-hidden h-full">
           {/* Header */}
           <div className="flex items-center justify-between mb-6 flex-shrink-0 px-2">
             <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
@@ -208,9 +204,10 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            3. [Right] Upcoming Panel (25%)
+            3. [Right] Upcoming Panel
+            ✅ w-[320px] flex-none: 너비 320px로 강제 고정
            ======================= */}
-        <div className="w-[25%] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col overflow-hidden h-full">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
@@ -256,8 +253,6 @@ export default function Schedule() {
             })}
           </div>
         </div>
-
-      </div>
     </div>
   );
 }
