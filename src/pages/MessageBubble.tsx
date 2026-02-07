@@ -1,89 +1,66 @@
-// ✅ 경로 수정: ../types (상위 폴더의 types)
-import { ChatMessage } from '../../../types';
+// ✅ 경로 수정: ../types
+import { ChatMessage } from '../types';
 
 interface MessageBubbleProps {
   msg: ChatMessage;
 }
 
 export function MessageBubble({ msg }: MessageBubbleProps) {
-  // 날짜 표시 (PC 카톡 스타일: 얇은 라인 + 텍스트)
+  // 날짜 표시
   if (msg.type === "date") {
     return (
-      <div className="flex items-center justify-center my-4 px-4">
-        <div className="flex-1 h-[1px] bg-[#a6b6c5]/40"></div>
-        <span className="px-3 text-[11px] text-[#555] font-medium">
+      <div className="flex justify-center my-4">
+        <span className="px-3 py-1 text-xs text-gray-700 bg-gray-300/50 rounded-full">
           {msg.content}
         </span>
-        <div className="flex-1 h-[1px] bg-[#a6b6c5]/40"></div>
       </div>
     );
   }
 
-  const isMe = msg.name === 'Me' || msg.name === '나';
-
+  // 시간 포맷팅
   const formatTime = (isoString?: string) => {
     if (!isoString) return '';
     try {
       const date = new Date(isoString);
-      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: true });
+      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
     } catch {
       return '';
     }
   };
-  const timeString = msg.time || formatTime(new Date().toISOString());
 
   return (
-    <div className={`flex w-full mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
-      
-      {/* 상대방 프로필 (네모난 모양) */}
-      {!isMe && (
-        <div className="flex flex-col items-center mr-2 shrink-0 self-start cursor-pointer">
-          {msg.profileImg ? (
-            <img 
-              src={msg.profileImg} 
-              alt={msg.name} 
-              // ✅ rounded-sm: 거의 네모남
-              className="w-[40px] h-[40px] rounded-[3px] object-cover border border-black/5" 
-            />
-          ) : (
-            <div className="w-[40px] h-[40px] rounded-[3px] bg-[#d1d1d1]" />
-          )}
-        </div>
-      )}
+    <div className="flex mb-5 items-start">
+      {/* 프로필 이미지: 둥근 사각형 (rounded-xl) */}
+      <div className="w-10 h-10 rounded-xl overflow-hidden mr-3 shrink-0 bg-gray-200">
+        {msg.profileImg ? (
+          <img src={msg.profileImg} alt={msg.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full bg-purple-200"></div>
+        )}
+      </div>
 
-      <div className={`flex flex-col max-w-[70%] ${isMe ? 'items-end' : 'items-start'}`}>
-        {/* 상대방 이름 */}
-        {!isMe && <span className="text-[12px] text-[#4b4b4b] mb-1 ml-0.5">{msg.name}</span>}
+      <div className="flex flex-col max-w-[75%]">
+        {/* 이름 */}
+        <span className="text-xs text-gray-700 mb-1 font-medium">{msg.name}</span>
 
-        <div className={`flex items-end gap-1.5 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-          
-          {/* 말풍선 (네모난 스타일) */}
-          {msg.type === "TEXT" && (
-            <div 
-              className={`
-                relative px-3 py-1.5 text-[13px] leading-relaxed whitespace-pre-wrap break-words border border-black/5
-                ${isMe 
-                  ? 'bg-[#feec34] text-black rounded-[2px]' // 나: 카톡 노랑 + 네모
-                  : 'bg-white text-black rounded-[2px]' // 상대: 흰색 + 네모
-                }
-              `}
-            >
-              {msg.content}
-            </div>
-          )}
-          
-          {/* 이미지 메시지 */}
-          {msg.type === "IMAGE" && (
-             <div className="rounded-[2px] overflow-hidden border border-black/5 max-w-[240px]">
-               <img src={msg.content} alt="image" className="w-full h-auto object-cover" />
-             </div>
-          )}
+        {/* 텍스트 메시지: 둥근 말풍선 (rounded-2xl) */}
+        {msg.type === "TEXT" && (
+          <div className="bg-white px-4 py-2.5 rounded-2xl text-[15px] leading-snug shadow-sm whitespace-pre-wrap">
+            {msg.content}
+          </div>
+        )}
 
-          {/* 시간 표시 */}
-          <span className="text-[10px] text-[#555] min-w-max mb-0.5 tracking-tight">
-            {timeString}
-          </span>
-        </div>
+        {/* 이미지 메시지: 둥근 모서리 */}
+        {msg.type === "IMAGE" && (
+          <div className="bg-white p-2 rounded-2xl shadow-sm">
+            <img src={msg.content} alt="전송된 이미지" className="rounded-lg max-w-full h-auto" />
+          </div>
+        )}
+
+        {/* 시간 */}
+        <span className="text-[11px] text-gray-500 mt-1 ml-1">
+          {formatTime(msg.time)}
+        </span>
       </div>
     </div>
   );
