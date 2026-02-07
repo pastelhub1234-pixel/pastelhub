@@ -13,7 +13,7 @@ export default function Timeline() {
           - h-[82vh]: 화면 높이의 82%를 차지하도록 늘림
           - max-w-[1600px]: 좌우 너비 제한을 풀어 시원하게
       */}
-      <div className="w-full max-w-[1600px] h-[82vh] bg-white rounded-xl shadow-sm border border-gray-200 flex overflow-hidden font-sans">
+      <div className="w-full max-w-[1600px] h-[95vh] bg-white rounded-xl shadow-sm border border-gray-200 flex overflow-hidden font-sans">
         
         {/* 왼쪽: 채팅방 목록 */}
         <div className="w-[300px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
