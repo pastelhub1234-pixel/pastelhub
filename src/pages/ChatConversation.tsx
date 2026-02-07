@@ -35,15 +35,14 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="flex-none h-[60px] bg-[#b2c7da]/95 backdrop-blur-sm px-4 flex justify-between items-center z-10 border-b border-black/5">
+      <header className="flex-none h-[60px] bg-white/80 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ [핵심 수정] style 속성으로 크기 36px 강제 고정 (절대 안 커짐)
-              style={{ width: '36px', height: '36px', minWidth: '36px', borderRadius: '13px', objectFit: 'cover' }}
-              className="shadow-sm cursor-pointer hover:opacity-90"
+              style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+              className="rounded-[13px] shadow-sm bg-gray-200"
             />
           )}
           <div className="min-w-0">
@@ -58,9 +57,9 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
           </div>
         </div>
 
-        <div className="flex gap-3 text-gray-700 opacity-60">
-          <Search size={18} className="cursor-pointer hover:opacity-100" />
-          <Menu size={18} className="cursor-pointer hover:opacity-100" />
+        <div className="flex gap-3 text-gray-500">
+          <Search size={18} className="cursor-pointer hover:text-black" />
+          <Menu size={18} className="cursor-pointer hover:text-black" />
         </div>
       </header>
 
