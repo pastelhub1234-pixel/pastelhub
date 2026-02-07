@@ -66,11 +66,6 @@ export default function Schedule() {
     }
   };
 
-  // ✅ [디자인 포인트] 달력 아이콘 배경색 (투명하게 처리하거나 심플하게)
-  const getEventIconClass = (type: ScheduleItem['type']) => {
-    return "text-2xl drop-shadow-sm";
-  };
-
   return (
     // 전체 컨테이너: 배경 투명 (MainLayout 배경 사용)
     <div className="w-full h-full flex gap-8">
