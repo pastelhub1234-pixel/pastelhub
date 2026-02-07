@@ -5,7 +5,7 @@ const EXTERNAL_LINKS = [
     id: 'bugs',
     title: '벅스 뮤직 차트 투표',
     description: '벅스에서 우리 아티스트에게 투표해주세요!',
-    url: 'https://music.bugs.co.kr/',
+    url: 'https://favorite.bugs.co.kr/',
     icon: Vote,
     gradient: 'from-orange-400 to-red-400',
   },
@@ -97,7 +97,6 @@ export default function Activities() {
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 text-center">
         <p className="text-slate-700 leading-relaxed">
           💡 <strong>팁:</strong> 각 활동은 외부 사이트로 연결됩니다. 
-          안전한 참여를 위해 공식 채널인지 확인해주세요!
         </p>
       </div>
 
