@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // ✅ 경로 수정: 같은 폴더 내 파일들 ./
-import { ChatRoomList } from '../components/chat/ChatRoomList'; 
-import { ChatConversation } from '../components/chat/ChatConversation'; 
+import { ChatRoomList } from './ChatRoomList'; 
+import { ChatConversation } from './ChatConversation'; 
 import { MessageCircle } from 'lucide-react';
 
 export default function Timeline() {
