@@ -6,14 +6,8 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ [수정 1] items-start: 위쪽으로 정렬 (중앙 정렬 해제 -> 위쪽 간격 제거)
-    // ✅ [수정 2] pt-2: 상단 여백 최소화 (8px), px-0: 좌우 여백 없음 (외부 여백 활용)
-    // ✅ [수정 3] h-screen: 화면 전체 높이 사용
-    <div className="flex justify-center items-start w-full h-screen bg-gray-50 pt-2 px-0 pb-2 font-sans">
-      
-      {/* ✅ [수정 4] rounded-[24px]: 모서리 둥글게 복구 */}
-      {/* h-[calc(100%-10px)]: 하단 여백 살짝 남김 */}
-      <div className="w-full h-[calc(100%-8px)] bg-white rounded-[24px] shadow-lg border border-gray-200 flex overflow-hidden font-sans">
+    <div className="flex justify-center items-center w-full h-full p-0 font-sans bg-gray-50">
+      <div className="w-full h-full bg-white rounded-xl shadow-md border border-gray-200 flex overflow-hidden font-sans">
         
         {/* 왼쪽: 채팅방 목록 (320px) */}
         <div className="w-[320px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
