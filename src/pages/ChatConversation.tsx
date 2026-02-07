@@ -1,14 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip } from 'lucide-react';
+// ✅ [수정] src/pages 기준 경로
 import { useJsonData } from '../hooks/useJsonData';
 import { MessageBubble } from './MessageBubble';
-import { ChatMessage } from '../types'; 
-
-interface ChatRoom {
-  roomId: string;
-  roomName: string;
-  roomImg: string;
-}
+import { ChatRoom, ChatMessage } from '../types'; 
 
 interface ChatConversationProps {
   roomId: string;
@@ -35,14 +30,15 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="flex-none h-[60px] bg-white/80 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
+      <header className="flex-none h-[60px] bg-[#b2c7da]/95 backdrop-blur-sm px-4 flex justify-between items-center z-10 border-b border-black/5">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              style={{ width: '40px', height: '40px', objectFit: 'cover' }}
-              className="rounded-[13px] shadow-sm bg-gray-200"
+              // ✅ shrink-0 추가 (찌그러짐 방지)
+              style={{ width: '36px', height: '36px', minWidth: '36px', objectFit: 'cover' }}
+              className="rounded-[13px] shadow-sm bg-gray-200 shrink-0 cursor-pointer"
             />
           )}
           <div className="min-w-0">
@@ -57,9 +53,9 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
           </div>
         </div>
 
-        <div className="flex gap-3 text-gray-500">
-          <Search size={18} className="cursor-pointer hover:text-black" />
-          <Menu size={18} className="cursor-pointer hover:text-black" />
+        <div className="flex gap-3 text-gray-700 opacity-60">
+          <Search size={18} className="cursor-pointer hover:opacity-100" />
+          <Menu size={18} className="cursor-pointer hover:opacity-100" />
         </div>
       </header>
 

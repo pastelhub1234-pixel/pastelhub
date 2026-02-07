@@ -1,14 +1,7 @@
 import { Search } from 'lucide-react';
+// ✅ [수정] src/pages 기준 경로 (../hooks, ../types)
 import { useJsonData } from '../hooks/useJsonData';
-
-interface ChatRoom {
-  roomId: string;
-  roomName: string;
-  roomImg: string;
-  todayPostCount: number;
-  lastPost: string;
-  lastPostTime: string;
-}
+import { ChatRoom } from '../types';
 
 interface ChatRoomListProps {
   onSelect: (roomId: string) => void;
@@ -63,12 +56,11 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 ${isSelected ? "bg-gray-100" : "hover:bg-gray-50 bg-white"}
               `}
             >
-              {/* ✅ [수정] shrink-0와 min-w 설정을 통해 이미지 찌그러짐 방지 */}
+              {/* ✅ [수정] 이미지 찌그러짐 방지 (shrink-0, min-w, min-h 필수) */}
               <div className="relative shrink-0">
                 <img 
                   src={room.roomImg} 
                   alt={room.roomName} 
-                  // min-w-[44px] min-h-[44px] 추가로 크기 강제 확보
                   className="w-[44px] h-[44px] min-w-[44px] min-h-[44px] rounded-[14px] object-cover border border-black/5 bg-gray-200"
                 />
               </div>

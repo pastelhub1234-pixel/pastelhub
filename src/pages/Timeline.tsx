@@ -1,4 +1,5 @@
 import { useState } from 'react';
+// ✅ 같은 폴더(src/pages) 내 컴포넌트 호출
 import { ChatRoomList } from './ChatRoomList'; 
 import { ChatConversation } from './ChatConversation'; 
 
@@ -6,9 +7,9 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ [수정] 간격을 30% 수준으로 축소 (p-1.5 = 6px)
-    // 화면 전체 높이에서 아주 조금만 뺌
-    <div className="flex justify-center items-center w-full h-screen bg-gray-50 p-1.5 font-sans">
+    // ✅ [수정] 상단 여백(pt) 0, 나머지 여백 최소화 (px-2, pb-2)
+    // h-[calc(100vh-10px)]: 화면 꽉 채우되 아래쪽만 살짝 띄움
+    <div className="flex justify-center items-end w-full h-[calc(100vh-10px)] px-2 pb-2 pt-0 font-sans bg-gray-50">
       
       {/* 메인 컨테이너 */}
       <div className="w-full h-full bg-white rounded-xl shadow-md border border-gray-200 flex overflow-hidden font-sans">
