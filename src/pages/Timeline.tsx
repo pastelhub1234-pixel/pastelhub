@@ -6,13 +6,18 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ [수정 1] 위쪽 간격 최소화를 위해 items-end 사용 (아래로 붙임)
-    // h-[calc(100vh-10px)]: 화면 높이에서 10px만 뺌 (거의 꽉 참)
-    // pb-2: 하단에 아주 살짝 숨구멍만 줌
-    <div className="flex justify-center items-end w-full h-[calc(100vh-10px)] px-2 pb-2 pt-0 font-sans bg-gray-50">
+    // ✅ [수정 포인트]
+    // 1. items-center -> items-start: 수직 중앙 정렬을 해제하여 위쪽 붕 뜨는 간격 제거
+    // 2. pt-2: 상단에 최소한의 여백(8px)만 부여 (답답하지 않게)
+    // 3. px-0: 옆쪽 간격은 현재 좋다고 하셨으니 0으로 유지 (외부 여백 활용)
+    <div className="flex justify-center items-start w-full h-screen bg-gray-50 pt-2 px-0 pb-2 font-sans">
       
-      {/* ✅ [수정 2] 모서리 둥글게 복구 (rounded-[24px]) */}
-      <div className="w-full h-full bg-white rounded-[24px] shadow-lg border border-gray-200 flex overflow-hidden font-sans">
+      {/* ✅ [디자인 복구] 
+          - rounded-[24px]: 둥근 모서리 다시 적용
+          - shadow-lg: 입체감 추가 
+          - h-[calc(100%-10px)]: 하단 여백 확보를 위해 높이 미세 조정
+      */}
+      <div className="w-full h-[calc(100%-8px)] bg-white rounded-[24px] shadow-lg border border-gray-200 flex overflow-hidden font-sans">
         
         {/* 왼쪽: 채팅방 목록 (320px) */}
         <div className="w-[320px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
