@@ -11,7 +11,8 @@ const monthNames = [
 export default function Schedule() {
   const { data: schedules } = useJsonData<ScheduleItem[]>('schedules');
   
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 1)); 
+  // 기준 날짜를 2026년 2월로 설정 (이미지와 동일하게)
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 1, 1)); 
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
 
   useEffect(() => {
@@ -66,19 +67,29 @@ export default function Schedule() {
     }
   };
 
-  const getEventColor = (type: ScheduleItem['type']) => {
-    switch (type) {
-      case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
-      case 'album': return 'bg-purple-100 text-purple-600 ring-purple-200';
-      case 'concert': return 'bg-blue-100 text-blue-600 ring-blue-200';
-      case 'broadcast': return 'bg-yellow-100 text-yellow-700 ring-yellow-200';
-      default: return 'bg-green-100 text-green-600 ring-green-200';
+  // ✅ [핵심] 미니멀한 날짜 스타일 (원형 배경)
+  const getDateStyle = (event: ScheduleItem | undefined, isToday: boolean, isSelected: boolean) => {
+    const baseStyle = "w-10 h-10 flex items-center justify-center rounded-full text-[15px] transition-all duration-200 mb-2";
+    
+    // 1. 오늘 날짜 (이벤트 유무 상관없이 회색 테두리 원)
+    if (isToday) {
+      return `${baseStyle} border-[1.5px] border-gray-400 text-gray-500 bg-transparent font-medium`;
     }
+
+    // 2. 이벤트가 있는 경우 (파스텔 톤 배경)
+    if (event) {
+      if (event.type === 'birthday') {
+        return `${baseStyle} bg-[#FCE7F3] text-[#9D174D] font-bold`; // 연한 핑크 (생일)
+      }
+      return `${baseStyle} bg-[#DCFCE7] text-[#166534] font-bold`; // 연한 민트 (일반 이벤트)
+    }
+
+    // 3. 기본 날짜
+    return `${baseStyle} text-gray-400 hover:bg-gray-50 font-medium`;
   };
 
   return (
-    // ✅ [수정] gap-6 -> gap-4로 축소하여 콤팩트하게 배치
-    <div className="w-full h-full flex gap-4">
+    <div className="w-full h-full flex gap-6">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -86,118 +97,115 @@ export default function Schedule() {
 
         {/* =======================
             1. [Left] Details Panel
-            ✅ w-[320px] -> w-[280px] 축소
-            ✅ p-6 -> p-5 내부 여백 축소
            ======================= */}
-        <div className="w-[280px] flex-none bg-white/60 backdrop-blur-xl rounded-[24px] p-5 shadow-sm border border-white/60 flex flex-col relative overflow-hidden h-full">
+        <div className="w-[300px] flex-none bg-white rounded-[24px] p-6 shadow-[0_2px_15px_rgba(0,0,0,0.015)] flex flex-col relative overflow-hidden h-full border border-gray-50">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-1">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center w-full pt-4">
                
-               {/* 아이콘 크기 및 마진 축소 */}
-               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[1.5rem] shadow-sm flex items-center justify-center text-4xl mb-4 border border-purple-50">
+               {/* 아이콘 박스 (더 심플하게) */}
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex items-center justify-center text-4xl mb-5 border border-gray-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-3 py-1 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1 mb-5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest">
                 {selectedEvent.type}
               </div>
 
-              {/* 제목 폰트 사이즈 및 높이 조절 */}
-              <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight px-2 w-full break-keep text-center line-clamp-2 h-[3rem] flex items-center justify-center">
+              <h2 className="text-xl font-bold text-gray-800 mb-2 leading-tight text-center break-keep line-clamp-2 h-[3.5rem] flex items-center justify-center px-2">
                 {selectedEvent.title}
               </h2>
               
-              <p className="text-xs text-gray-500 mb-4 leading-relaxed px-2 break-keep text-center line-clamp-5 h-[4.5rem] overflow-hidden">
+              <p className="text-xs text-gray-400 mb-6 leading-relaxed text-center px-4 break-keep line-clamp-3">
                 {selectedEvent.description}
               </p>
 
-              <div className="w-full bg-white/60 rounded-2xl p-4 text-left border border-white/80 space-y-3 shadow-sm mt-auto flex-shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
-                    <CalendarIcon size={16} />
+              {/* 하단 정보 카드 (미니멀 디자인) */}
+              <div className="w-full bg-[#FAFAFA] rounded-[20px] p-5 text-left border border-gray-100 mt-auto mb-2">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-purple-400 shadow-sm shrink-0">
+                      <CalendarIcon size={16} />
+                    </div>
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold mb-0.5">Date</p>
+                      <p className="text-[13px] font-bold text-gray-700">
+                        {new Date(selectedEvent.date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'numeric', day: 'numeric' })}.
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
-                    <p className="text-xs font-bold text-gray-700 mt-0.5 truncate">
-                      {new Date(selectedEvent.date).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                 <div className="flex items-center gap-3">
-                   <div className="w-9 h-9 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
-                    <MapPin size={16} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
-                    <p className="text-xs font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
+
+                   <div className="flex items-center gap-4">
+                     <div className="w-9 h-9 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-pink-400 shadow-sm shrink-0">
+                      <MapPin size={16} />
+                    </div>
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold mb-0.5">Location</p>
+                      <p className="text-[13px] font-bold text-gray-700">Seoul, Korea</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-3 select-none opacity-50 justify-center h-full">
-              <Info className="w-12 h-12 opacity-20" />
+            <div className="h-full flex flex-col items-center justify-center text-gray-300 gap-3 select-none opacity-50">
+              <Info className="w-10 h-10 opacity-20" />
               <p className="text-xs font-medium">일정을 선택해주세요</p>
             </div>
           )}
         </div>
 
         {/* =======================
-            2. [Center] Calendar
-            ✅ p-8 -> p-6 내부 여백 축소
-            ✅ 그리드 간격 gap-4 -> gap-2로 축소
+            2. [Center] Calendar (Minimal)
            ======================= */}
-        <div className="flex-1 min-w-0 bg-white/60 backdrop-blur-xl rounded-[24px] p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white rounded-[24px] p-8 shadow-[0_2px_15px_rgba(0,0,0,0.015)] flex flex-col overflow-hidden h-full border border-gray-50">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4 flex-shrink-0 px-1">
-            <h3 className="text-gray-800 font-bold flex items-center gap-2 text-2xl tracking-tight">
-              <CalendarIcon className="w-6 h-6 text-purple-500" />
-              {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
+          <div className="flex items-center justify-between mb-8 px-2">
+            <h3 className="text-gray-800 font-bold flex items-center gap-2 text-[22px] tracking-tight">
+              <span className="text-purple-500"><CalendarIcon className="w-6 h-6" /></span>
+              {monthNames[currentDate.getMonth()]} <span className="text-purple-200 font-medium">{currentDate.getFullYear()}</span>
             </h3>
-            <div className="flex gap-1.5">
-              <button onClick={previousMonth} className="w-8 h-8 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
+            <div className="flex gap-2">
+              <button onClick={previousMonth} className="w-8 h-8 hover:bg-gray-50 rounded-full flex items-center justify-center transition-colors">
+                <ChevronLeft className="w-5 h-5 text-gray-400" />
               </button>
-              <button onClick={nextMonth} className="w-8 h-8 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
-                <ChevronRight className="w-5 h-5 text-gray-600" />
+              <button onClick={nextMonth} className="w-8 h-8 hover:bg-gray-50 rounded-full flex items-center justify-center transition-colors">
+                <ChevronRight className="w-5 h-5 text-gray-400" />
               </button>
             </div>
           </div>
 
           {/* Weekdays */}
-          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
+          <div className="grid grid-cols-7 mb-4 px-2">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <div key={day} className="text-center text-[11px] font-bold text-gray-400 uppercase tracking-widest">
                 {day}
               </div>
             ))}
           </div>
 
           {/* Days Grid */}
-          <div className="flex-1 px-1 pb-1">
-            <div className="grid grid-cols-7 gap-2 h-full content-start p-1">
+          <div className="flex-1 px-1">
+            <div className="grid grid-cols-7 gap-y-2 gap-x-2 content-start">
               {Array.from({ length: startingDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
                 const event = getEventsForDate(day);
-                const isToday = new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
+                
+                // 오늘 날짜 (2026-02-07 고정)
+                const isToday = day === 7 && currentDate.getMonth() === 1 && currentDate.getFullYear() === 2026;
                 const isSelected = selectedEvent && new Date(selectedEvent.date).getDate() === day && new Date(selectedEvent.date).getMonth() === currentDate.getMonth();
 
                 return (
                   <button
                     key={day}
                     onClick={() => event && setSelectedEvent(event)}
-                    className={`
-                      w-full aspect-square rounded-xl flex flex-col items-center justify-center relative transition-all duration-300
-                      ${event 
-                        ? `${getEventColor(event.type)} hover:scale-105 shadow-sm hover:shadow-md cursor-pointer` 
-                        : 'hover:bg-gray-50 text-gray-400'}
-                      ${isToday ? 'ring-2 ring-purple-400 ring-offset-2 z-10' : ''}
-                      ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
-                    `}
+                    className="flex flex-col items-center justify-center w-full aspect-square relative group"
+                    disabled={!event && !isToday}
                   >
-                    <span className={`text-sm mb-0.5 ${event ? 'font-bold' : ''}`}>{day}</span>
-                    {event && <span className="text-lg group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
+                    {/* ✅ [수정] 원형 날짜 배경 (아이콘 제거) */}
+                    <div className={getDateStyle(event, isToday, !!isSelected)}>
+                      {day}
+                    </div>
                   </button>
                 );
               })}
@@ -207,16 +215,14 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ w-[320px] -> w-[280px] 축소
-            ✅ p-6 -> p-5 축소
            ======================= */}
-        <div className="w-[280px] flex-none bg-white/60 backdrop-blur-xl rounded-[24px] p-5 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
-          <div className="flex items-center gap-2 mb-3 pl-1 flex-shrink-0">
+        <div className="w-[300px] flex-none bg-white rounded-[24px] p-6 shadow-[0_2px_15px_rgba(0,0,0,0.015)] flex flex-col overflow-hidden h-full border border-gray-50">
+          <div className="flex items-center gap-2 mb-6 pl-1 flex-shrink-0">
             <Clock className="w-4 h-4 text-purple-500" />
-            <h4 className="text-gray-800 font-bold text-base">Upcoming</h4>
+            <h4 className="text-gray-800 font-bold text-[15px]">Upcoming</h4>
           </div>
            
-          <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-1">
+          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-hide pr-1 pb-2">
             {schedules?.map((event) => {
               const eventDate = new Date(event.date);
               const isSelected = selectedEvent?.id === event.id;
@@ -229,25 +235,26 @@ export default function Schedule() {
                     setCurrentDate(new Date(event.date));
                   }}
                   className={`
-                    w-full px-3 py-2.5 rounded-xl transition-all duration-200 text-left flex items-center gap-3 group
+                    w-full px-4 py-3.5 rounded-[18px] transition-all duration-200 text-left flex items-start gap-4 group
                     ${isSelected 
-                      ? 'bg-purple-50 border-purple-100 ring-1 ring-purple-100' 
-                      : 'hover:bg-white/50 border border-transparent'}
+                      ? 'bg-[#FAF5FF] shadow-sm' 
+                      : 'hover:bg-gray-50 bg-white border border-transparent'}
                   `}
                 >
-                  <div className={`
-                    flex flex-col items-center justify-center min-w-[2.5rem] border-r pr-2.5
-                    ${isSelected ? 'border-purple-200 text-purple-600' : 'border-gray-200 text-gray-400'}
-                  `}>
-                    <span className="text-[9px] font-bold uppercase">{monthNames[eventDate.getMonth()].slice(0, 3)}</span>
-                    <span className="text-base font-bold leading-none">{eventDate.getDate()}</span>
+                  <div className="flex flex-col items-center justify-center min-w-[2.5rem] pt-0.5">
+                    <span className={`text-[10px] font-bold uppercase mb-0.5 ${isSelected ? 'text-purple-500' : 'text-gray-400'}`}>
+                      {monthNames[eventDate.getMonth()].slice(0, 3)}
+                    </span>
+                    <span className={`text-lg font-bold leading-none ${isSelected ? 'text-gray-800' : 'text-gray-500'}`}>
+                      {eventDate.getDate()}
+                    </span>
                   </div>
                   
-                  <div className="min-w-0 flex-1">
-                    <p className={`text-xs font-bold truncate ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}>
+                  <div className="min-w-0 flex-1 flex flex-col justify-center h-full pt-0.5">
+                    <p className={`text-[13px] font-bold truncate leading-tight mb-1 ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}>
                       {event.title}
                     </p>
-                    <p className="text-[9px] text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
+                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide truncate">
                       {event.type}
                     </p>
                   </div>
@@ -256,7 +263,6 @@ export default function Schedule() {
             })}
           </div>
         </div>
-
     </div>
   );
 }
