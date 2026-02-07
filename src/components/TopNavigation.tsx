@@ -35,15 +35,16 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] h-[54px]로 꽉 차게 복구 */}
+          {/* 🟧 [메뉴] 고정 높이 제거 & 패딩으로 자연스러운 볼륨감 형성 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정 완료] py-2.5 삭제하고 h-[54px] 부활!
-              // - 이제 절대 작아지지 않고 54px 크기를 유지합니다.
-              // - px-6: 가로도 넓게 유지
-              const baseLayout = "flex items-center gap-3 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [핵심 수정] h-[...] 제거 -> py-2.5 사용
+              // - 이제 버튼 높이는 내용물 + 패딩(위아래 10px씩)에 의해 결정됩니다.
+              // - 결과적으로 약 48~50px 정도의 자연스러운 높이가 되며, 상단바(64px) 안에서 숨쉴 공간이 생깁니다.
+              // - px-4.5: 너비를 줄여서 조금 더 네모난(Tile) 느낌을 줍니다.
+              const baseLayout = "flex items-center gap-2.5 py-2.5 px-4.5 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -58,9 +59,9 @@ export function TopNavigation() {
                     flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    <item.icon className="size-5" />
+                    <item.icon className="size-[18px]" />
                   </div>
-                  <span className="text-[15px]">{item.label}</span>
+                  <span className="text-[14px]">{item.label}</span>
                 </Link>
               );
             })}
