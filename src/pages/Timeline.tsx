@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ChatRoomList } from '../components/chat/ChatRoomList'; // 경로 확인 필요
-import { ChatConversation } from '../components/chat/ChatConversation'; // 경로 확인 필요
+import { ChatRoomList } from './ChatRoomList'; // 경로 확인 필요
+import { ChatConversation } from './ChatConversation'; // 경로 확인 필요
 import { MessageCircle } from 'lucide-react';
 
 export default function Timeline() {
