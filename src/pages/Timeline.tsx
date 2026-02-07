@@ -8,9 +8,9 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    <div className="flex justify-center items-center h-[calc(100vh-64px)] w-full p-6 font-sans">
+    <div className="flex justify-center items-center h-[calc(100vh-60px)] w-full p-6 font-sans">
       
-      {/* ✅ 메인 창: rounded-[32px] (아주 둥글게) */}
+      {/* ✅ 메인 창: rounded-[32px] (매우 둥글게) */}
       <div className="w-full max-w-[1100px] h-[85vh] max-h-[850px] bg-white rounded-[32px] shadow-2xl border border-white/60 overflow-hidden flex ring-1 ring-black/5">
         
         {/* 왼쪽: 채팅방 목록 */}
@@ -19,6 +19,7 @@ export default function Timeline() {
         </div>
         
         {/* 오른쪽: 대화 내용 */}
+        {/* ✅ min-w-0: 내용 깨짐 방지 */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#b2c7da] relative">
           {roomId ? (
             <ChatConversation key={roomId} roomId={roomId} />
