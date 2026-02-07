@@ -28,10 +28,9 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   return (
     <div className="w-full h-full flex flex-col bg-white border-r border-[#ececec] min-h-0 shrink-0">
       
-      {/* ✅ [수정] 높이를 80px로 고정하여 위아래 공간을 확실하게 확보 */}
-      {/* flex items-center로 텍스트를 정중앙에 배치 */}
-      <div className="h-[80px] px-6 border-b border-[#ececec] flex-shrink-0 bg-white z-10 flex items-center">
-        <h2 className="font-bold text-gray-800 text-[20px]">채팅</h2>
+      {/* ✅ [수정] 고정 높이 제거 -> 패딩으로 자연스러운 여백 확보 */}
+      <div className="px-4 py-3 border-b border-[#ececec] flex-shrink-0 bg-white z-10">
+        <h2 className="font-bold text-gray-800 text-base">채팅</h2>
       </div>
 
       {/* 리스트 영역 */}
