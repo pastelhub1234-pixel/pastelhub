@@ -35,11 +35,10 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   if (loading) return <div className="flex-1 flex items-center justify-center text-xs text-gray-400">...</div>;
 
   return (
-    // ✅ [수정] Timeline에서 정한 너비(320px)를 꽉 채움
     <div className="w-full h-full flex flex-col bg-white border-r border-gray-100 min-h-0 shrink-0">
       
       {/* 헤더 */}
-      <div className="px-4 pt-5 pb-3 bg-white shrink-0">
+      <div className="px-4 pt-4 pb-3 bg-white shrink-0">
         <h2 className="text-[18px] font-bold text-gray-800 mb-3">채팅</h2>
         <div className="relative group">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-[14px] h-[14px]" />
@@ -64,11 +63,13 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 ${isSelected ? "bg-gray-100" : "hover:bg-gray-50 bg-white"}
               `}
             >
+              {/* ✅ [수정] shrink-0와 min-w 설정을 통해 이미지 찌그러짐 방지 */}
               <div className="relative shrink-0">
                 <img 
                   src={room.roomImg} 
                   alt={room.roomName} 
-                  className="w-[44px] h-[44px] rounded-[14px] object-cover border border-black/5"
+                  // min-w-[44px] min-h-[44px] 추가로 크기 강제 확보
+                  className="w-[44px] h-[44px] min-w-[44px] min-h-[44px] rounded-[14px] object-cover border border-black/5 bg-gray-200"
                 />
               </div>
 
@@ -83,7 +84,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 </div>
                 
                 <div className="flex justify-between items-center w-full">
-                  <p className="text-[12px] text-gray-500 w-full pr-2 break-all">
+                  <p className="text-[12px] text-gray-500 w-full pr-2 break-all line-clamp-1">
                     {truncateText(room.lastPost, 20)}
                   </p>
                   
