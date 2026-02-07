@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
-
-interface ScheduleItem {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-  type: 'birthday' | 'album' | 'concert' | 'broadcast' | 'event';
-}
+// ✅ [수정] index.ts에 정의된 타입 사용
+import { ScheduleItem } from '../types';
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -84,40 +78,44 @@ export default function Schedule() {
   };
 
   return (
-    // ✅ [수정 1] 배경색(bg-gray-50)을 추가하여 내부의 흰색 반투명 카드(bg-white/70)가 보이도록 함
-    <div className="w-full h-full p-6 overflow-x-auto flex justify-center items-center bg-gray-50">
+    // 배경색 추가: bg-gray-50
+    <div className="w-full h-full p-6 overflow-x-auto overflow-y-hidden bg-gray-50 flex items-center justify-center">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Grid 컨테이너: 가로 스크롤을 위해 min-w 설정 유지 */}
-      <div className="min-w-[1000px] max-w-[1400px] w-full h-[600px] grid grid-cols-4 gap-6">
+      {/* ✅ [핵심 수정] Grid 대신 Flex 사용 (가로 배치 강제)
+         - min-w-[1200px]: 화면이 줄어들어도 절대 찌그러지지 않게 최소 너비 확보
+         - gap-6: 패널 사이 간격
+         - h-[700px]: 높이 고정 (화면에 꽉 차보이게)
+      */}
+      <div className="flex gap-6 min-w-[1200px] w-full max-w-[1600px] h-[700px]">
         
         {/* =======================
-            1. [Left] Details
+            1. [Left] Details Panel (25%)
            ======================= */}
-        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
+        <div className="w-[25%] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full">
                
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-5xl mb-6 border border-purple-50">
+               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[1.5rem] shadow-sm flex items-center justify-center text-4xl mb-5 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-3 py-1 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-2 w-full break-keep line-clamp-3">
+              <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight text-center px-2 w-full break-keep line-clamp-2">
                 {selectedEvent.title}
               </h2>
               
-              <p className="text-sm text-gray-500 mb-6 leading-relaxed px-2 break-keep line-clamp-5">
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed text-center px-2 break-keep line-clamp-3">
                 {selectedEvent.description}
               </p>
 
-              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
+              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
                     <CalendarIcon size={18} />
@@ -141,17 +139,17 @@ export default function Schedule() {
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50">
-              <Info className="w-16 h-16 opacity-20" />
+            <div className="h-full flex flex-col items-center justify-center text-gray-300 gap-4 select-none opacity-50">
+              <Info className="w-12 h-12 opacity-20" />
               <p className="text-sm font-medium">일정을 선택해주세요</p>
             </div>
           )}
         </div>
 
         {/* =======================
-            2. [Center] Calendar
+            2. [Center] Calendar (50%)
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between mb-6 flex-shrink-0 px-2">
             <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
@@ -201,7 +199,6 @@ export default function Schedule() {
                     `}
                   >
                     <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
-                    {/* ✅ [수정 2] event.icon 대신 getEventIcon(event.type) 사용 */}
                     {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                   </button>
                 );
@@ -211,9 +208,9 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            3. [Right] Upcoming
+            3. [Right] Upcoming Panel (25%)
            ======================= */}
-        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
+        <div className="w-[25%] flex-none bg-white/80 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
