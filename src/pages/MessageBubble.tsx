@@ -29,9 +29,11 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
 
   return (
     <div className="flex mb-4 items-start">
-      {/* 프로필 이미지 */}
-      {/* rounded-2xl: 모서리 둥글게 (표준 클래스 사용) */}
-      <div className="w-10 h-10 min-w-[40px] rounded-2xl overflow-hidden mr-3 shrink-0 bg-gray-200 border border-black/5">
+      {/* ✅ [핵심 수정 1] flex-none 사용
+          - shrink-0보다 강력하게 "나는 크기 변화에 참여하지 않겠다"고 선언
+          - 어떤 상황에서도 40px 너비를 사수합니다.
+      */}
+      <div className="flex-none w-10 h-10 rounded-2xl overflow-hidden mr-3 bg-gray-200 border border-black/5">
         {msg.profileImg ? (
           <img src={msg.profileImg} alt={msg.name} className="w-full h-full object-cover" />
         ) : (
@@ -39,16 +41,17 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
         )}
       </div>
 
-      {/* ✅ [수정 1] 너비 제한 확실하게 (320px) */}
-      <div className="flex flex-col max-w-[320px]">
+      {/* ✅ [핵심 수정 2] min-w-0 및 break-all
+          - min-w-0: Flex 자식이 부모 너비를 무시하고 팽창하는 버그 방지
+          - max-w-[320px]: 말풍선 최대 너비
+      */}
+      <div className="flex flex-col min-w-0 max-w-[320px]">
         {/* 이름 */}
         <span className="text-[12px] text-gray-600 mb-1 pl-1 font-medium">{msg.name}</span>
 
         {/* 텍스트 메시지 */}
         {msg.type === "TEXT" && (
-          // ✅ [수정 2] 디자인 및 줄바꿈 해결
-          // rounded-2xl: 네모난 현상 해결 (확실히 둥글게)
-          // break-all: 긴 단어/반복 문자 강제 줄바꿈 (너비 무시 방지)
+          // ✅ break-all: URL이나 긴 영어 단어도 강제로 줄바꿈시킴 (레이아웃 깨짐 방지)
           <div className="bg-white px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-sm whitespace-pre-wrap break-all text-gray-800">
             {msg.content}
           </div>
