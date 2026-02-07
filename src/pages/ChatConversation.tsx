@@ -28,17 +28,17 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
   return (
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 min-h-0 relative">
       
-      {/* ✅ [수정] 고정 높이 제거 -> 패딩(px-4 py-3)으로 자연스럽게 조절 */}
+      {/* 패딩(px-4 py-3)으로 자연스러운 높이 조절 */}
       <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
         
-        {/* gap-3으로 적절한 간격 유지 */}
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ 이미지 크기 36px (w-9 h-9)
-              className="w-9 h-9 rounded-[13px] object-cover shadow-sm cursor-pointer hover:opacity-90"
+              // ✅ [수정] 이미지 크기 강력 제한 (36px 고정, 찌그러짐 방지)
+              style={{ width: '36px', height: '36px', minWidth: '36px', maxWidth: '36px', objectFit: 'cover' }}
+              className="rounded-[13px] shadow-sm cursor-pointer hover:opacity-90 shrink-0"
             />
           )}
           <div className="min-w-0">
@@ -59,7 +59,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
       </header>
 
-      {/* 대화 내용 */}
+      {/* 대화 내용 (기존 유지) */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar"
@@ -86,7 +86,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 입력창 */}
+      {/* 입력창 (기존 유지) */}
       <div className="flex-none bg-white p-4 z-20 border-t border-gray-100">
         <div className="flex flex-col bg-gray-50 rounded-xl px-4 py-3">
             <textarea 
