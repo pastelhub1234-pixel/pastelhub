@@ -6,12 +6,13 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ [수정] p-0으로 간격 완전 제거, h-full로 높이 꽉 채움
-    // 부모 컨테이너(레이아웃)에서 남겨준 공간을 빈틈없이 사용합니다.
-    <div className="flex justify-center items-center w-full h-full p-0 font-sans bg-gray-50">
+    // ✅ [수정 1] 위쪽 간격 최소화를 위해 items-end 사용 (아래로 붙임)
+    // h-[calc(100vh-10px)]: 화면 높이에서 10px만 뺌 (거의 꽉 참)
+    // pb-2: 하단에 아주 살짝 숨구멍만 줌
+    <div className="flex justify-center items-end w-full h-[calc(100vh-10px)] px-2 pb-2 pt-0 font-sans bg-gray-50">
       
-      {/* 메인 컨테이너: 테두리(border)는 유지하되 꽉 차게 */}
-      <div className="w-full h-full bg-white shadow-sm border border-gray-200 flex overflow-hidden font-sans rounded-none">
+      {/* ✅ [수정 2] 모서리 둥글게 복구 (rounded-[24px]) */}
+      <div className="w-full h-full bg-white rounded-[24px] shadow-lg border border-gray-200 flex overflow-hidden font-sans">
         
         {/* 왼쪽: 채팅방 목록 (320px) */}
         <div className="w-[320px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
