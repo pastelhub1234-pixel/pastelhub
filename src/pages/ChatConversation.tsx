@@ -19,6 +19,12 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
 
   const displayMessages = messages ? messages.slice(-MAX_MESSAGES) : [];
 
+  // ✅ [수정] 참여자 수 계산 로직
+  // 'group'으로 시작하면 전체 인원(방 목록 개수), 아니면 2명(1:1 DM)
+  const participantCount = roomId.startsWith('group') 
+    ? (chatRooms?.length || 0) 
+    : 2;
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -28,7 +34,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
   return (
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 min-h-0 relative">
       
-      {/* 패딩(px-4 py-3)으로 자연스러운 높이 조절 */}
+      {/* 헤더 */}
       <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
         
         <div className="flex items-center gap-3 min-w-0">
@@ -36,7 +42,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ [수정] 이미지 크기 강력 제한 (36px 고정, 찌그러짐 방지)
+              // ✅ [수정] 이미지 크기 36px 강제 고정 (스타일 우선 적용)
               style={{ width: '36px', height: '36px', minWidth: '36px', maxWidth: '36px', objectFit: 'cover' }}
               className="rounded-[13px] shadow-sm cursor-pointer hover:opacity-90 shrink-0"
             />
@@ -47,7 +53,8 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
             </h2>
             <div className="flex items-center gap-1.5 text-gray-700 opacity-70 mt-0.5">
               <span className="text-[11px]">
-                참여자 {(messages?.length || 0) + 1}
+                {/* ✅ [수정] 계산된 참여자 수 표시 */}
+                참여자 {participantCount}
               </span>
             </div>
           </div>
@@ -59,7 +66,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
       </header>
 
-      {/* 대화 내용 (기존 유지) */}
+      {/* 대화 내용 */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar"
@@ -86,7 +93,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 입력창 (기존 유지) */}
+      {/* 입력창 */}
       <div className="flex-none bg-white p-4 z-20 border-t border-gray-100">
         <div className="flex flex-col bg-gray-50 rounded-xl px-4 py-3">
             <textarea 
