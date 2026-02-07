@@ -35,16 +35,15 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] h-[54px] 강제 고정 (절대 찌그러지지 않음) */}
+          {/* 🟧 [메뉴] */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정 완료] h-[54px]
-              // - 상단바(64px) - 버튼(54px) = 위아래 5px 여백 (꽉 찬 느낌)
-              // - px-6: 가로 너비를 넓혀서 시원하게
-              // - rounded-xl: 단단하고 세련된 네모 비율
-              const baseLayout = "flex items-center gap-3 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정 포인트] py-2.5 삭제 -> h-[54px] 추가
+              // - py-2.5를 쓰면 높이가 약 40px로 줄어들어 납작해집니다.
+              // - h-[54px]를 쓰면 무조건 54px가 되어 상단바를 꽉 채웁니다.
+              const baseLayout = "flex items-center gap-2.5 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -59,10 +58,8 @@ export function TopNavigation() {
                     flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* 아이콘 크기: 20px */}
                     <item.icon className="size-5" />
                   </div>
-                  {/* 글자 크기: 15px */}
                   <span className="text-[15px]">{item.label}</span>
                 </Link>
               );
