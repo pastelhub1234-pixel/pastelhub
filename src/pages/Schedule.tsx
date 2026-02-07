@@ -84,16 +84,18 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full h-full p-6 overflow-x-auto flex justify-center items-center">
+    // ✅ [수정 1] 배경색(bg-gray-50)을 추가하여 내부의 흰색 반투명 카드(bg-white/70)가 보이도록 함
+    <div className="w-full h-full p-6 overflow-x-auto flex justify-center items-center bg-gray-50">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* Grid 컨테이너: 가로 스크롤을 위해 min-w 설정 유지 */}
       <div className="min-w-[1000px] max-w-[1400px] w-full h-[600px] grid grid-cols-4 gap-6">
         
         {/* =======================
-            1. [Left] Details (Moved from Right)
+            1. [Left] Details
            ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
@@ -192,14 +194,15 @@ export default function Schedule() {
                     className={`
                       w-full aspect-square rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300
                       ${event 
-                        ? `${getEventColor(event.type).split(' ')[0]} ${getEventColor(event.type).split(' ')[1]} hover:scale-105 shadow-sm hover:shadow-md cursor-pointer` 
+                        ? `${getEventColor(event.type)} hover:scale-105 shadow-sm hover:shadow-md cursor-pointer` 
                         : 'hover:bg-gray-50 text-gray-400'}
                       ${isToday ? 'ring-2 ring-purple-400 ring-offset-2 z-10' : ''}
                       ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
                     `}
                   >
                     <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
-                    {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{event.icon}</span>}
+                    {/* ✅ [수정 2] event.icon 대신 getEventIcon(event.type) 사용 */}
+                    {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                   </button>
                 );
               })}
@@ -208,14 +211,14 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            3. [Right] Upcoming (Moved from Left & Simplified)
+            3. [Right] Upcoming
            ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
           </div>
-          
+           
           <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-2">
             {schedules?.map((event) => {
               const eventDate = new Date(event.date);
