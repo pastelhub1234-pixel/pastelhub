@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 // ✅ 경로 수정: ../hooks
-import { useJsonData } from '../../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 
 interface ChatRoom {
   roomId: string;
