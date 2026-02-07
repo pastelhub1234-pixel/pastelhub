@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Search, Menu, Smile, Paperclip } from 'lucide-react';
 // ✅ 경로 수정: ../hooks
-import { useJsonData } from '../../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 // ✅ 경로 수정: ./MessageBubble, ../types
 import { MessageBubble } from './MessageBubble';
-import { ChatMessage } from '../../../types'; 
+import { ChatMessage } from '../types'; 
 
 interface ChatRoom {
   roomId: string;
