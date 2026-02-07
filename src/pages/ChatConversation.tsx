@@ -35,14 +35,14 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="flex-none h-[60px] bg-white/90 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
+      <header className="flex-none h-[60px] bg-white/80 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ [수정] 프로필 크기 고정 (너무 크지 않게 40px로 제한)
-              className="w-[40px] h-[40px] min-w-[40px] min-h-[40px] object-cover rounded-[14px] shadow-sm"
+              // ✅ 프로필 이미지 크기 고정 (40px)
+              className="w-10 h-10 min-w-[40px] min-h-[40px] object-cover rounded-[14px] shadow-sm bg-gray-200"
             />
           )}
           <div className="min-w-0">
@@ -56,8 +56,8 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
 
         <div className="flex gap-3 text-gray-500">
-          <Search size={19} className="cursor-pointer hover:text-black" />
-          <Menu size={19} className="cursor-pointer hover:text-black" />
+          <Search size={18} className="cursor-pointer hover:text-black" />
+          <Menu size={18} className="cursor-pointer hover:text-black" />
         </div>
       </header>
 
