@@ -32,7 +32,7 @@ export default function MainLayout() {
           </aside>
         )}
 
-        <main className="flex-1 min-w-0 px-3.5 py-3.5 md:px-10">
+        <main className="flex-1 min-w-0 px-3 py-3.5 md:px-10">
           <Outlet />
         </main>
       </div>
