@@ -35,16 +35,15 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 패딩 기반의 자연스러운 크기 조절 */}
+          {/* 🟧 [메뉴] 최종 밸런스 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정된 비율]
-              // py-2 (8px): 위아래 패딩을 줄여서 버튼 높이를 살짝 낮춤 (슬림해짐)
-              // px-6 (24px): 좌우 패딩을 늘려서 버튼을 넓게 만듦 (와이드)
-              // rounded-2xl: 둥근 모서리 유지
-              const baseLayout = "flex items-center gap-2.5 py-2 px-6 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [미세 조정]
+              // py-2 (8px): 위아래는 아까 마음에 들어하셨던 슬림한 높이 유지
+              // px-5 (20px): 좌우를 24px -> 20px로 아주 살짝 줄임 (딱 좋은 핏)
+              const baseLayout = "flex items-center gap-2.5 py-2 px-5 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -59,10 +58,10 @@ export function TopNavigation() {
                     flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* ✅ 아이콘 크기 축소: size-4 (16px) */}
+                    {/* 아이콘 크기: 16px (담백하게) */}
                     <item.icon className="size-4" />
                   </div>
-                  {/* 글자 크기는 15px로 유지해서 시원하게 */}
+                  {/* 글자 크기: 15px (시원하게) */}
                   <span className="text-[15px]">{item.label}</span>
                 </Link>
               );
