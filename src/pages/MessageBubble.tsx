@@ -45,7 +45,7 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
 
         {/* 텍스트 메시지 */}
         {msg.type === "TEXT" && (
-          <div className="bg-white px-4 py-2.5 rounded-2xl text-[10px] leading-snug shadow-sm whitespace-pre-wrap break-words">
+          <div className="bg-white px-4 py-2.5 rounded-2xl text-[12px] leading-snug shadow-sm whitespace-pre-wrap break-words">
             {msg.content}
           </div>
         )}
