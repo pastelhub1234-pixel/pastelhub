@@ -35,15 +35,15 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] */}
+          {/* 🟧 [메뉴] h-[54px]로 꽉 차게 복구 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [수정 포인트] py-2.5 삭제 -> h-[54px] 추가
-              // - py-2.5를 쓰면 높이가 약 40px로 줄어들어 납작해집니다.
-              // - h-[54px]를 쓰면 무조건 54px가 되어 상단바를 꽉 채웁니다.
-              const baseLayout = "flex items-center gap-2.5 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정 완료] py-2.5 삭제하고 h-[54px] 부활!
+              // - 이제 절대 작아지지 않고 54px 크기를 유지합니다.
+              // - px-6: 가로도 넓게 유지
+              const baseLayout = "flex items-center gap-3 h-[54px] px-6 rounded-xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
