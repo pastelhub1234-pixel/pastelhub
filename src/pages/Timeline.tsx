@@ -6,14 +6,17 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // 중앙 정렬을 위한 래퍼
-    <div className="flex justify-center items-center h-[calc(100vh-60px)] w-full p-4 font-sans">
+    // 중앙 정렬 및 전체 레이아웃 패딩 조정
+    <div className="flex justify-center items-center h-[calc(100vh-60px)] w-full px-4 py-2 font-sans">
       
-      {/* ✅ 사용자님이 주신 코드 스타일 적용 (rounded-xl, shadow-sm, border-gray-200) */}
-      <div className="w-full h-[600px] bg-white rounded-xl shadow-sm border border-gray-200 flex overflow-hidden font-sans">
+      {/* ✅ [수정] 크기 대폭 확대
+          - h-[82vh]: 화면 높이의 82%를 차지하도록 늘림
+          - max-w-[1600px]: 좌우 너비 제한을 풀어 시원하게
+      */}
+      <div className="w-full max-w-[1600px] h-[82vh] bg-white rounded-xl shadow-sm border border-gray-200 flex overflow-hidden font-sans">
         
         {/* 왼쪽: 채팅방 목록 */}
-        <div className="w-[280px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
+        <div className="w-[300px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
           <ChatRoomList current={roomId} onSelect={setRoomId} />
         </div>
         

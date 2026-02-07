@@ -14,7 +14,6 @@ interface ChatConversationProps {
   roomId: string;
 }
 
-// ✅ 사용자 요청: 최대 50개 메시지
 const MAX_MESSAGES = 50; 
 
 export function ChatConversation({ roomId }: ChatConversationProps) {
@@ -36,18 +35,18 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="flex-none h-[60px] bg-white/80 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
+      <header className="flex-none h-[60px] bg-white/90 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ 헤더 이미지 둥글게
-              className="w-[36px] h-[36px] object-cover rounded-[12px] shadow-sm"
+              // ✅ [수정] 프로필 크기 고정 (너무 크지 않게 40px로 제한)
+              className="w-[40px] h-[40px] min-w-[40px] min-h-[40px] object-cover rounded-[14px] shadow-sm"
             />
           )}
           <div className="min-w-0">
-            <h2 className="text-gray-900 text-[14px] font-bold truncate">
+            <h2 className="text-gray-900 text-[15px] font-bold truncate">
               {room ? room.roomName : "채팅방"}
             </h2>
             <span className="text-gray-500 text-[11px]">
@@ -57,8 +56,8 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         </div>
 
         <div className="flex gap-3 text-gray-500">
-          <Search size={18} className="cursor-pointer hover:text-black" />
-          <Menu size={18} className="cursor-pointer hover:text-black" />
+          <Search size={19} className="cursor-pointer hover:text-black" />
+          <Menu size={19} className="cursor-pointer hover:text-black" />
         </div>
       </header>
 
@@ -89,7 +88,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 입력창 (둥글게) */}
+      {/* 입력창 */}
       <div className="flex-none bg-white p-3 z-20 border-t border-gray-100">
         <div className="flex flex-col bg-gray-50 rounded-xl px-3 py-2">
             <textarea 

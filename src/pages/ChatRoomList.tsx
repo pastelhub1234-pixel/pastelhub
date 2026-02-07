@@ -27,7 +27,6 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
     }
   };
 
-  // ✅ 사용자 요청 로직: 글자수 제한
   const truncateText = (text: string | undefined, limit: number) => {
     if (!text) return "대화 내용이 없습니다.";
     return text.length > limit ? text.substring(0, limit) + "..." : text;
@@ -36,7 +35,8 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   if (loading) return <div className="flex-1 flex items-center justify-center text-xs text-gray-400">...</div>;
 
   return (
-    <>
+    <div className="w-[300px] h-full flex flex-col bg-white border-r border-gray-100 min-h-0 shrink-0">
+      
       {/* 헤더 */}
       <div className="px-4 pt-5 pb-3 bg-white shrink-0">
         <h2 className="text-[18px] font-bold text-gray-800 mb-3">채팅</h2>
@@ -45,7 +45,6 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
           <input
             type="text"
             placeholder="검색"
-            // ✅ 검색창 둥글게 (부모 컨테이너와 통일감)
             className="w-full pl-9 pr-3 py-2 bg-gray-50 border-none rounded-xl text-[13px] placeholder:text-gray-400 focus:outline-none focus:bg-gray-100 transition-colors"
           />
         </div>
@@ -59,7 +58,6 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
             <button
               key={room.roomId}
               onClick={() => onSelect(room.roomId)}
-              // ✅ 리스트 아이템 둥글게 (rounded-xl)
               className={`
                 w-full px-3 py-3 flex items-center gap-3 transition-all relative rounded-xl mb-0.5
                 ${isSelected ? "bg-gray-100" : "hover:bg-gray-50 bg-white"}
@@ -69,8 +67,8 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 <img 
                   src={room.roomImg} 
                   alt={room.roomName} 
-                  // ✅ 이미지도 둥글게
-                  className="w-[44px] h-[44px] rounded-[14px] object-cover border border-black/5"
+                  // ✅ [수정] 목록 이미지 크기 50px로 고정
+                  className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[16px] object-cover border border-black/5"
                 />
               </div>
 
@@ -85,7 +83,6 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 </div>
                 
                 <div className="flex justify-between items-center w-full">
-                  {/* ✅ truncateText 적용 */}
                   <p className="text-[12px] text-gray-500 w-full pr-2 break-all">
                     {truncateText(room.lastPost, 20)}
                   </p>
@@ -101,6 +98,6 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
