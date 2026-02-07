@@ -28,13 +28,17 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
   return (
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 min-h-0 relative">
       
-      {/* ✅ [수정] 헤더 패딩(py-4) 확대 및 간격(gap-4) 조정 */}
-      <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-5 py-4 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
-        <div className="flex items-center gap-4 min-w-0"> {/* gap-4로 이미지와 텍스트 간격 넓힘 */}
+      {/* ✅ [수정] 높이 80px 고정: 위아래 좁은 느낌 해결 */}
+      {/* px-6: 좌우 여백도 넉넉하게 */}
+      <header className="flex-none h-[80px] bg-[#b2c7da]/95 backdrop-blur-sm px-6 flex justify-between items-center border-b border-black/5 z-10">
+        
+        {/* ✅ [수정] gap-5: 이미지와 텍스트 사이 간격을 넓힘 (기존 gap-3 -> gap-5) */}
+        <div className="flex items-center gap-5 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
+              // 이미지는 작게 유지 (36px)
               className="w-9 h-9 rounded-[13px] object-cover shadow-sm cursor-pointer hover:opacity-90"
             />
           )}
@@ -50,7 +54,7 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
           </div>
         </div>
 
-        <div className="flex gap-4 text-gray-700 opacity-60">
+        <div className="flex gap-5 text-gray-700 opacity-60">
           <Search size={20} className="cursor-pointer hover:opacity-100" />
           <Menu size={20} className="cursor-pointer hover:opacity-100" />
         </div>

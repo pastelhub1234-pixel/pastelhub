@@ -28,9 +28,10 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   return (
     <div className="w-full h-full flex flex-col bg-white border-r border-[#ececec] min-h-0 shrink-0">
       
-      {/* ✅ [수정] "채팅" 타이틀 위아래 여백을 충분히 확보 (pt-7 pb-5) */}
-      <div className="px-6 pt-7 pb-5 border-b border-[#ececec] flex-shrink-0 bg-white z-10">
-        <h2 className="font-bold text-gray-800 text-[18px]">채팅</h2>
+      {/* ✅ [수정] 높이를 80px로 고정하여 위아래 공간을 확실하게 확보 */}
+      {/* flex items-center로 텍스트를 정중앙에 배치 */}
+      <div className="h-[80px] px-6 border-b border-[#ececec] flex-shrink-0 bg-white z-10 flex items-center">
+        <h2 className="font-bold text-gray-800 text-[20px]">채팅</h2>
       </div>
 
       {/* 리스트 영역 */}
@@ -42,7 +43,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
               key={room.roomId}
               onClick={() => onSelect(room.roomId)}
               className={`
-                w-full flex items-center px-4 py-3 transition-colors text-left group
+                w-full flex items-center px-5 py-3 transition-colors text-left group
                 ${isSelected ? "bg-[#eaeaec]" : "hover:bg-[#f5f5f5] bg-white"}
               `}
             >
