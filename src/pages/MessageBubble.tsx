@@ -5,11 +5,11 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ msg }: MessageBubbleProps) {
-  // 날짜 표시
+  // 날짜 표시 (공유해주신 디자인 적용)
   if (msg.type === "date") {
     return (
       <div className="flex justify-center my-4">
-        <span className="px-3 py-1 text-xs text-gray-500 bg-gray-100 rounded-full border border-gray-200/50">
+        <span className="px-3 py-1 text-xs text-gray-700 bg-gray-300/50 rounded-full">
           {msg.content}
         </span>
       </div>
@@ -28,12 +28,9 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
   };
 
   return (
-    <div className="flex mb-4 items-start">
-      {/* ✅ [핵심 수정 1] flex-none 사용
-          - shrink-0보다 강력하게 "나는 크기 변화에 참여하지 않겠다"고 선언
-          - 어떤 상황에서도 40px 너비를 사수합니다.
-      */}
-      <div className="flex-none w-10 h-10 rounded-2xl overflow-hidden mr-3 bg-gray-200 border border-black/5">
+    <div className="flex mb-5 items-start">
+      {/* ✅ 프로필 영역: shrink-0으로 크기 고정 및 flex 영향권 최소화 */}
+      <div className="w-10 h-10 rounded-xl overflow-hidden mr-3 shrink-0 bg-gray-200 border border-black/5">
         {msg.profileImg ? (
           <img src={msg.profileImg} alt={msg.name} className="w-full h-full object-cover" />
         ) : (
@@ -41,18 +38,14 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
         )}
       </div>
 
-      {/* ✅ [핵심 수정 2] min-w-0 및 break-all
-          - min-w-0: Flex 자식이 부모 너비를 무시하고 팽창하는 버그 방지
-          - max-w-[320px]: 말풍선 최대 너비
-      */}
-      <div className="flex flex-col min-w-0 max-w-[320px]">
+      {/* ✅ 메시지 영역: min-w-0을 주어 내부 텍스트 팽창으로 인한 이미지 깨짐 방지 */}
+      <div className="flex flex-col max-w-[75%] min-w-0">
         {/* 이름 */}
-        <span className="text-[12px] text-gray-600 mb-1 pl-1 font-medium">{msg.name}</span>
+        <span className="text-xs text-gray-700 mb-1 font-medium pl-0.5">{msg.name}</span>
 
-        {/* 텍스트 메시지 */}
+        {/* 텍스트 메시지: 공유해주신 text-[15px]와 leading-snug 적용 */}
         {msg.type === "TEXT" && (
-          // ✅ break-all: URL이나 긴 영어 단어도 강제로 줄바꿈시킴 (레이아웃 깨짐 방지)
-          <div className="bg-white px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-sm whitespace-pre-wrap break-all text-gray-800">
+          <div className="bg-white px-4 py-2.5 rounded-2xl text-[15px] leading-snug shadow-sm whitespace-pre-wrap break-words text-gray-800">
             {msg.content}
           </div>
         )}
@@ -60,12 +53,12 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
         {/* 이미지 메시지 */}
         {msg.type === "IMAGE" && (
           <div className="bg-white p-2 rounded-2xl shadow-sm border border-black/5">
-            <img src={msg.content} alt="전송된 이미지" className="rounded-xl max-w-full h-auto" />
+            <img src={msg.content} alt="전송된 이미지" className="rounded-lg max-w-full h-auto" />
           </div>
         )}
 
-        {/* 시간 */}
-        <span className="text-[10px] text-gray-400 mt-1 ml-1">
+        {/* 시간: text-[11px]로 작고 깔끔하게 표시 */}
+        <span className="text-[11px] text-gray-500 mt-1 ml-1">
           {formatTime(msg.time)}
         </span>
       </div>
