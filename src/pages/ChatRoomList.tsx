@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import { useJsonData } from '../../hooks/useJsonData';
+import { useJsonData } from '../hooks/useJsonData';
 
 interface ChatRoom {
   roomId: string;
