@@ -20,34 +20,31 @@ export function TopNavigation() {
 
   return (
     <>
-      {/* ✅ 헤더 높이: 70px 
-        (버튼이 56px로 매우 크기 때문에, 64px보다는 70px가 훨씬 비율이 좋습니다) 
-      */}
       <header 
         className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm flex items-center justify-center"
-        style={{ height: '70px' }} 
+        style={{ height: '64px' }} 
       >
         <div className="w-full h-full max-w-[1700px] mx-auto px-4 md:px-6 flex items-center justify-between">
           
           {/* 로고 */}
           <Link to="/" className="shrink-0 group flex items-center gap-1.5 transition-opacity hover:opacity-80">
-            <Sparkles className="h-6 w-6 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
+            <Sparkles className="h-5 w-5 text-indigo-300 transition-transform duration-500 group-hover:rotate-180" />
             <h1 className="font-extrabold text-2xl tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-pink-400">pastel</span>
               <span className="text-slate-700">hub</span>
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 이미지처럼 "빡" 늘린 스타일 */}
-          <nav className="hidden md:flex items-center gap-3 self-center"> 
+          {/* 🟧 [메뉴] 패딩 기반의 자연스러운 크기 조절 */}
+          <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [대형 버튼 스타일]
-              // h-[56px]: 높이를 과감하게 키움
-              // px-7: 가로 너비도 넓게 (와이드)
-              // rounded-2xl: 이미지처럼 둥글고 큰 모서리
-              const baseLayout = "flex items-center gap-3 h-[56px] px-7 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [수정된 비율]
+              // py-2 (8px): 위아래 패딩을 줄여서 버튼 높이를 살짝 낮춤 (슬림해짐)
+              // px-6 (24px): 좌우 패딩을 늘려서 버튼을 넓게 만듦 (와이드)
+              // rounded-2xl: 둥근 모서리 유지
+              const baseLayout = "flex items-center gap-2.5 py-2 px-6 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -58,18 +55,15 @@ export function TopNavigation() {
                   to={item.path} 
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
-                  {/* ✅ 아이콘 박스 대형화 (w-9 h-9) */}
-                  {/* 이미지처럼 아이콘 주변 색상 박스도 큼직하게 만듭니다. */}
                   <div className={`
-                    flex items-center justify-center w-9 h-9 rounded-xl shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    {/* 아이콘 크기: 22px */}
-                    <item.icon className="size-[22px]" />
+                    {/* ✅ 아이콘 크기 축소: size-4 (16px) */}
+                    <item.icon className="size-4" />
                   </div>
-                  
-                  {/* ✅ 글자 크기 대형화 (17px) */}
-                  <span className="text-[17px] tracking-tight">{item.label}</span>
+                  {/* 글자 크기는 15px로 유지해서 시원하게 */}
+                  <span className="text-[15px]">{item.label}</span>
                 </Link>
               );
             })}
@@ -80,26 +74,26 @@ export function TopNavigation() {
             className="md:hidden p-2 text-slate-500 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="size-7" /> : <Menu className="size-7" />}
+            {isMobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
         </div>
       </header>
 
       {/* 모바일 메뉴 */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-[70px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="p-4 w-full gap-2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
+        <div className="md:hidden fixed top-[64px] left-0 w-full bg-white z-50 border-b border-slate-100 shadow-xl animate-in slide-in-from-top-2 fade-in duration-200">
+          <div className="p-3 w-full gap-1.5" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
-              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 rounded-2xl border transition-all duration-200 active:scale-95 h-[64px]";
+              const mobileLayout = "flex flex-col items-center justify-center gap-0.5 rounded-xl border transition-all duration-200 active:scale-95 h-[60px]";
               const mobileColor = isActive ? `bg-${item.id}-50 border-${item.id}-200 text-${item.id}-900` : `bg-transparent border-transparent text-gray-500`;
 
               return (
                 <Link key={item.path} to={item.path} className={`${mobileLayout} ${mobileColor}`} style={{ flex: 1 }} onClick={() => setIsMobileMenuOpen(false)}>
                   <div className={`flex items-center justify-center w-8 h-8 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0 ${isActive ? `active-icon-${item.id}` : 'bg-white text-gray-400'}`}>
-                    <item.icon className="size-5" />
+                    <item.icon className="size-4" />
                   </div>
-                  <span className="text-[12px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
+                  <span className="text-[11px] font-bold mt-0.5 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
