@@ -56,16 +56,16 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
 
               <div className="flex-1 min-w-0 flex flex-col justify-center ml-3.5 gap-0.5">
                 <div className="flex justify-between items-center">
-                  <span className={`text-[15px] font-bold truncate pr-2 ${isSelected ? 'text-black' : 'text-gray-800'}`}>
+                  <span className={`text-[13px] font-bold truncate pr-2 ${isSelected ? 'text-black' : 'text-gray-800'}`}>
                     {room.roomName}
                   </span>
-                  <span className="text-[11px] text-gray-400 shrink-0">
+                  <span className="text-[10px] text-gray-400 shrink-0">
                     {formatTime(room.lastPostTime)}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center w-full">
-                  <p className="text-[13px] text-gray-500 w-full pr-2 break-all line-clamp-1 leading-snug">
+                  <p className="text-[11px] text-gray-500 w-full pr-2 break-all line-clamp-1 leading-snug">
                     {truncateText(room.lastPost, 20)}
                   </p>
                   
