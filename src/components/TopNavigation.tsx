@@ -35,16 +35,16 @@ export function TopNavigation() {
             </h1>
           </Link>
 
-          {/* 🟧 [메뉴] 고정 높이 제거 & 패딩으로 자연스러운 볼륨감 형성 */}
+          {/* 🟧 [메뉴] 상단바를 가득 채우는 58px 버튼 */}
           <nav className="hidden md:flex items-center gap-2 self-center"> 
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               
-              // ✅ [핵심 수정] h-[...] 제거 -> py-2.5 사용
-              // - 이제 버튼 높이는 내용물 + 패딩(위아래 10px씩)에 의해 결정됩니다.
-              // - 결과적으로 약 48~50px 정도의 자연스러운 높이가 되며, 상단바(64px) 안에서 숨쉴 공간이 생깁니다.
-              // - px-4.5: 너비를 줄여서 조금 더 네모난(Tile) 느낌을 줍니다.
-              const baseLayout = "flex items-center gap-2.5 py-2.5 px-4.5 rounded-2xl border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
+              // ✅ [최종 수정] h-[58px] & rounded-lg
+              // - 64px 헤더 - 58px 버튼 = 위아래 3px 간격 (진짜 꽉 참)
+              // - px-6: 좌우 너비 넓게
+              // - rounded-lg: 2xl보다 각져서 '네모난 타일' 느낌을 줌
+              const baseLayout = "flex items-center gap-2.5 h-[58px] px-6 rounded-lg border transition-all duration-200 group active:scale-95 font-bold whitespace-nowrap";
               
               const activeColor = `bg-${item.id}-50 border-${item.id}-200 shadow-md ring-1 ring-${item.id}-100 text-${item.id}-900`;
               const inactiveColor = `bg-transparent border-transparent text-gray-500 hover-bg-${item.id}-50 hover-text-${item.id}-600`;
@@ -56,12 +56,14 @@ export function TopNavigation() {
                   className={`${baseLayout} ${isActive ? activeColor : inactiveColor}`}
                 >
                   <div className={`
-                    flex items-center justify-center w-7 h-7 rounded-lg shadow-sm transition-all duration-300 border border-slate-100 shrink-0
+                    flex items-center justify-center w-7 h-7 rounded-md shadow-sm transition-all duration-300 border border-slate-100 shrink-0
                     ${isActive ? `active-icon-${item.id} border-transparent` : `bg-white text-gray-400 group-hover-text-${item.id}-500 group-hover-border-${item.id}-200`}
                   `}>
-                    <item.icon className="size-[18px]" />
+                    {/* 아이콘 크기: 20px */}
+                    <item.icon className="size-5" />
                   </div>
-                  <span className="text-[14px]">{item.label}</span>
+                  {/* 글자 크기: 15px */}
+                  <span className="text-[15px]">{item.label}</span>
                 </Link>
               );
             })}
