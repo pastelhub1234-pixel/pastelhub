@@ -35,36 +35,38 @@ export function ChatConversation({ roomId }: ChatConversationProps) {
     <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 relative">
       
       {/* 헤더 */}
-      <header className="flex-none h-[60px] bg-white/80 backdrop-blur-md px-4 flex justify-between items-center z-10 border-b border-white/40">
+      <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
         <div className="flex items-center gap-3 min-w-0">
           {room && (
             <img 
               src={room.roomImg} 
               alt={room.roomName} 
-              // ✅ 프로필 이미지 크기 고정 (40px)
-              className="w-10 h-10 min-w-[40px] min-h-[40px] object-cover rounded-[14px] shadow-sm bg-gray-200"
+              // ✅ w-9 h-9 (36px) 유지
+              className="w-9 h-9 rounded-[13px] object-cover shadow-sm cursor-pointer hover:opacity-90"
             />
           )}
           <div className="min-w-0">
-            <h2 className="text-gray-900 text-[15px] font-bold truncate">
+            <h2 className="text-gray-900 text-[14px] font-bold truncate">
               {room ? room.roomName : "채팅방"}
             </h2>
-            <span className="text-gray-500 text-[11px]">
-              참여자 {(messages?.length || 0) + 1}
-            </span>
+            <div className="flex items-center gap-1.5 text-gray-700 opacity-70">
+              <span className="text-[11px]">
+                참여자 {(messages?.length || 0) + 1}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex gap-3 text-gray-500">
-          <Search size={18} className="cursor-pointer hover:text-black" />
-          <Menu size={18} className="cursor-pointer hover:text-black" />
+        <div className="flex gap-3 text-gray-700 opacity-60">
+          <Search size={18} className="cursor-pointer hover:opacity-100" />
+          <Menu size={18} className="cursor-pointer hover:opacity-100" />
         </div>
       </header>
 
       {/* 대화 내용 */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-3 custom-scrollbar"
+        className="flex-1 overflow-y-auto px-4 py-3 space-y-1 custom-scrollbar"
       >
         {loading ? (
           <div className="text-center text-gray-500 py-10 text-xs">로딩 중...</div>

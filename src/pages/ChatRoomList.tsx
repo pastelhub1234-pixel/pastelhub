@@ -35,7 +35,8 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   if (loading) return <div className="flex-1 flex items-center justify-center text-xs text-gray-400">...</div>;
 
   return (
-    <div className="w-[300px] h-full flex flex-col bg-white border-r border-gray-100 min-h-0 shrink-0">
+    // ✅ [수정] Timeline에서 정한 너비(320px)를 꽉 채움
+    <div className="w-full h-full flex flex-col bg-white border-r border-gray-100 min-h-0 shrink-0">
       
       {/* 헤더 */}
       <div className="px-4 pt-5 pb-3 bg-white shrink-0">
@@ -67,8 +68,7 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 <img 
                   src={room.roomImg} 
                   alt={room.roomName} 
-                  // ✅ [수정] 목록 이미지 크기 50px로 고정
-                  className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[16px] object-cover border border-black/5"
+                  className="w-[44px] h-[44px] rounded-[14px] object-cover border border-black/5"
                 />
               </div>
 

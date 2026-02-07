@@ -6,21 +6,24 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ 1. 전체 컨테이너: 화면 높이(헤더 제외)를 꽉 채움
-    <div className="w-full h-[calc(100vh-60px)] bg-gray-50 flex justify-center items-center p-6">
+    // ✅ [수정] 화면 중앙 정렬
+    // h-screen: 화면 전체 높이 사용
+    // p-2: 바깥 여백을 최소화 (아주 얇은 간격)
+    <div className="flex justify-center items-center w-full h-screen bg-gray-50 p-2 font-sans">
       
-      {/* ✅ 2. 채팅창 본체: 
-          - w-full h-full: 부모가 준 공간(패딩 제외)을 100% 다 씁니다.
-          - max-w: 너무 넓어지는 게 싫으면 여기서 조절 (지금은 제한 없음)
+      {/* ✅ [수정] 메인 컨테이너
+          - w-full: 가로 꽉 채움
+          - h-[96%] 또는 h-[94vh]: 부모 높이의 대부분을 사용하고 살짝만 남김
+          - rounded-xl, shadow-sm: 둥근 카드 디자인 유지
       */}
-      <div className="w-full h-full bg-white rounded-xl shadow-sm border border-gray-200 flex overflow-hidden font-sans">
+      <div className="w-full h-[96%] bg-white rounded-xl shadow-md border border-gray-200 flex overflow-hidden font-sans">
         
-        {/* 왼쪽: 채팅방 목록 (너비 300px 고정) */}
-        <div className="w-[300px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
+        {/* 왼쪽: 채팅방 목록 (320px로 확대하여 균형 맞춤) */}
+        <div className="w-[320px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
           <ChatRoomList current={roomId} onSelect={setRoomId} />
         </div>
         
-        {/* 오른쪽: 대화 내용 (나머지 공간 자동 채움) */}
+        {/* 오른쪽: 대화 내용 */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#b2c7da] relative">
           {roomId ? (
             <ChatConversation key={roomId} roomId={roomId} />
