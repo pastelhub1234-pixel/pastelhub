@@ -1,5 +1,3 @@
-import { Search } from 'lucide-react';
-// ✅ [수정] src/pages 기준 경로 (../hooks, ../types)
 import { useJsonData } from '../hooks/useJsonData';
 import { ChatRoom } from '../types';
 
@@ -30,17 +28,9 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
   return (
     <div className="w-full h-full flex flex-col bg-white border-r border-gray-100 min-h-0 shrink-0">
       
-      {/* 헤더 */}
-      <div className="px-4 pt-4 pb-3 bg-white shrink-0">
-        <h2 className="text-[18px] font-bold text-gray-800 mb-3">채팅</h2>
-        <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-[14px] h-[14px]" />
-          <input
-            type="text"
-            placeholder="검색"
-            className="w-full pl-9 pr-3 py-2 bg-gray-50 border-none rounded-xl text-[13px] placeholder:text-gray-400 focus:outline-none focus:bg-gray-100 transition-colors"
-          />
-        </div>
+      {/* ✅ [수정] 검색창 제거, 타이틀만 깔끔하게 유지 */}
+      <div className="px-5 pt-6 pb-4 bg-white shrink-0">
+        <h2 className="text-[20px] font-bold text-[#1e1e1e]">채팅</h2>
       </div>
 
       {/* 리스트 영역 */}
@@ -56,18 +46,18 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 ${isSelected ? "bg-gray-100" : "hover:bg-gray-50 bg-white"}
               `}
             >
-              {/* ✅ [수정] 이미지 찌그러짐 방지 (shrink-0, min-w, min-h 필수) */}
+              {/* 이미지 찌그러짐 방지 */}
               <div className="relative shrink-0">
                 <img 
                   src={room.roomImg} 
                   alt={room.roomName} 
-                  className="w-[44px] h-[44px] min-w-[44px] min-h-[44px] rounded-[14px] object-cover border border-black/5 bg-gray-200"
+                  className="w-[48px] h-[48px] min-w-[48px] min-h-[48px] rounded-[18px] object-cover border border-black/5 bg-gray-200"
                 />
               </div>
 
               <div className="flex-1 min-w-0 flex flex-col justify-center h-full text-left">
                 <div className="flex justify-between items-center mb-0.5">
-                  <span className="text-[14px] font-bold text-gray-800 truncate pr-2">
+                  <span className="text-[14px] font-bold text-[#1e1e1e] truncate pr-2">
                     {room.roomName}
                   </span>
                   <span className="text-[11px] text-gray-400 shrink-0">
@@ -76,12 +66,12 @@ export function ChatRoomList({ onSelect, current }: ChatRoomListProps) {
                 </div>
                 
                 <div className="flex justify-between items-center w-full">
-                  <p className="text-[12px] text-gray-500 w-full pr-2 break-all line-clamp-1">
+                  <p className="text-[13px] text-gray-500 w-full pr-2 break-all line-clamp-1">
                     {truncateText(room.lastPost, 20)}
                   </p>
                   
                   {room.todayPostCount > 0 && (
-                    <span className="bg-[#ff4b4b] text-white text-[10px] font-bold h-[16px] min-w-[16px] px-1 flex items-center justify-center rounded-full shrink-0">
+                    <span className="bg-[#ff4b4b] text-white text-[10px] font-bold h-[18px] min-w-[18px] px-1.5 flex items-center justify-center rounded-full shrink-0">
                       {room.todayPostCount > 300 ? "300+" : room.todayPostCount}
                     </span>
                   )}

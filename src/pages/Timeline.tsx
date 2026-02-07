@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// ✅ 같은 폴더(src/pages) 내 컴포넌트 호출
 import { ChatRoomList } from './ChatRoomList'; 
 import { ChatConversation } from './ChatConversation'; 
 
@@ -7,12 +6,12 @@ export default function Timeline() {
   const [roomId, setRoomId] = useState<string>("group_stellive_all");
 
   return (
-    // ✅ [수정] 상단 여백(pt) 0, 나머지 여백 최소화 (px-2, pb-2)
-    // h-[calc(100vh-10px)]: 화면 꽉 채우되 아래쪽만 살짝 띄움
-    <div className="flex justify-center items-end w-full h-[calc(100vh-10px)] px-2 pb-2 pt-0 font-sans bg-gray-50">
+    // ✅ [수정] p-0으로 간격 완전 제거, h-full로 높이 꽉 채움
+    // 부모 컨테이너(레이아웃)에서 남겨준 공간을 빈틈없이 사용합니다.
+    <div className="flex justify-center items-center w-full h-full p-0 font-sans bg-gray-50">
       
-      {/* 메인 컨테이너 */}
-      <div className="w-full h-full bg-white rounded-xl shadow-md border border-gray-200 flex overflow-hidden font-sans">
+      {/* 메인 컨테이너: 테두리(border)는 유지하되 꽉 차게 */}
+      <div className="w-full h-full bg-white shadow-sm border border-gray-200 flex overflow-hidden font-sans rounded-none">
         
         {/* 왼쪽: 채팅방 목록 (320px) */}
         <div className="w-[320px] border-r border-gray-100 flex-none bg-white z-10 flex flex-col">
