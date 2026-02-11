@@ -104,7 +104,7 @@ export default function Schedule() {
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                
                {/* ✅ [수정] 상자 크기(w-24 h-24) 유지, 아이콘 크기(text-7xl) 확대, 아래 간격(mb-8) 증가 */}
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
@@ -195,7 +195,7 @@ export default function Schedule() {
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
                     className={`
-                      w-full h-12 self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                      w-full h-16 self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
