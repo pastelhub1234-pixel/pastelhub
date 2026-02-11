@@ -19,24 +19,20 @@ export default function Schedule() {
     }
   }, [schedules]);
 
+  // --- 로직 파트 (PC/모바일 공통) ---
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    return { 
-      daysInMonth: lastDay.getDate(), 
-      startingDayOfWeek: firstDay.getDay() 
-    };
+    return { daysInMonth: lastDay.getDate(), startingDayOfWeek: firstDay.getDay() };
   };
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
-
-  const totalSlots = 42; 
   const calendarCells = [
     ...Array(startingDayOfWeek).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-    ...Array(totalSlots - (startingDayOfWeek + daysInMonth)).fill(null)
+    ...Array(42 - (startingDayOfWeek + daysInMonth)).fill(null)
   ];
 
   const previousMonth = () => {
@@ -83,23 +79,87 @@ export default function Schedule() {
   };
 
   return (
-    // md:h-screen와 overflow-hidden은 PC에서만 적용, 모바일은 자유로운 스크롤 허용
-    <div className="w-full min-h-screen md:h-screen p-4 md:p-2 flex justify-center items-center bg-gray-50/50 md:overflow-hidden">
+    // md:h-screen와 overflow-hidden은 PC에서만 적용하여 기존 로직 유지
+    <div className="w-full min-h-screen md:h-screen p-4 md:p-2 flex justify-center items-center md:overflow-hidden bg-gray-50/30">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* PC: grid-cols-4, min-w-[1000px], height: 560px (사용자 제공 로직)
+          모바일: grid-cols-1, Upcoming 제거 
+      */}
       <div 
-        // 모바일: 1열 배치 / PC: 4열 배치 및 최소 너비 설정
         className="w-full max-w-[1400px] grid grid-cols-1 md:grid-cols-4 gap-6 md:min-w-[1000px]"
-        style={{ height: 'auto' }} // 모바일에서는 자동 높이
+        style={{ height: typeof window !== 'undefined' && window.innerWidth >= 768 ? '560px' : 'auto' }}
       >
         
         {/* =======================
-            1. 상세 정보 패널 (모바일에서는 달력 아래로 가거나 상단에 배치 가능)
+            1. [중앙/상단] 메인 캘린더
            ======================= */}
-        <div className="order-2 md:order-1 col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center md:h-[560px] relative overflow-hidden">
+        <div className="order-1 md:order-2 md:col-span-2 bg-white/70 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+          <div className="flex items-center justify-between mb-4 flex-shrink-0 px-4 pt-2">
+            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-xl md:text-2xl tracking-tight">
+              <CalendarIcon className="w-6 h-6 md:w-7 md:h-7 text-purple-500" />
+              {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
+            </h3>
+            <div className="flex gap-2">
+              <button onClick={previousMonth} className="w-8 h-8 md:w-9 md:h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors">
+                <ChevronLeft size={20} className="text-gray-600" />
+              </button>
+              <button onClick={nextMonth} className="w-8 h-8 md:w-9 md:h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors">
+                <ChevronRight size={20} className="text-gray-600" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
+            {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
+              <div key={day} className="text-center text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-widest">
+                {day}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex-1 px-1 pb-1">
+            <div className="grid grid-cols-7 grid-rows-6 gap-2 md:gap-3 h-full content-start">
+              {calendarCells.map((day, i) => {
+                const event = getEventsForDate(day);
+                const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
+                const isSelected = selectedEvent && day && new Date(selectedEvent.date).getDate() === day && new Date(selectedEvent.date).getMonth() === currentDate.getMonth();
+
+                return (
+                  <button
+                    key={i}
+                    onClick={() => day && event && setSelectedEvent(event)}
+                    disabled={!day} 
+                    className={`
+                      w-full aspect-square md:h-16 self-center rounded-xl md:rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                      ${day && event 
+                        ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
+                        : 'hover:bg-gray-50/50 text-gray-400 bg-white/40 md:bg-transparent'}
+                      ${isToday ? 'ring-2 ring-purple-400 ring-offset-1 z-10' : ''}
+                      ${isSelected ? 'ring-2 ring-gray-400 ring-offset-1 z-10 scale-95' : ''}
+                      ${!day ? 'invisible pointer-events-none' : ''} 
+                    `}
+                  >
+                    {day && (
+                      <>
+                        <span className={`text-xs md:text-base leading-none ${event ? 'font-bold opacity-90' : ''}`}>{day}</span>
+                        {event && <span className="text-lg md:text-2xl leading-none">{getEventIcon(event.type)}</span>}
+                      </>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* =======================
+            2. [좌측/하단] 상세 정보 패널
+           ======================= */}
+        <div className="order-2 md:order-1 md:col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-4 md:pt-8 pb-4 md:pb-8">
                <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl md:text-5xl mb-6 md:mb-8 border border-purple-50">
@@ -114,29 +174,29 @@ export default function Schedule() {
               <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-3 md:line-clamp-4 mb-6 md:mb-8">
                 {selectedEvent.description}
               </p>
-              <div className="w-full bg-white/60 rounded-3xl p-4 md:p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto">
+              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
-                  <div className="w-9 h-9 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
-                    <CalendarIcon size={16} />
+                  <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
+                    <CalendarIcon size={18} />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
-                    <p className="text-sm font-bold text-gray-700 truncate">{new Date(selectedEvent.date).toLocaleDateString()}</p>
+                    <p className="text-sm font-bold text-gray-700">{new Date(selectedEvent.date).toLocaleDateString()}</p>
                   </div>
                 </div>
                  <div className="flex items-center gap-4">
-                   <div className="w-9 h-9 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
-                    <MapPin size={16} />
+                   <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500">
+                    <MapPin size={18} />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
-                    <p className="text-sm font-bold text-gray-700 truncate">Seoul, Korea</p>
+                    <p className="text-sm font-bold text-gray-700">Seoul, Korea</p>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50 py-10">
+            <div className="text-gray-300 flex flex-col items-center gap-4 py-10 opacity-50">
               <Info className="w-16 h-16 md:w-20 md:h-20 opacity-20" />
               <p className="text-base font-medium">일정을 선택해주세요</p>
             </div>
@@ -144,115 +204,37 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            2. 메인 캘린더 (모바일에서 가장 먼저 보임)
+            3. [우측] Upcoming 패널 (PC에서만 표시)
            ======================= */}
-        <div className="order-1 md:order-2 col-span-1 md:col-span-2 bg-white/70 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-sm border border-purple-50 flex flex-col md:h-[560px] overflow-hidden">
-          <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2 pt-2">
-            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-xl md:text-2xl tracking-tight">
-              <CalendarIcon className="w-6 h-6 md:w-7 md:h-7 text-purple-500" />
-              {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
-            </h3>
-            <div className="flex gap-1 md:gap-2">
-              <button onClick={previousMonth} className="w-8 h-8 md:w-9 md:h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors">
-                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
-              </button>
-              <button onClick={nextMonth} className="w-8 h-8 md:w-9 md:h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors">
-                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-7 mb-2 px-1 flex-shrink-0">
-            {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
-              <div key={day} className="text-center text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-widest">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          <div className="flex-1 px-1 pb-1">
-            <div className="grid grid-cols-7 grid-rows-6 gap-1 md:gap-3 h-full content-start">
-              {calendarCells.map((day, i) => {
-                const event = getEventsForDate(day);
-                const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
-                const isSelected = selectedEvent && day && new Date(selectedEvent.date).getDate() === day && new Date(selectedEvent.date).getMonth() === currentDate.getMonth();
-
-                return (
-                  <button
-                    key={i}
-                    onClick={() => day && event && setSelectedEvent(event)}
-                    disabled={!day} 
-                    className={`
-                      w-full aspect-square md:h-16 rounded-lg md:rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
-                      ${day && event 
-                        ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
-                        : 'hover:bg-gray-50/50 text-gray-400 bg-white/30'}
-                      ${isToday ? 'ring-2 ring-purple-400 ring-offset-1 z-10' : ''}
-                      ${isSelected ? 'ring-2 ring-gray-400 ring-offset-1 z-10 scale-95' : ''}
-                      ${!day ? 'invisible pointer-events-none' : ''} 
-                    `}
-                  >
-                    {day && (
-                      <>
-                        <span className={`text-sm md:text-base leading-none ${event ? 'font-bold opacity-90' : ''}`}>{day}</span>
-                        {event && <span className="text-lg md:text-2xl leading-none">{getEventIcon(event.type)}</span>}
-                      </>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* =======================
-            3. 다가오는 일정 리스트
-           ======================= */}
-        <div className="order-3 md:order-3 col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col md:h-[560px] overflow-hidden">
+        <div className="hidden md:flex md:col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
           </div>
-          
-          <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-2 max-h-[400px] md:max-h-full">
-            {schedules?.map((event) => {
-              const eventDate = new Date(event.date);
-              const isSelected = selectedEvent?.id === event.id;
-              
-              return (
-                <button
-                  key={event.id}
-                  onClick={() => {
-                    setSelectedEvent(event);
-                    // PC에서만 월 이동, 모바일에서는 선택만
-                    if(window.innerWidth > 768) setCurrentDate(new Date(event.date));
-                  }}
-                  className={`
-                    w-full px-4 py-3 rounded-xl transition-all duration-200 text-left flex items-center gap-3 group
-                    ${isSelected 
-                      ? 'bg-purple-50 border-purple-100 ring-1 ring-purple-100' 
-                      : 'hover:bg-white/50 border border-transparent bg-white/30'}
-                  `}
-                >
-                  <div className={`
-                    flex flex-col items-center justify-center min-w-[2.5rem] md:min-w-[3rem] border-r pr-3
-                    ${isSelected ? 'border-purple-200 text-purple-600' : 'border-gray-200 text-gray-400'}
-                  `}>
-                    <span className="text-[9px] md:text-[10px] font-bold uppercase">{monthNames[eventDate.getMonth()].slice(0, 3)}</span>
-                    <span className="text-base md:text-lg font-bold leading-none">{eventDate.getDate()}</span>
-                  </div>
-                  
-                  <div className="min-w-0 flex-1">
-                    <p className={`text-sm font-bold truncate ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}>
-                      {event.title}
-                    </p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
-                      {event.type}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
+          <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-2">
+            {schedules?.map((event) => (
+              <button
+                key={event.id}
+                onClick={() => {
+                  setSelectedEvent(event);
+                  setCurrentDate(new Date(event.date));
+                }}
+                className={`w-full px-4 py-3 rounded-xl transition-all text-left flex items-center gap-3 group ${
+                  selectedEvent?.id === event.id ? 'bg-purple-50 ring-1 ring-purple-100' : 'hover:bg-white/50'
+                }`}
+              >
+                <div className={`flex flex-col items-center justify-center min-w-[3rem] border-r pr-3 ${
+                  selectedEvent?.id === event.id ? 'border-purple-200 text-purple-600' : 'border-gray-200 text-gray-400'
+                }`}>
+                  <span className="text-[10px] font-bold uppercase">{monthNames[new Date(event.date).getMonth()].slice(0, 3)}</span>
+                  <span className="text-lg font-bold leading-none">{new Date(event.date).getDate()}</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold truncate text-gray-700">{event.title}</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wide">{event.type}</p>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
 
