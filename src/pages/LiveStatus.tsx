@@ -90,6 +90,8 @@ export default function LiveStatus() {
           const config = STATUS_CONFIG[statusType];
           const isOff = statusType === 'off';
           const Component = isOff ? 'div' : 'a';
+          
+          // ✅ 방송 중(Live)인지 체크: Scheduled, Off 제외
           const isLive = statusType === 'chzzk' || statusType === 'space';
 
           return (
@@ -107,23 +109,12 @@ export default function LiveStatus() {
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 
-                {/* 1. 프로필 이미지 Wrapper (Gradient Ring) */}
-                {/* ✅ 반응형 기준 통일:
-                    - 모바일: w-10 h-10 (40px)
-                    - PC (sm이상): w-12 h-12 (48px)
-                    - inline style 제거하고 Tailwind 클래스로만 제어
-                */}
+                {/* 1. 프로필 이미지 Wrapper */}
                 <div className="relative flex-none w-10 h-10 sm:w-12 sm:h-12">
-                  
-                  {/* 링(Ring) 컨테이너 */}
                   <div 
                     className="w-full h-full rounded-full flex items-center justify-center p-[2px] transition-transform duration-300 group-hover:scale-105"
-                    style={{ background: config.ringGradient }} // 그라데이션만 인라인 유지
+                    style={{ background: config.ringGradient }}
                   >
-                    {/* ✅ 프로필 이미지
-                        - w-full h-full로 부모 꽉 채움 -> 빈틈 없음
-                        - border-2 border-white: 이미지와 링 사이의 아주 얇은 구분선 (깔끔함을 위해 유지하되 링 안쪽으로 들어감)
-                    */}
                     <img 
                       src={item.profileImg} 
                       alt={item.name} 
@@ -131,19 +122,24 @@ export default function LiveStatus() {
                     />
                   </div>
                   
-                  {/* 2. 상태 표시 점 (Live Pulse) */}
-                  {!isOff && (
-                    <div className="absolute bottom-0 right-0 translate-x-[10%] translate-y-[10%] z-10">
-                      {isLive && (
-                         <span 
-                           className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${config.dotColor}`} 
-                         ></span>
-                      )}
-                      <span 
-                        className={`relative inline-flex rounded-full border-2 border-white ${config.dotColor}`}
-                        // 점 크기: 모바일(w-3) vs PC(w-3.5)
-                        style={{ width: '12px', height: '12px' }}
-                      ></span>
+                  {/* ✅ 2. 상태 표시 점 (Live일 때만 노출) 
+                     - translate 제거하여 위치를 안쪽으로 당김
+                     - border-white를 사용하여 프로필과 경계 구분
+                  */}
+                  {isLive && (
+                    <div className="absolute bottom-0 right-0 z-10">
+                       {/* Pulse 애니메이션 */}
+                       <span 
+                         className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${config.dotColor}`} 
+                       ></span>
+                       {/* 실제 점 */}
+                       <span 
+                         className={`relative inline-flex rounded-full border-2 border-white ${config.dotColor}`}
+                         // 점 크기: 모바일(10px), PC(12px) - 살짝 작게 조정하여 밀착감 향상
+                         style={{ width: '10px', height: '10px' }}
+                         // PC에서는 점 크기를 CSS 클래스로 조금 키워도 됨 (선택사항)
+                         // className 내부에 sm:w-3 sm:h-3 등을 추가하여 반응형 처리 가능
+                       ></span>
                     </div>
                   )}
                 </div>
