@@ -33,7 +33,6 @@ export default function Schedule() {
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
 
-  // 달력 높이 고정 (6주 = 42칸)
   const totalSlots = 42; 
   const calendarCells = [
     ...Array(startingDayOfWeek).fill(null),
@@ -85,8 +84,10 @@ export default function Schedule() {
   };
 
   return (
-    // ✅ [수정 1] 전체 패딩 축소 (p-6 -> p-2) : 위아래 간격 줄임
-    <div className="w-full h-full p-2 overflow-x-auto flex justify-center items-center">
+    // ✅ [수정 1] items-center 제거 -> items-start로 변경 (위쪽 정렬)
+    // ✅ [수정 2] pt-8 (약 32px) 추가하여 천장에 딱 붙지 않게 적당한 간격 부여
+    // ✅ [수정 3] h-full 제거 -> h-screen 또는 min-h-screen으로 변경하여 스크롤 시 잘림 방지
+    <div className="w-full min-h-screen p-2 pt-8 overflow-x-auto flex justify-center items-start">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -102,7 +103,6 @@ export default function Schedule() {
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-6 pb-2">
                
-               {/* ✅ [수정 2] 아이콘 상자 & 크기 확대 */}
                <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2.5rem] shadow-sm flex items-center justify-center text-7xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
@@ -115,12 +115,10 @@ export default function Schedule() {
                 {selectedEvent.title}
               </h2>
               
-              {/* 설명 텍스트 */}
               <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4">
                 {selectedEvent.description}
               </p>
 
-              {/* ✅ [수정 3] mt-auto로 하단 박스와의 간격 자동 확보 (최대 거리 벌림) */}
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
@@ -225,7 +223,7 @@ export default function Schedule() {
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
           </div>
-          
+           
           <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-2">
             {schedules?.map((event) => {
               const eventDate = new Date(event.date);
