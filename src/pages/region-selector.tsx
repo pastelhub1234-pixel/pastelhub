@@ -60,7 +60,7 @@ export function RegionSelector({
     >
       <div
         className="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200"
-        style={{ width: '360px', height: '320px', maxWidth: '95vw', maxHeight: '90vh' }}
+        style={{ width: '540px', height: '540px', maxWidth: '95vw', maxHeight: '90vh' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 1. 헤더 */}
