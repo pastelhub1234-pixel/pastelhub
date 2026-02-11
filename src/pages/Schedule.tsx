@@ -84,7 +84,8 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full min-h-screen p-2 pt-8 overflow-x-auto flex justify-center items-start">
+    // ✅ [수정 1] h-screen(화면 전체 높이), items-center(수직 중앙 정렬), overflow-hidden(스크롤 방지)
+    <div className="w-full h-screen p-4 flex justify-center items-center overflow-hidden">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -92,7 +93,7 @@ export default function Schedule() {
 
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
-        style={{ height: '560px' }}
+        style={{ height: '600px' }} // 높이를 600px 정도로 고정 (화면 중앙에 적당한 크기로 위치)
       >
         
         {/* =======================
@@ -100,16 +101,18 @@ export default function Schedule() {
            ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-4">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
+               {/* ✅ [수정 2] 아이콘 박스 크기 및 비율 조정 (w-24, text-6xl) */}
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
+              {/* ✅ [수정 3] break-keep: 단어 단위 줄바꿈 유지 */}
               <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
                 {selectedEvent.title}
               </h2>
@@ -151,20 +154,19 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ p-4로 여백 최소화 -> 달력 크기 확보
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-2xl p-4 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between mb-4 flex-shrink-0 px-4 pt-2">
-            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-xl tracking-tight">
-              <CalendarIcon className="w-6 h-6 text-purple-500" />
+            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-2xl tracking-tight">
+              <CalendarIcon className="w-7 h-7 text-purple-500" />
               {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
             </h3>
             <div className="flex gap-2">
-              <button onClick={previousMonth} className="w-8 h-8 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={previousMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
-              <button onClick={nextMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={nextMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronRight className="w-6 h-6 text-gray-600" />
               </button>
             </div>
@@ -181,8 +183,8 @@ export default function Schedule() {
 
           {/* Days Grid */}
           <div className="flex-1 px-1 pb-1">
-            {/* ✅ [수정 1] gap-1: 간격을 아주 좁게 하여 버튼 크기를 최대로 키움 (꽉 찬 느낌) */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-1 h-full content-start">
+            {/* ✅ [수정 4] gap-3: 간격을 넓혀서 날짜 박스(상자) 크기를 작게 만듦 */}
+            <div className="grid grid-cols-7 grid-rows-6 gap-3 h-full content-start">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
                 const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
@@ -193,12 +195,11 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
-                    // ✅ [수정 2] rounded-2xl: 자연스러운 둥근 사각형 (너무 네모나지도, 너무 동그랗지도 않음)
-                    // ✅ flex-col gap-1: 숫자와 아이콘 사이 간격 조절
+                    // rounded-2xl: 부드러운 둥근 사각형
                     className={`
-                      w-full h-full rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-1
+                      w-full h-full rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
-                        ? `${getEventColor(event.type)} hover:scale-[1.02] shadow-sm cursor-pointer` 
+                        ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
                       ${isToday ? 'ring-2 ring-purple-400 ring-offset-2 z-10' : ''}
                       ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
@@ -207,9 +208,7 @@ export default function Schedule() {
                   >
                     {day && (
                       <>
-                        {/* 숫자 크기: text-base (적당히 잘 보이게) */}
                         <span className={`text-base leading-none ${event ? 'font-bold opacity-90' : ''}`}>{day}</span>
-                        {/* 아이콘 크기: text-2xl (잘 보이게) */}
                         {event && <span className="text-2xl leading-none group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                       </>
                     )}
