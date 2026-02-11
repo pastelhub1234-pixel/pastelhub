@@ -117,7 +117,7 @@ export default function Schedule() {
                 {selectedEvent.title}
               </h2>
               
-              <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4">
+              <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4 mb-8">
                 {selectedEvent.description}
               </p>
 
