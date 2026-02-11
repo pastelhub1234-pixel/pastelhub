@@ -13,12 +13,10 @@ import { TradeItem } from "../types";
 const TradeCard = ({ trade }: { trade: TradeItem }) => (
   <div
     className={cn(
-      // ✅ [Fix] rounded-[24px] -> rounded-3xl (표준 클래스 사용)
-      // ✅ [Fix] 테두리 및 그림자 색상 강화
       "group relative bg-white rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden",
       trade.status === 'completed'
-        ? 'border-slate-100 opacity-70 bg-slate-50 grayscale-[0.5]'
-        : 'border-slate-100 hover:border-teal-200 hover:shadow-teal-100/40'
+        ? 'border-slate-100 opacity-60 bg-slate-50 grayscale-[0.5]'
+        : 'border-slate-100 hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/40 hover:-translate-y-1'
     )}
   >
     {/* 상단: 상태 및 위치 */}
