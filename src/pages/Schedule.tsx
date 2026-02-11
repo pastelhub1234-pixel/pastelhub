@@ -33,6 +33,7 @@ export default function Schedule() {
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
 
+  // 달력 높이 고정 (6주)
   const totalSlots = 42; 
   const calendarCells = [
     ...Array(startingDayOfWeek).fill(null),
@@ -84,17 +85,15 @@ export default function Schedule() {
   };
 
   return (
-    // ✅ [수정 1] items-center 제거 -> items-start로 변경 (위쪽 정렬)
-    // ✅ [수정 2] pt-8 (약 32px) 추가하여 천장에 딱 붙지 않게 적당한 간격 부여
-    // ✅ [수정 3] h-full 제거 -> h-screen 또는 min-h-screen으로 변경하여 스크롤 시 잘림 방지
+    // 상단 여백 pt-8 유지
     <div className="w-full min-h-screen p-2 pt-8 overflow-x-auto flex justify-center items-start">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Grid Layout (1:2:1) - 높이 600px 고정 */}
-      <div className="min-w-[1000px] max-w-[1400px] w-full h-[600px] grid grid-cols-4 gap-6">
+      {/* ✅ [수정 1] 높이를 h-[750px]로 대폭 늘림 (세로로 길어짐) */}
+      <div className="min-w-[1000px] max-w-[1400px] w-full h-[750px] grid grid-cols-4 gap-6">
         
         {/* =======================
             1. [Left] Details Panel
@@ -103,6 +102,7 @@ export default function Schedule() {
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-6 pb-2">
                
+               {/* 아이콘 상자 */}
                <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2.5rem] shadow-sm flex items-center justify-center text-7xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
@@ -119,6 +119,7 @@ export default function Schedule() {
                 {selectedEvent.description}
               </p>
 
+              {/* 하단 정보창 */}
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
@@ -152,8 +153,9 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
+            ✅ 패딩을 줄이고(p-6) 내부를 꽉 채우는 디자인
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2">
             <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
@@ -171,7 +173,7 @@ export default function Schedule() {
           </div>
 
           {/* Weekdays */}
-          <div className="grid grid-cols-7 mb-2 px-4 flex-shrink-0">
+          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <div key={day} className="text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
                 {day}
@@ -180,8 +182,9 @@ export default function Schedule() {
           </div>
 
           {/* Days Grid */}
-          <div className="flex-1 px-2 pb-2">
-            <div className="grid grid-cols-7 grid-rows-6 gap-4 h-full content-start p-2">
+          <div className="flex-1 px-1 pb-1">
+            {/* ✅ [수정 2] gap-2로 줄여서 칸 사이 틈을 좁힘 (더 꽉 차 보임) */}
+            <div className="grid grid-cols-7 grid-rows-6 gap-2 h-full content-start">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
                 const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
@@ -192,10 +195,11 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
+                    // ✅ [수정 3] 버튼 스타일 변경: 꽉 찬 배경색, 글자 작게, 둥근 사각형(rounded-2xl)
                     className={`
-                      w-full h-full aspect-square rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300
+                      w-full h-full rounded-[24px] flex flex-col items-center justify-center relative transition-all duration-300
                       ${day && event 
-                        ? `${getEventColor(event.type).split(' ')[0]} ${getEventColor(event.type).split(' ')[1]} hover:scale-105 shadow-sm hover:shadow-md cursor-pointer` 
+                        ? `${getEventColor(event.type)} hover:scale-[1.02] shadow-sm cursor-pointer` // 배경색 전체 채움
                         : 'hover:bg-gray-50/50 text-gray-400'}
                       ${isToday ? 'ring-2 ring-purple-400 ring-offset-2 z-10' : ''}
                       ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
@@ -204,8 +208,10 @@ export default function Schedule() {
                   >
                     {day && (
                       <>
-                        <span className={`text-lg mb-0.5 ${event ? 'font-bold' : ''}`}>{day}</span>
-                        {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
+                        {/* ✅ [수정 4] 숫자 크기 줄임 (text-sm) -> 박스가 더 커보이는 효과 */}
+                        <span className={`text-sm mb-1 ${event ? 'font-bold opacity-80' : ''}`}>{day}</span>
+                        {/* 아이콘 */}
+                        {event && <span className="text-2xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                       </>
                     )}
                   </button>
@@ -223,7 +229,7 @@ export default function Schedule() {
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
           </div>
-           
+          
           <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide pr-1 pb-2">
             {schedules?.map((event) => {
               const eventDate = new Date(event.date);
