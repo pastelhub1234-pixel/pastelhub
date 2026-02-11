@@ -84,27 +84,25 @@ export default function Schedule() {
   };
 
   return (
-    // 상단 여백 pt-8 유지, 높이 820px 유지
     <div className="w-full min-h-screen p-2 pt-8 overflow-x-auto flex justify-center items-start">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Grid Layout (1:2:1) - 높이 820px */}
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
-        style={{ height: '820px' }}
+        style={{ height: '700px' }}
       >
         
         {/* =======================
             1. [Left] Details Panel
            ======================= */}
-        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
+        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-4">
                
-               <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2.5rem] shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
+               <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-2xl shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
@@ -155,15 +153,15 @@ export default function Schedule() {
             2. [Center] Calendar
             ✅ p-4로 여백 최소화 -> 달력 크기 확보
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-4 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-2xl p-4 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between mb-4 flex-shrink-0 px-4 pt-2">
-            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
-              <CalendarIcon className="w-8 h-8 text-purple-500" />
+            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-xl tracking-tight">
+              <CalendarIcon className="w-4 h-4 text-purple-500" />
               {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
             </h3>
             <div className="flex gap-2">
-              <button onClick={previousMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={previousMonth} className="w-8 h-8 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
               <button onClick={nextMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
