@@ -15,7 +15,7 @@ const TradeCard = ({ trade }: { trade: TradeItem }) => (
     className={cn(
       // ✅ [Fix] rounded-[24px] -> rounded-3xl (표준 클래스 사용)
       // ✅ [Fix] 테두리 및 그림자 색상 강화
-      "group relative bg-white rounded-xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden",
+      "group relative bg-white rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden",
       trade.status === 'completed'
         ? 'border-slate-100 opacity-70 bg-slate-50 grayscale-[0.5]'
         : 'border-slate-100 hover:border-teal-200 hover:shadow-teal-100/40'
@@ -51,46 +51,38 @@ const TradeCard = ({ trade }: { trade: TradeItem }) => (
       </div>
     </div>
 
-    {/* 중단: HAVE <-> WANT */}
-    <div className="flex-1 px-6 py-2 space-y-4">
-      
-      {/* HAVE 섹션 (Mint Theme) */}
-      {/* ✅ [Fix] /30 투명도 제거 -> 색상 선명하게 복구 (bg-teal-50) */}
-      <div className="bg-teal-50 rounded-2xl border border-teal-100 p-5 relative group-hover:bg-teal-50/80 transition-colors">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[10px] font-extrabold text-teal-600 bg-teal-100 px-2.5 py-1 rounded-lg tracking-wide">
-            HAVE
+    {/* 메인: HAVE <-> WANT */}
+    <div className="flex-1 px-5 space-y-3">
+      <div className="bg-indigo-50/60 rounded-xl border border-indigo-100/60 p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">
+            HAVE (보유)
           </span>
-          <span className="text-xs text-teal-600/70 font-medium">보유 굿즈</span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {trade.haveItems.map((item, idx) => (
-            <span key={idx} className="text-sm font-bold text-teal-800 bg-white px-3 py-2 rounded-xl border border-teal-100 shadow-sm">
+            <span key={idx} className="text-xs font-medium text-indigo-900 bg-white px-2 py-1.5 rounded-lg border border-indigo-50 shadow-sm">
               {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* 화살표 아이콘 */}
-      <div className="flex justify-center -my-6 relative z-10">
-        <div className="bg-white p-2 rounded-full border border-slate-100 text-slate-300 shadow-sm group-hover:text-teal-400 group-hover:border-teal-100 transition-colors">
-          <ArrowRightLeft className="w-4 h-4" />
+      <div className="flex justify-center -my-1">
+        <div className="bg-slate-50 p-1.5 rounded-full border border-slate-100 text-slate-400 shadow-sm z-10">
+          <ArrowRightLeft className="w-3.5 h-3.5" />
         </div>
       </div>
 
-      {/* WANT 섹션 (Pink Theme) */}
-      {/* ✅ [Fix] /30 투명도 제거 -> bg-pink-50 */}
-      <div className="bg-pink-50 rounded-2xl border border-pink-100 p-5 relative group-hover:bg-pink-50/80 transition-colors">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[10px] font-extrabold text-pink-600 bg-pink-100 px-2.5 py-1 rounded-lg tracking-wide">
-            WANT
+      <div className="bg-pink-50/60 rounded-xl border border-pink-100/60 p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-bold text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full">
+            WANT (구함)
           </span>
-          <span className="text-xs text-pink-600/70 font-medium">구하는 굿즈</span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {trade.wantItems.map((item, idx) => (
-            <span key={idx} className="text-sm font-bold text-pink-800 bg-white px-3 py-2 rounded-xl border border-pink-100 shadow-sm">
+            <span key={idx} className="text-xs font-medium text-pink-900 bg-white px-2 py-1.5 rounded-lg border border-pink-50 shadow-sm">
               {item}
             </span>
           ))}
@@ -180,7 +172,7 @@ export default function GoodsTrade() {
       <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex items-start gap-3 text-sm text-orange-800 shadow-sm">
         <AlertCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          <span className="font-bold">주의사항:</span> 이곳은 순수한 <strong>물물교환(Barter)</strong>만을 위한 공간입니다. 
+          <span className="font-bold">주의사항:</span> 이곳은 순수한 <strong>물물교환</strong>만을 위한 공간입니다. 
           금전 요구, 계좌 거래 유도 행위 적발 시 이용이 제한될 수 있습니다.
         </p>
       </div>
@@ -265,11 +257,11 @@ export default function GoodsTrade() {
           >
             <Filter className="w-4 h-4" /> 거래중만 보기
           </button>
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap ml-auto lg:ml-2">
+            <ArrowRightLeft className="w-4 h-4" />
+            <span>교환글 쓰기</span>
+          </button>
         </div>
-        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap ml-auto lg:ml-2">
-          <ArrowRightLeft className="w-4 h-4" />
-          <span>교환글 쓰기</span>
-        </button>
       </div>
 
       {/* 4. 리스트 Grid */}
