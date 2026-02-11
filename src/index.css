@@ -2954,6 +2954,10 @@
     color: var(--color-red-500);
   }
 
+  .text-red-600 {
+    color: var(--color-red-600);
+  }
+
   .text-sky-600 {
     color: var(--color-sky-600);
   }
