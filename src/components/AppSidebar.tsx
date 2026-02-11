@@ -77,7 +77,7 @@ export function AppSidebar() {
                     
                     <span className={`
                       text-[10px] font-extrabold px-1.5 py-0.5 rounded-md tracking-wide flex-none ml-1
-                      ${isXSpace ? 'bg-purple-50 text-purple-600' : 'bg-red-50 text-red-600 animate-pulse'}
+                      ${isXSpace ? 'bg-purple-50 text-purple-600 animate-pulse' : 'bg-red-50 text-red-600 animate-pulse'}
                     `}>
                       {badgeText}
                     </span>
