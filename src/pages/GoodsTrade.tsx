@@ -174,41 +174,28 @@ export default function GoodsTrade() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-8 bg-transparent">
-
-      {/* 1. 주의사항 (Warm Amber) */}
-      <div className="bg-amber-50 border border-amber-100 rounded-3xl p-5 flex items-start gap-4 shadow-sm">
-        <div className="p-1.5 bg-amber-100 rounded-full flex-shrink-0 mt-0.5">
-          <AlertCircle className="w-4 h-4 text-amber-600" />
-        </div>
-        <div className="space-y-0.5">
-          <h3 className="text-sm font-bold text-amber-800">주의사항 안내</h3>
-          <p className="text-sm text-amber-700/90 leading-relaxed">
-            이곳은 팬들을 위한 순수 <strong>물물교환</strong> 공간입니다. 금전 거래는 제한됩니다.
-          </p>
-        </div>
+    <div className="max-w-6xl mx-auto p-4 md:p-6 space-y-6">
+      
+      {/* 1. 주의사항 (상단 배치) */}
+      <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex items-start gap-3 text-sm text-orange-800 shadow-sm">
+        <AlertCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+        <p className="leading-relaxed">
+          <span className="font-bold">주의사항:</span> 이곳은 순수한 <strong>물물교환(Barter)</strong>만을 위한 공간입니다. 
+          금전 요구, 계좌 거래 유도 행위 적발 시 이용이 제한될 수 있습니다.
+        </p>
       </div>
 
       {/* 2. 헤더 Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-100 pb-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center gap-3">
-            {/* 아이콘 배경 */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-400 to-violet-400 flex items-center justify-center shadow-lg shadow-teal-100">
-              <RefreshCw className="w-6 h-6 text-white" />
-            </div>
-            굿즈 교환소
-          </h1>
-          <p className="text-slate-500 pl-[60px] font-medium text-sm md:text-base">
-            중복 굿즈는 나누고, 필요한 굿즈는 채워보세요.
-          </p>
-        </div>
-        
-        {/* 작성 버튼: rounded-2xl 적용 */}
-        <button className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-teal-200/50 hover:-translate-y-0.5 flex items-center gap-2 whitespace-nowrap">
-          <ArrowRightLeft className="w-4 h-4" />
-          <span>교환글 작성하기</span>
-        </button>
+      <div className="flex flex-col justify-center gap-2 border-b border-slate-100 pb-6">
+        <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+            <RefreshCw className="w-6 h-6 text-indigo-500" />
+          </div>
+          굿즈 교환소
+        </h1>
+        <p className="text-slate-500 text-sm ml-[52px]">
+          중복 굿즈는 교환하고, 없는 굿즈는 채워보세요.
+        </p>
       </div>
 
       {/* 3. 필터 바 */}
@@ -279,6 +266,10 @@ export default function GoodsTrade() {
             <Filter className="w-4 h-4" /> 거래중만 보기
           </button>
         </div>
+        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap ml-auto lg:ml-2">
+          <ArrowRightLeft className="w-4 h-4" />
+          <span>교환글 쓰기</span>
+        </button>
       </div>
 
       {/* 4. 리스트 Grid */}
