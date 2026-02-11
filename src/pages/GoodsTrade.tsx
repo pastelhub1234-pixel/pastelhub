@@ -15,7 +15,7 @@ const TradeCard = ({ trade }: { trade: TradeItem }) => (
     className={cn(
       // ✅ [Fix] rounded-[24px] -> rounded-3xl (표준 클래스 사용)
       // ✅ [Fix] 테두리 및 그림자 색상 강화
-      "group relative bg-white rounded-3xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden",
+      "group relative bg-white rounded-xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden",
       trade.status === 'completed'
         ? 'border-slate-100 opacity-70 bg-slate-50 grayscale-[0.5]'
         : 'border-slate-100 hover:border-teal-200 hover:shadow-teal-100/40'
@@ -27,7 +27,7 @@ const TradeCard = ({ trade }: { trade: TradeItem }) => (
         {/* 상태 배지 (Mint) */}
         <span className={cn(
           // ✅ [Fix] rounded-xl 적용
-          "px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-colors",
+          "px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1 transition-colors",
           trade.status === 'active'
             ? "bg-teal-50 text-teal-600 border-teal-100"
             : "bg-slate-100 text-slate-500 border-slate-200"
@@ -111,7 +111,7 @@ const TradeCard = ({ trade }: { trade: TradeItem }) => (
         rel="noreferrer"
         className={cn(
           // ✅ [Fix] 버튼 둥글기 rounded-xl
-          "flex items-center gap-1.5 px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shadow-sm active:scale-95",
+          "flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 mb-3",
           trade.status === 'active'
             ? "bg-[#FAE100] text-[#371D1E] hover:bg-[#FCE620] hover:shadow-md border border-[#F5DA00]/50"
             : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
@@ -222,7 +222,7 @@ export default function GoodsTrade() {
           {/* ✅ [Fix] rounded-2xl 적용 및 배경색 투명도 제거(bg-slate-50) */}
           <input
             type="text"
-            placeholder="찾으시는 굿즈 이름을 검색해보세요"
+            placeholder="     찾으시는 굿즈 이름을 검색해보세요"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-14 pr-4 py-3 bg-slate-50 border-transparent rounded-2xl focus:bg-white focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400 text-sm text-slate-700 font-medium"
