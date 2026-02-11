@@ -66,7 +66,7 @@ export default function Schedule() {
     }
   };
 
-  // ✅ Code 1 스타일: 이벤트 종류별 화려한 색상
+  // Code 1 스타일: 이벤트 종류별 화려한 색상
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
@@ -78,58 +78,62 @@ export default function Schedule() {
   };
 
   return (
-    // ✅ [수정 1] 패딩 제거 (p-0) & Flex 레이아웃으로 가로 배치 강제
-    // h-full로 부모 높이를 꽉 채우고, gap-4로 패널 사이 간격만 유지
-    <div className="w-full h-full flex gap-4 overflow-hidden">
+    // ✅ [수정 1] 외부 패딩 추가 (p-8)
+    <div className="w-full h-full p-8 overflow-x-auto flex justify-center items-center">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* ✅ [수정 2] Flex 사용으로 가로 배치 고정 */}
+      <div className="min-w-[1100px] max-w-[1500px] w-full h-[600px] flex gap-6">
+        
         {/* =======================
             1. [Left] Details Panel
-            ✅ Code 1 스타일: bg-white/70 (글래스모피즘)
-            ✅ Flex Item으로 고정 너비 (w-[300px])
+            ✅ w-[320px] flex-none: 너비 고정 (글자가 길어져도 안 늘어남)
            ======================= */}
-        <div className="w-[300px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-2">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-5xl mb-5 border border-purple-50">
+               {/* ✅ [수정 3] 상자는 작게(w-20), 아이콘은 크게(text-6xl) */}
+               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              <h2 className="text-2xl font-bold text-gray-800 mb-3 leading-tight px-2 w-full break-keep line-clamp-3">
+              {/* ✅ [수정 4] 텍스트 줄바꿈 처리 (break-keep, whitespace-pre-wrap) */}
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-2 w-full break-keep whitespace-pre-wrap">
                 {selectedEvent.title}
               </h2>
               
-              <p className="text-sm text-gray-500 mb-6 leading-relaxed px-2 break-keep line-clamp-5">
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed px-2 break-keep whitespace-pre-wrap line-clamp-5">
                 {selectedEvent.description}
               </p>
 
-              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-3 shadow-sm mt-auto flex-shrink-0">
+              {/* ✅ [수정 5] 하단 박스 크기 확대 (p-6, space-y-5) */}
+              <div className="w-full bg-white/60 rounded-3xl p-6 text-left border border-white/80 space-y-5 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
-                    <CalendarIcon size={18} />
+                  <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                    <CalendarIcon size={22} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
-                    <p className="text-sm font-bold text-gray-700 mt-0.5 truncate">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
+                    <p className="text-[15px] font-bold text-gray-700 mt-0.5 truncate">
                       {new Date(selectedEvent.date).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                  <div className="flex items-center gap-4">
-                   <div className="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
-                    <MapPin size={18} />
+                   <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                    <MapPin size={22} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
-                    <p className="text-sm font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
+                    <p className="text-[15px] font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
                   </div>
                 </div>
               </div>
@@ -144,28 +148,27 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ Code 1 스타일: 날짜 안에 아이콘(🎂) 포함
-            ✅ Flex-1로 남은 공간 모두 차지
+            ✅ flex-1: 남은 공간 채우기
            ======================= */}
-        <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2">
-            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-2xl tracking-tight">
-              <CalendarIcon className="w-7 h-7 text-purple-500" />
+          <div className="flex items-center justify-between mb-6 flex-shrink-0 px-2">
+            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
+              <CalendarIcon className="w-8 h-8 text-purple-500" />
               {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
             </h3>
             <div className="flex gap-2">
-              <button onClick={previousMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={previousMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
-              <button onClick={nextMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={nextMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronRight className="w-6 h-6 text-gray-600" />
               </button>
             </div>
           </div>
 
           {/* Weekdays */}
-          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
+          <div className="grid grid-cols-7 mb-2 px-4 flex-shrink-0">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <div key={day} className="text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
                 {day}
@@ -174,8 +177,8 @@ export default function Schedule() {
           </div>
 
           {/* Days Grid */}
-          <div className="flex-1 px-1 pb-1">
-            <div className="grid grid-cols-7 gap-2 h-full content-start">
+          <div className="flex-1 px-2 pb-2">
+            <div className="grid grid-cols-7 gap-4 h-full content-start p-2">
               {Array.from({ length: startingDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
@@ -196,8 +199,7 @@ export default function Schedule() {
                       ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
                     `}
                   >
-                    <span className={`text-lg mb-0.5 ${event ? 'font-bold' : ''}`}>{day}</span>
-                    {/* ✅ Code 1 핵심: 달력 날짜 안에 아이콘 직접 표시 */}
+                    <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
                     {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                   </button>
                 );
@@ -208,8 +210,7 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ Code 1 스타일: 오른쪽 리스트, bg-white/70
-            ✅ Flex Item으로 고정 너비 (w-[300px])
+            ✅ w-[300px] flex-none: 너비 고정
            ======================= */}
         <div className="w-[300px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
@@ -258,6 +259,7 @@ export default function Schedule() {
           </div>
         </div>
 
+      </div>
     </div>
   );
 }
