@@ -60,7 +60,7 @@ export function RegionSelector({
     >
       <div
         // ✅ [수정] 모달 크기 확대 (max-w-lg), 둥근 모서리 강조 (rounded-3xl)
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/5"
+        className="bg-white rounded-3xl shadow-2xl w-24 h-24 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 1. 헤더 */}
