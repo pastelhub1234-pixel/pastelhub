@@ -73,7 +73,6 @@ export default function Schedule() {
     }
   };
 
-  // ✅ [수정] w-16 h-16 제거 (달력 버튼 크기에 영향을 주지 않도록 색상만 반환)
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
@@ -85,17 +84,15 @@ export default function Schedule() {
   };
 
   return (
-    // ✅ [수정 1] h-screen, items-center, overflow-hidden (스크롤 방지 & 중앙 정렬)
-    <div className="w-full h-screen p-4 flex justify-center items-center overflow-hidden">
+    <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [수정] 높이 620px (왼쪽 패널 간격 확보를 위해 약간 늘림) */}
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
-        style={{ height: '620px' }}
+        style={{ height: '560px' }}
       >
         
         {/* =======================
@@ -103,19 +100,19 @@ export default function Schedule() {
            ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
+            // ✅ [수정] pt-8, pb-8로 위아래 간격 확보
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                
-               {/* ✅ [수정 2] 아이콘: text-7xl로 확대, 상자는 w-24 h-24 유지 */}
-               {/* mb-8로 아래 요소와 간격 확보 */}
+               {/* ✅ [수정] 상자 크기(w-24 h-24) 유지, 아이콘 크기(text-7xl) 확대, 아래 간격(mb-8) 증가 */}
                <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
+              {/* ✅ [수정] 아래 간격(mb-6) 증가 */}
               <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              {/* ✅ [수정 3] break-keep 및 간격(mb-4) 조정 */}
               <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
                 {selectedEvent.title}
               </h2>
@@ -197,7 +194,7 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
-                    // ✅ [수정 4] h-[85%] self-center: 버튼 높이를 줄이고 그리드 셀 중앙에 배치
+                    // ✅ [수정] h-[85%] self-center: 버튼 높이를 줄이고 그리드 셀 중앙에 배치 (위아래 길이 축소)
                     className={`
                       w-full h-[85%] self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
