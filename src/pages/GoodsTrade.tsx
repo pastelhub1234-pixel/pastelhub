@@ -3,26 +3,11 @@ import {
   Search, MapPin, Box, ExternalLink, RefreshCw, Clock, Filter, 
   ArrowRightLeft, AlertCircle, Loader2, ChevronDown 
 } from 'lucide-react';
-import { useJsonData } from "../../../hooks/useJsonData"; 
-import { cn, formatDate } from '../../../utils/common';
+import { useJsonData } from "../hooks/useJsonData"; 
+import { cn, formatDate } from '../lib/utils';
 // ✅ 빌드 에러 방지를 위해 파일명 소문자 확인
-import { RegionSelector } from './RegionSelector';
-
-// 타입 정의
-interface TradeItem {
-  id: string;
-  haveItems: string[];
-  wantItems: string[];
-  region: string;
-  status: "active" | "completed";
-  isDeliveryAvailable: boolean;
-  createdAt: string;
-  openChatLink: string;
-  author: {
-    name: string;
-    level: string;
-  };
-}
+import { RegionSelector } from './region-selector';
+import { TradeItem } from "../types";
 
 export function GoodsTrade() {
   const { data: trades, isLoading } = useJsonData<TradeItem[]>('goodstrade');
@@ -87,7 +72,7 @@ export function GoodsTrade() {
         <div className="space-y-1">
           <h3 className="text-sm font-bold text-amber-800">주의사항 안내</h3>
           <p className="text-sm text-amber-700/90 leading-relaxed">
-            이곳은 팬들을 위한 순수 <strong>물물교환(Barter)</strong> 공간입니다. 
+            이곳은 팬들을 위한 순수 <strong>물물교환</strong> 공간입니다. 
             금전 요구, 계좌 거래 유도 행위 적발 시 이용이 제한될 수 있습니다.
           </p>
         </div>
