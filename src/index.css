@@ -254,7 +254,14 @@
     --color-blue-950: oklch(.282 .091 267.935);
 
     --color-cyan-400: oklch(0.798 0.136 219.227);
-    --color-teal-400: oklch(0.806 0.122 173.23);
+    --color-teal-50: oklch(0.96 0.03 173.23);   /* 배경용 연한 민트 */
+    --color-teal-100: oklch(0.92 0.06 173.23);  /* 테두리용 */
+    --color-teal-200: oklch(0.87 0.10 173.23);  /* Hover 테두리 */
+    --color-teal-400: oklch(0.806 0.122 173.23); /* 포인트 (Pulse 등) */
+    --color-teal-500: oklch(0.72 0.16 173.23);   /* 버튼 배경 */
+    --color-teal-600: oklch(0.60 0.14 173.23);   /* 텍스트/버튼 Hover */
+    --color-teal-700: oklch(0.48 0.12 173.23);   /* 진한 텍스트 */
+    --color-teal-800: oklch(0.35 0.10 173.23);   /* 매우 진한 텍스트 */
 
     /* Indigo */
     --color-indigo-50: oklch(.962 .018 272.314);
@@ -320,6 +327,10 @@
     --color-rose-800: oklch(.455 .188 13.697);
     --color-rose-900: oklch(.41 .159 10.272);
     --color-rose-950: oklch(.271 .105 12.094);
+
+    --color-kakao-bg: #FAE100;
+    --color-kakao-text: #371D1E;
+    --color-kakao-border: #F5DA00;
 
     /* Base Variables */
     --color-black: #000;
@@ -2096,16 +2107,21 @@
   .bg-slate-50\/30 { background-color: var(--color-slate-50-30); }
   .bg-slate-50\/50 { background-color: var(--color-slate-50-50); }
   .bg-slate-50\/80 { background-color: var(--color-slate-50-80); }
-  .bg-emerald-50 { background-color: var(--color-emerald-50); }
-  .bg-emerald-50\/30 { background-color: var(--color-emerald-50-30); }
-  .bg-emerald-50\/50 { background-color: var(--color-emerald-50-50); }
-  .bg-emerald-100\/80 { background-color: var(--color-emerald-100-80); }
-  .bg-emerald-400 { background-color: var(--color-emerald-400); }
-  .bg-emerald-500 { background-color: var(--color-emerald-500); }
-  .bg-emerald-600 { background-color: var(--color-emerald-600); }
+  .bg-teal-50 { background-color: var(--color-teal-50); }
+  .bg-teal-100 { background-color: var(--color-teal-100); }
+  .bg-teal-400 { background-color: var(--color-teal-400); }
+  .bg-teal-500 { background-color: var(--color-teal-500); }
+  .bg-kakao { background-color: var(--color-kakao-bg); }
+  .text-teal-500 { color: var(--color-teal-500); }
+  .text-teal-600 { color: var(--color-teal-600); }
+  .text-teal-700 { color: var(--color-teal-700); }
+  .text-teal-800 { color: var(--color-teal-800); }
+  .border-teal-100 { border-color: var(--color-teal-100); }
+  .border-teal-200 { border-color: var(--color-teal-200); }
   
-  .hover\:bg-emerald-50\/50:hover { background-color: var(--color-emerald-50-50); }
-  .hover\:bg-emerald-700:hover { background-color: var(--color-emerald-700); }
+  .hover\:bg-teal-600:hover { background-color: var(--color-teal-600); }
+  .hover\:bg-slate-50:hover { background-color: var(--color-slate-50); }
+  .hover\:border-teal-200:hover { border-color: var(--color-teal-200); }
   .bg-rose-50\/30 { background-color: var(--color-rose-50-30); }
   .bg-rose-50\/50 { background-color: var(--color-rose-50-50); }
   .bg-rose-100\/80 { background-color: var(--color-rose-100-80); }
