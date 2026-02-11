@@ -195,7 +195,7 @@ export default function Schedule() {
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
                     className={`
-                      w-full h-[80%] self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                      w-full h-12 self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
