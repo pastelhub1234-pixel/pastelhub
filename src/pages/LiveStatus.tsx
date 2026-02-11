@@ -31,7 +31,7 @@ const STATUS_CONFIG = {
     isLive: false,
   },
   off: {
-    wrapper: 'border-gray-100 bg-gray-50/30 opacity-60 cursor-default', // 클릭 불가 느낌
+    wrapper: 'border-gray-100 bg-gray-50/30 opacity-60 cursor-default',
     badge: 'bg-gray-100 text-gray-400',
     dot: 'bg-gray-300',
     icon: <Moon className="w-3 h-3 mr-1" />,
@@ -40,7 +40,6 @@ const STATUS_CONFIG = {
   },
 } as const;
 
-// 헬퍼 함수
 const getViewStatus = (status: string, title: string): ViewStatus => {
   if (status === 'chzzk_live') return 'chzzk';
   if (status === 'X_live') return 'space';
@@ -75,16 +74,15 @@ export default function LiveStatus() {
 
   return (
     <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-white/60 space-y-4">
-      
       {/* 헤더 */}
       <div className="flex items-center justify-between px-1">
         <h3 className="text-gray-800 font-bold text-lg">방송 현황</h3>
         {sortedList.some(i => i.status.includes('live')) && (
           <div className="flex items-center gap-1.5 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
-            <div className="relative flex h-2 w-2">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-            </div>
+            </span>
             <span className="text-[11px] font-bold text-red-500">ON AIR</span>
           </div>
         )}
@@ -96,8 +94,6 @@ export default function LiveStatus() {
           const statusType = getViewStatus(item.status, item.title);
           const config = STATUS_CONFIG[statusType];
           const isOff = statusType === 'off';
-
-          // OFF 상태면 div, 아니면 a 태그 사용
           const Component = isOff ? 'div' : 'a';
 
           return (
@@ -109,23 +105,26 @@ export default function LiveStatus() {
               className={`
                 group relative flex items-center justify-between p-3 rounded-xl border transition-all duration-200
                 ${config.wrapper}
-                ${!isOff ? 'hover:scale-[1.02] hover:shadow-md cursor-pointer' : ''}
+                ${!isOff ? 'hover:scale-[1.01] hover:shadow-md cursor-pointer' : ''}
               `}
             >
+              {/* 왼쪽 영역: 이미지 + 텍스트 */}
               <div className="flex items-center gap-3 overflow-hidden flex-1">
-                {/* 프로필 이미지 */}
+                
+                {/* 1. 프로필 이미지 영역 (크기 고정 및 축소 방지) */}
                 <div className="relative flex-shrink-0">
                   <img 
                     src={item.profileImg} 
                     alt={item.name} 
-                    className={`w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm transition-transform ${!isOff ? 'group-hover:scale-105' : 'grayscale'}`} 
+                    // ✅ w-10 h-10으로 크기 고정 (약 40px), flex-shrink-0 추가
+                    className={`w-10 h-10 rounded-full object-cover border border-white shadow-sm transition-transform ${!isOff ? 'group-hover:scale-105' : 'grayscale'}`} 
                   />
                   {config.isLive && (
-                    <span className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${config.dot} animate-pulse`}></span>
+                    <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full ${config.dot} animate-pulse`}></span>
                   )}
                 </div>
 
-                {/* 텍스트 정보 */}
+                {/* 2. 텍스트 정보 */}
                 <div className="flex flex-col min-w-0 pr-2">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className={`text-sm font-bold ${isOff ? 'text-gray-500' : 'text-gray-800'}`}>
@@ -141,10 +140,10 @@ export default function LiveStatus() {
                 </div>
               </div>
 
-              {/* 우측 화살표 아이콘 (Link 상태일 때만 표시) */}
+              {/* 우측 화살표 (이동 가능할 때만) */}
               {!isOff && (
-                <div className="pl-2 text-gray-300 group-hover:text-purple-400 transition-colors">
-                  <ChevronRight className="w-5 h-5" />
+                <div className="pl-2 text-gray-300 group-hover:text-purple-400 transition-colors flex-shrink-0">
+                  <ChevronRight className="w-4 h-4" />
                 </div>
               )}
             </Component>
