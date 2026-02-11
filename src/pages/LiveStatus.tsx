@@ -1,60 +1,46 @@
 import { useMemo } from 'react';
-import { Radio, ExternalLink, Mic, Tv, Calendar, Moon, Loader2 } from "lucide-react";
+import { Radio, Mic, Tv, Calendar, Moon, Loader2, ChevronRight } from "lucide-react";
 import { useJsonData } from '../hooks/useJsonData';
-import { BroadcastItem } from '../types'; // 정의된 타입 import
+import { BroadcastItem } from '../types';
 
-// UI 내부적으로 사용할 상태 타입 (View Logic)
 type ViewStatus = 'chzzk' | 'space' | 'scheduled' | 'off';
 
-// 상태별 디자인/설정 상수 (컴포넌트 외부에 선언하여 메모리 절약)
 const STATUS_CONFIG = {
   chzzk: {
-    color: 'emerald',
-    wrapper: 'border-emerald-200 bg-emerald-50/60',
+    wrapper: 'border-emerald-100 bg-emerald-50/40 hover:border-emerald-300 hover:shadow-emerald-100/50',
     badge: 'bg-emerald-100 text-emerald-600',
     dot: 'bg-emerald-500',
     icon: <Tv className="w-3 h-3 mr-1" />,
     label: 'CHZZK',
-    btn: 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200 text-white',
-    btnText: 'LIVE',
     isLive: true,
   },
   space: {
-    color: 'violet',
-    wrapper: 'border-violet-200 bg-violet-50/60',
-    badge: 'bg-violet-100 text-violet-600',
-    dot: 'bg-violet-500',
+    wrapper: 'border-purple-100 bg-purple-50/40 hover:border-purple-300 hover:shadow-purple-100/50',
+    badge: 'bg-purple-100 text-purple-600',
+    dot: 'bg-purple-500',
     icon: <Mic className="w-3 h-3 mr-1" />,
     label: 'SPACE',
-    btn: 'bg-violet-600 hover:bg-violet-700 shadow-violet-200 text-white',
-    btnText: 'LISTEN',
     isLive: true,
   },
   scheduled: {
-    color: 'amber',
-    wrapper: 'border-amber-100 bg-white',
+    wrapper: 'border-amber-100 bg-white hover:border-amber-300 hover:shadow-amber-100/50',
     badge: 'bg-amber-100 text-amber-600',
     dot: 'bg-amber-400',
     icon: <Calendar className="w-3 h-3 mr-1" />,
     label: '방송예정',
-    btn: 'bg-amber-100 text-amber-700 hover:bg-amber-200',
-    btnText: '대기',
     isLive: false,
   },
   off: {
-    color: 'gray',
-    wrapper: 'border-gray-100 bg-gray-50/40 opacity-75',
+    wrapper: 'border-gray-100 bg-gray-50/30 opacity-60 cursor-default', // 클릭 불가 느낌
     badge: 'bg-gray-100 text-gray-400',
     dot: 'bg-gray-300',
     icon: <Moon className="w-3 h-3 mr-1" />,
     label: 'OFF',
-    btn: 'hidden',
-    btnText: '',
     isLive: false,
   },
 } as const;
 
-// 상태 판별 헬퍼 함수
+// 헬퍼 함수
 const getViewStatus = (status: string, title: string): ViewStatus => {
   if (status === 'chzzk_live') return 'chzzk';
   if (status === 'X_live') return 'space';
@@ -65,14 +51,11 @@ const getViewStatus = (status: string, title: string): ViewStatus => {
 export default function LiveStatus() {
   const { data: statusList, loading } = useJsonData<BroadcastItem[]>('status');
 
-  // 데이터 가공 및 정렬 메모이제이션
   const sortedList = useMemo(() => {
     if (!statusList) return [];
-    
     return [...statusList].sort((a, b) => {
       const getScore = (item: BroadcastItem) => {
         const viewStatus = getViewStatus(item.status, item.title);
-        // 우선순위: Live(2) > Scheduled(1) > Off(0)
         if (viewStatus === 'chzzk' || viewStatus === 'space') return 2;
         if (viewStatus === 'scheduled') return 1;
         return 0;
@@ -81,105 +64,92 @@ export default function LiveStatus() {
     });
   }, [statusList]);
 
-  // 로딩 UI
   if (loading) {
     return (
-      <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100/50 min-h-[180px] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
-        <span className="text-gray-400 text-sm">멤버 상태 불러오는 중...</span>
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/60 min-h-[150px] flex flex-col items-center justify-center gap-3">
+        <Loader2 className="w-6 h-6 text-purple-400 animate-spin" />
+        <span className="text-gray-400 text-xs">로딩 중...</span>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/60 space-y-5">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-white/60 space-y-4">
       
       {/* 헤더 */}
       <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-purple-100 to-white rounded-lg shadow-sm border border-purple-50">
-            <Radio className="w-5 h-5 text-purple-600" />
-          </div>
-          <h3 className="text-gray-800 font-bold text-lg">방송 현황</h3>
-        </div>
-        
-        {/* 라이브 상태 인디케이터 */}
+        <h3 className="text-gray-800 font-bold text-lg">방송 현황</h3>
         {sortedList.some(i => i.status.includes('live')) && (
           <div className="flex items-center gap-1.5 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
-            <span className="relative flex h-2.5 w-2.5">
+            <div className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-            </span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+            </div>
             <span className="text-[11px] font-bold text-red-500">ON AIR</span>
           </div>
         )}
       </div>
 
       {/* 리스트 */}
-      <div className="flex flex-col gap-3">
-        {sortedList.length > 0 ? (
-          sortedList.map((item, idx) => {
-            const statusType = getViewStatus(item.status, item.title);
-            const config = STATUS_CONFIG[statusType];
+      <div className="flex flex-col gap-2.5">
+        {sortedList.map((item, idx) => {
+          const statusType = getViewStatus(item.status, item.title);
+          const config = STATUS_CONFIG[statusType];
+          const isOff = statusType === 'off';
 
-            return (
-              <div 
-                key={`${item.name}-${idx}`} 
-                className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all duration-300 hover:shadow-md ${config.wrapper}`}
-              >
-                <div className="flex items-center gap-4 overflow-hidden">
-                  {/* 프로필 이미지 & 상태 닷 */}
-                  <div className="relative flex-shrink-0">
-                    <img 
-                      src={item.profileImg} 
-                      alt={item.name} 
-                      className={`w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm transition-transform ${statusType === 'off' ? 'grayscale opacity-70' : 'hover:scale-105'}`} 
-                    />
-                    <div className="absolute bottom-0 right-0 translate-x-1 translate-y-1">
-                      {config.isLive && (
-                        <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${config.dot}`}></span>
-                      )}
-                      <span className={`relative inline-flex rounded-full h-3.5 w-3.5 border-2 border-white ${config.dot}`}></span>
-                    </div>
-                  </div>
+          // OFF 상태면 div, 아니면 a 태그 사용
+          const Component = isOff ? 'div' : 'a';
 
-                  {/* 정보 텍스트 */}
-                  <div className="min-w-0 flex flex-col gap-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${statusType === 'off' ? 'text-gray-500' : 'text-gray-800'}`}>
-                        {item.name}
-                      </span>
-                      <span className={`flex items-center text-[10px] font-extrabold px-1.5 py-0.5 rounded ${config.badge}`}>
-                        {config.icon}
-                        {config.label}
-                      </span>
-                    </div>
-                    <p className={`text-xs truncate max-w-[160px] sm:max-w-[220px] ${statusType === 'off' ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {item.title || '제목 없음'}
-                    </p>
-                  </div>
+          return (
+            <Component
+              key={`${item.name}-${idx}`}
+              href={!isOff ? item.liveUrl : undefined}
+              target={!isOff ? "_blank" : undefined}
+              rel={!isOff ? "noreferrer" : undefined}
+              className={`
+                group relative flex items-center justify-between p-3 rounded-xl border transition-all duration-200
+                ${config.wrapper}
+                ${!isOff ? 'hover:scale-[1.02] hover:shadow-md cursor-pointer' : ''}
+              `}
+            >
+              <div className="flex items-center gap-3 overflow-hidden flex-1">
+                {/* 프로필 이미지 */}
+                <div className="relative flex-shrink-0">
+                  <img 
+                    src={item.profileImg} 
+                    alt={item.name} 
+                    className={`w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm transition-transform ${!isOff ? 'group-hover:scale-105' : 'grayscale'}`} 
+                  />
+                  {config.isLive && (
+                    <span className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${config.dot} animate-pulse`}></span>
+                  )}
                 </div>
 
-                {/* 버튼 (Off 상태가 아닐 때만 노출) */}
-                {statusType !== 'off' && (
-                  <a 
-                    href={item.liveUrl} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className={`flex-shrink-0 flex items-center gap-1 text-xs font-bold px-3.5 py-2 rounded-xl transition-transform active:scale-95 ml-2 ${config.btn}`}
-                  >
-                    {config.btnText}
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
+                {/* 텍스트 정보 */}
+                <div className="flex flex-col min-w-0 pr-2">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className={`text-sm font-bold ${isOff ? 'text-gray-500' : 'text-gray-800'}`}>
+                      {item.name}
+                    </span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold flex items-center ${config.badge}`}>
+                      {config.icon} {config.label}
+                    </span>
+                  </div>
+                  <p className={`text-xs truncate w-full ${isOff ? 'text-gray-400' : 'text-gray-500'}`}>
+                    {item.title || (isOff ? '' : '제목 없음')}
+                  </p>
+                </div>
               </div>
-            );
-          })
-        ) : (
-          <div className="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-            <p className="text-gray-400 text-sm">데이터가 없습니다.</p>
-          </div>
-        )}
+
+              {/* 우측 화살표 아이콘 (Link 상태일 때만 표시) */}
+              {!isOff && (
+                <div className="pl-2 text-gray-300 group-hover:text-purple-400 transition-colors">
+                  <ChevronRight className="w-5 h-5" />
+                </div>
+              )}
+            </Component>
+          );
+        })}
       </div>
     </div>
   );
