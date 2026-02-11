@@ -73,27 +73,29 @@ export default function Schedule() {
     }
   };
 
+  // ✅ [수정] w-16 h-16 제거 (달력 버튼 크기에 영향을 주지 않도록 색상만 반환)
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
-      case 'birthday': return 'w-16 h-16 bg-pink-100 text-pink-600 ring-pink-200';
-      case 'album': return 'w-16 h-16 bg-purple-100 text-purple-600 ring-purple-200';
-      case 'concert': return 'w-16 h-16 bg-blue-100 text-blue-600 ring-blue-200';
-      case 'broadcast': return 'w-16 h-16 bg-yellow-100 text-yellow-700 ring-yellow-200';
-      default: return 'w-16 h-16 bg-green-100 text-green-600 ring-green-200';
+      case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
+      case 'album': return 'bg-purple-100 text-purple-600 ring-purple-200';
+      case 'concert': return 'bg-blue-100 text-blue-600 ring-blue-200';
+      case 'broadcast': return 'bg-yellow-100 text-yellow-700 ring-yellow-200';
+      default: return 'bg-green-100 text-green-600 ring-green-200';
     }
   };
 
   return (
-    // ✅ [수정 1] h-screen(화면 전체 높이), items-center(수직 중앙 정렬), overflow-hidden(스크롤 방지)
-    <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
+    // ✅ [수정 1] h-screen, items-center, overflow-hidden (스크롤 방지 & 중앙 정렬)
+    <div className="w-full h-screen p-4 flex justify-center items-center overflow-hidden">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* ✅ [수정] 높이 620px (왼쪽 패널 간격 확보를 위해 약간 늘림) */}
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
-        style={{ height: '560px' }}
+        style={{ height: '620px' }}
       >
         
         {/* =======================
@@ -103,16 +105,17 @@ export default function Schedule() {
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               {/* ✅ [수정 2] 아이콘 박스 크기 및 비율 조정 (w-24, text-6xl) */}
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
+               {/* ✅ [수정 2] 아이콘: text-7xl로 확대, 상자는 w-24 h-24 유지 */}
+               {/* mb-8로 아래 요소와 간격 확보 */}
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              {/* ✅ [수정 3] break-keep: 단어 단위 줄바꿈 유지 */}
+              {/* ✅ [수정 3] break-keep 및 간격(mb-4) 조정 */}
               <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
                 {selectedEvent.title}
               </h2>
@@ -183,7 +186,6 @@ export default function Schedule() {
 
           {/* Days Grid */}
           <div className="flex-1 px-1 pb-1">
-            {/* ✅ [수정 4] gap-3: 간격을 넓혀서 날짜 박스(상자) 크기를 작게 만듦 */}
             <div className="grid grid-cols-7 grid-rows-6 gap-3 h-full content-start">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
@@ -195,9 +197,9 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
-                    // rounded-2xl: 부드러운 둥근 사각형
+                    // ✅ [수정 4] h-[85%] self-center: 버튼 높이를 줄이고 그리드 셀 중앙에 배치
                     className={`
-                      w-full h-full rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                      w-full h-[85%] self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
