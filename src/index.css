@@ -1320,15 +1320,6 @@
     height: 560px !important; 
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-
   .h-\[50vh\] {
     height: 50vh;
   }
@@ -1608,6 +1599,10 @@
   .grid-cols-7 {
     grid-template-columns: repeat(7, minmax(0, 1fr));
   }
+
+  .sm\:grid-cols-3 { @media (min-width: 640px) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+  .w-\[35\%\] { width: 35%; }
 
   .flex-col {
     flex-direction: column;
@@ -3760,6 +3755,30 @@ html {
     @apply bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm;
   }
 
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0; /* slate-200 */
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1; /* slate-300 */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  
   /* =========================================
      3. 아이콘 크기 및 애니메이션
      ========================================= */
