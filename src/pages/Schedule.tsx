@@ -83,56 +83,55 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [수정] gap-4로 축소하여 중앙 공간 확보 */}
-      <div className="min-w-[1100px] max-w-[1500px] w-full h-[600px] flex gap-4">
+      {/* ✅ [수정] h-[600px]로 높이를 강제 고정하여 레이아웃이 늘어나지 않게 함 */}
+      <div className="min-w-[1100px] max-w-[1500px] w-full h-[600px] flex gap-6">
         
         {/* =======================
             1. [Left] Details Panel
-            ✅ [수정] w-[260px]로 축소 (달력 공간 확보를 위해)
+            ✅ h-full: 부모 높이(600px)를 꽉 채움
            ======================= */}
-        <div className="w-[260px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-5 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-2">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               {/* 아이콘 박스 */}
-               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-5 border border-purple-50">
+               {/* 아이콘 영역 */}
+               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              {/* 제목 */}
-              <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight px-1 w-full break-keep whitespace-pre-wrap">
+              {/* 텍스트 영역 (줄바꿈 허용) */}
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-2 w-full break-keep whitespace-pre-wrap">
                 {selectedEvent.title}
               </h2>
               
-              {/* 설명 */}
-              <p className="text-xs text-gray-500 mb-6 leading-relaxed px-1 break-keep whitespace-pre-wrap line-clamp-5">
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed px-2 break-keep whitespace-pre-wrap line-clamp-5">
                 {selectedEvent.description}
               </p>
 
-              {/* 하단 정보 박스 */}
-              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
-                    <CalendarIcon size={18} />
+              {/* ✅ [수정] mt-auto를 사용하여 항상 맨 아래에 고정 */}
+              <div className="w-full bg-white/60 rounded-3xl p-6 text-left border border-white/80 space-y-5 shadow-sm mt-auto flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                    <CalendarIcon size={22} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
-                    <p className="text-[13px] font-bold text-gray-700 mt-0.5 truncate">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
+                    <p className="text-[15px] font-bold text-gray-700 mt-0.5 truncate">
                       {new Date(selectedEvent.date).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
-                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
-                    <MapPin size={18} />
+                 <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                    <MapPin size={22} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
-                    <p className="text-[13px] font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
+                    <p className="text-[15px] font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
                   </div>
                 </div>
               </div>
@@ -147,7 +146,7 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ flex-1: 이제 양쪽이 줄어들어서 중앙이 훨씬 넓어짐 (약 1:2:1 비율 근접)
+            ✅ h-full로 높이 고정
            ======================= */}
         <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
@@ -209,9 +208,9 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ [수정] w-[260px]로 축소
+            ✅ h-full로 높이 고정
            ======================= */}
-        <div className="w-[260px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
+        <div className="w-[300px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
@@ -237,7 +236,7 @@ export default function Schedule() {
                   `}
                 >
                   <div className={`
-                    flex flex-col items-center justify-center min-w-[2.5rem] border-r pr-3
+                    flex flex-col items-center justify-center min-w-[3rem] border-r pr-3
                     ${isSelected ? 'border-purple-200 text-purple-600' : 'border-gray-200 text-gray-400'}
                   `}>
                     <span className="text-[10px] font-bold uppercase">{monthNames[eventDate.getMonth()].slice(0, 3)}</span>
