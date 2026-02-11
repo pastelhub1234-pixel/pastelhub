@@ -33,7 +33,7 @@ export default function Schedule() {
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
 
-  // ✅ [중요] 달력 높이 고정을 위해 항상 42칸(6주) 생성
+  // 달력 높이 고정 (6주 = 42칸)
   const totalSlots = 42; 
   const calendarCells = [
     ...Array(startingDayOfWeek).fill(null),
@@ -85,31 +85,33 @@ export default function Schedule() {
   };
 
   return (
+    // 상단 여백 유지
     <div className="w-full min-h-screen p-2 pt-8 overflow-x-auto flex justify-center items-start">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Grid Layout (1:2:1) - 높이 750px */}
-      <div className="min-w-[1000px] max-w-[1400px] w-full h-[750px] grid grid-cols-4 gap-6">
+      {/* ✅ [수정 1] 높이를 h-[820px]로 대폭 늘림 (세로로 시원하게) */}
+      <div className="min-w-[1000px] max-w-[1400px] w-full h-[820px] grid grid-cols-4 gap-6">
         
         {/* =======================
             1. [Left] Details Panel
            ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-6 pb-2">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-4">
                
-               <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2.5rem] shadow-sm flex items-center justify-center text-7xl mb-6 border border-purple-50">
+               {/* 아이콘 상자 */}
+               <div className="w-28 h-28 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2.5rem] shadow-sm flex items-center justify-center text-7xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              <h2 className="text-2xl font-bold text-gray-800 mb-3 leading-tight px-1 w-full break-keep">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
                 {selectedEvent.title}
               </h2>
               
@@ -117,6 +119,7 @@ export default function Schedule() {
                 {selectedEvent.description}
               </p>
 
+              {/* 하단 정보창 */}
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
@@ -150,11 +153,10 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ p-8 -> p-6 (패딩 축소)
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2">
+          <div className="flex items-center justify-between mb-6 flex-shrink-0 px-2">
             <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
               <CalendarIcon className="w-8 h-8 text-purple-500" />
               {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
@@ -170,7 +172,7 @@ export default function Schedule() {
           </div>
 
           {/* Weekdays */}
-          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
+          <div className="grid grid-cols-7 mb-4 px-2 flex-shrink-0">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <div key={day} className="text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
                 {day}
@@ -180,8 +182,8 @@ export default function Schedule() {
 
           {/* Days Grid */}
           <div className="flex-1 px-1 pb-1">
-            {/* ✅ gap-4 -> gap-2 (간격 좁혀서 박스 키움) */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-2 h-full content-start">
+            {/* ✅ [수정 2] gap-3: 너무 붙지 않으면서도 꽉 찬 느낌 */}
+            <div className="grid grid-cols-7 grid-rows-6 gap-3 h-full content-start">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
                 const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
@@ -192,10 +194,9 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
-                    // ✅ w-full h-full: 박스 크기 최대화
-                    // ✅ rounded-[24px]: 둥글둥글한 사각형 (Squircle 느낌)
+                    // ✅ [수정 3] rounded-[32px] (매우 둥글게) 적용하여 네모난 느낌 제거
                     className={`
-                      w-full h-full rounded-[24px] flex flex-col items-center justify-center relative transition-all duration-300
+                      w-full h-full rounded-[32px] flex flex-col items-center justify-center relative transition-all duration-300
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.02] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
@@ -206,8 +207,7 @@ export default function Schedule() {
                   >
                     {day && (
                       <>
-                        {/* ✅ 숫자 크기 text-sm: 박스가 상대적으로 더 커보임 */}
-                        <span className={`text-sm mb-1 ${event ? 'font-bold opacity-80' : ''}`}>{day}</span>
+                        <span className={`text-base mb-1 ${event ? 'font-bold opacity-80' : ''}`}>{day}</span>
                         {event && <span className="text-2xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                       </>
                     )}
