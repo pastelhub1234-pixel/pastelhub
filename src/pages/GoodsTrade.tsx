@@ -211,8 +211,8 @@ export default function GoodsTrade() {
         <div className="space-y-1 pt-0.5">
             <h3 className="text-sm font-bold text-orange-800">주의사항 안내</h3>
             <p className="text-sm text-orange-700 leading-relaxed">
-            이곳은 팬들을 위한 순수한 <strong>물물교환(Barter)</strong> 전용 공간입니다.<br className="hidden sm:block"/>
-            금전 요구, 계좌 거래 유도 등 상업적 행위 적발 시 이용이 영구 제한될 수 있습니다.
+            이곳은 팬들을 위한 <strong>물물교환</strong> 전용 공간입니다.<br className="hidden sm:block"/>
+            금전 요구, 계좌 거래 유도 행위 적발 시 이용이 제한될 수 있습니다.
             </p>
         </div>
       </div>
