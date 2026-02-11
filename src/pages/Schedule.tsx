@@ -33,8 +33,7 @@ export default function Schedule() {
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
 
-  // ✅ [핵심 1] 항상 6주(42칸)를 채워서 달력 높이 고정
-  // 빈 칸도 렌더링해야 그리드가 찌그러지지 않음
+  // ✅ [높이 고정 핵심] 달력은 항상 6주(42칸)로 고정하여 높이 변화 방지
   const totalSlots = 42; 
   const calendarCells = [
     ...Array(startingDayOfWeek).fill(null),
@@ -75,7 +74,6 @@ export default function Schedule() {
     }
   };
 
-  // 기존 Code 1 스타일 유지 (화려한 색상)
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
@@ -87,51 +85,43 @@ export default function Schedule() {
   };
 
   return (
-    // 전체 페이지 패딩
-    <div className="w-full h-full p-6 flex justify-center items-center">
+    // ✅ [수정 1] Grid 레이아웃 적용 (grid-cols-4) -> 가로 배치 강제
+    // ✅ [수정 2] 패딩 최소화 (p-4), 간격 최소화 (gap-4)
+    <div className="w-full h-full p-4 flex justify-center items-center overflow-hidden">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [핵심 2] Grid Layout 사용 (grid-cols-4)
-          - 전체 너비 min/max 설정으로 안정성 확보
-          - 높이 h-[600px] 강제 고정
-          - gap-4로 간격 일정하게 유지
-      */}
-      <div className="min-w-[1000px] max-w-[1400px] w-full h-[600px] grid grid-cols-4 gap-4">
+      {/* Grid 컨테이너: 1(좌) : 2(중) : 1(우) 비율, 높이 600px 고정 */}
+      <div className="w-full max-w-[1400px] h-[600px] grid grid-cols-4 gap-4">
         
         {/* =======================
-            1. [Left] Details Panel (col-span-1 = 25%)
+            1. [Left] Details Panel (col-span-1)
            ======================= */}
-        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
+        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-5 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-2">
                
-               {/* 아이콘 */}
-               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
+               <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-5 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              {/* 태그 */}
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              {/* 제목 (줄바꿈 허용) */}
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-2 w-full break-keep whitespace-pre-wrap">
+              <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight px-1 w-full break-keep whitespace-pre-wrap">
                 {selectedEvent.title}
               </h2>
               
-              {/* 설명 */}
-              <p className="text-sm text-gray-500 mb-6 leading-relaxed px-2 break-keep whitespace-pre-wrap line-clamp-5">
+              <p className="text-xs text-gray-500 mb-6 leading-relaxed px-1 break-keep whitespace-pre-wrap line-clamp-5">
                 {selectedEvent.description}
               </p>
 
-              {/* 하단 정보 (Date/Loc) - 하단 고정 */}
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
                     <CalendarIcon size={18} />
                   </div>
                   <div className="min-w-0">
@@ -141,8 +131,8 @@ export default function Schedule() {
                     </p>
                   </div>
                 </div>
-                 <div className="flex items-center gap-4">
-                   <div className="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                 <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
                     <MapPin size={18} />
                   </div>
                   <div className="min-w-0">
@@ -161,38 +151,39 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            2. [Center] Calendar (col-span-2 = 50%)
+            2. [Center] Calendar (col-span-2)
+            ✅ 2배 너비 차지, 높이 고정
            ======================= */}
-        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
+        <div className="col-span-2 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2">
-            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-3xl tracking-tight">
-              <CalendarIcon className="w-8 h-8 text-purple-500" />
+            <h3 className="text-gray-800 font-bold flex items-center gap-3 text-2xl tracking-tight">
+              <CalendarIcon className="w-7 h-7 text-purple-500" />
               {monthNames[currentDate.getMonth()]} <span className="text-purple-300 font-light">{currentDate.getFullYear()}</span>
             </h3>
             <div className="flex gap-2">
-              <button onClick={previousMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={previousMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
-              <button onClick={nextMonth} className="w-10 h-10 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
+              <button onClick={nextMonth} className="w-9 h-9 hover:bg-purple-50 rounded-full flex items-center justify-center transition-colors border border-transparent hover:border-purple-100">
                 <ChevronRight className="w-6 h-6 text-gray-600" />
               </button>
             </div>
           </div>
 
           {/* Weekdays */}
-          <div className="grid grid-cols-7 mb-2 px-4 flex-shrink-0">
+          <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
+              <div key={day} className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
                 {day}
               </div>
             ))}
           </div>
 
           {/* Days Grid */}
-          <div className="flex-1 px-2 pb-2">
-            {/* ✅ [핵심 3] grid-rows-6으로 6줄 강제 고정 */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-4 h-full content-start p-2">
+          <div className="flex-1 px-1 pb-1">
+            {/* ✅ grid-rows-6으로 6줄 강제 고정 (높이 흔들림 방지) */}
+            <div className="grid grid-cols-7 grid-rows-6 gap-2 h-full content-start">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
                 const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
@@ -215,7 +206,8 @@ export default function Schedule() {
                   >
                     {day && (
                       <>
-                        <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
+                        <span className={`text-lg mb-0.5 ${event ? 'font-bold' : ''}`}>{day}</span>
+                        {/* ✅ 달력 내부 아이콘 표시 (Code 1 스타일) */}
                         {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                       </>
                     )}
@@ -227,9 +219,9 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            3. [Right] Upcoming Panel (col-span-1 = 25%)
+            3. [Right] Upcoming Panel (col-span-1)
            ======================= */}
-        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
+        <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-5 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center justify-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
@@ -255,7 +247,7 @@ export default function Schedule() {
                   `}
                 >
                   <div className={`
-                    flex flex-col items-center justify-center min-w-[3rem] border-r pr-3
+                    flex flex-col items-center justify-center min-w-[2.5rem] border-r pr-3
                     ${isSelected ? 'border-purple-200 text-purple-600' : 'border-gray-200 text-gray-400'}
                   `}>
                     <span className="text-[10px] font-bold uppercase">{monthNames[eventDate.getMonth()].slice(0, 3)}</span>
