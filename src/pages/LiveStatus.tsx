@@ -5,38 +5,39 @@ import { BroadcastItem } from '../types';
 
 type ViewStatus = 'chzzk' | 'space' | 'scheduled' | 'off';
 
+// 상태별 설정 (아이콘, 텍스트, 링 컬러 등)
 const STATUS_CONFIG = {
   chzzk: {
-    wrapper: 'border-emerald-100 bg-emerald-50/40 hover:border-emerald-300 hover:shadow-emerald-100/50',
-    badge: 'bg-emerald-100 text-emerald-600',
-    dot: 'bg-emerald-500',
+    // 치지직: 네온 그린 ~ 에메랄드
+    ringGradient: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)', 
+    wrapper: 'bg-white hover:bg-emerald-50/50 hover:border-emerald-200 border-transparent',
+    badge: 'bg-emerald-50 text-emerald-600',
     icon: <Tv className="w-3 h-3 mr-1" />,
     label: 'CHZZK',
-    isLive: true,
   },
   space: {
-    wrapper: 'border-purple-100 bg-purple-50/40 hover:border-purple-300 hover:shadow-purple-100/50',
-    badge: 'bg-purple-100 text-purple-600',
-    dot: 'bg-purple-500',
+    // 스페이스: 핑크 ~ 보라
+    ringGradient: 'linear-gradient(to bottom right, #ec4899, #a855f7)',
+    wrapper: 'bg-white hover:bg-purple-50/50 hover:border-purple-200 border-transparent',
+    badge: 'bg-purple-50 text-purple-600',
     icon: <Mic className="w-3 h-3 mr-1" />,
     label: 'SPACE',
-    isLive: true,
   },
   scheduled: {
-    wrapper: 'border-amber-100 bg-white hover:border-amber-300 hover:shadow-amber-100/50',
-    badge: 'bg-amber-100 text-amber-600',
-    dot: 'bg-amber-400',
+    // 방송예정: 노랑 ~ 주황
+    ringGradient: 'linear-gradient(to bottom right, #fbbf24, #f59e0b)',
+    wrapper: 'bg-white hover:bg-amber-50/50 hover:border-amber-200 border-transparent',
+    badge: 'bg-amber-50 text-amber-600',
     icon: <Calendar className="w-3 h-3 mr-1" />,
     label: '방송예정',
-    isLive: false,
   },
   off: {
-    wrapper: 'border-gray-100 bg-gray-50/30 opacity-60 cursor-default',
+    // 휴방: 회색
+    ringGradient: 'linear-gradient(to bottom right, #e2e8f0, #cbd5e1)',
+    wrapper: 'bg-white opacity-60 hover:opacity-100 border-transparent', // 휴방은 흐리게
     badge: 'bg-gray-100 text-gray-400',
-    dot: 'bg-gray-300',
     icon: <Moon className="w-3 h-3 mr-1" />,
     label: 'OFF',
-    isLive: false,
   },
 } as const;
 
@@ -55,6 +56,7 @@ export default function LiveStatus() {
     return [...statusList].sort((a, b) => {
       const getScore = (item: BroadcastItem) => {
         const viewStatus = getViewStatus(item.status, item.title);
+        // 정렬 순서: Live(2) > Scheduled(1) > Off(0)
         if (viewStatus === 'chzzk' || viewStatus === 'space') return 2;
         if (viewStatus === 'scheduled') return 1;
         return 0;
@@ -73,9 +75,10 @@ export default function LiveStatus() {
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-white/60 space-y-4">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/60 h-full flex flex-col">
+      
       {/* 헤더 */}
-      <div className="flex items-center justify-between px-1">
+      <div className="flex items-center justify-between p-5 pb-2">
         <h3 className="text-gray-800 font-bold text-lg">방송 현황</h3>
         {sortedList.some(i => i.status.includes('live')) && (
           <div className="flex items-center gap-1.5 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
@@ -88,8 +91,8 @@ export default function LiveStatus() {
         )}
       </div>
 
-      {/* 리스트 */}
-      <div className="flex flex-col gap-2.5">
+      {/* 리스트 영역 (스크롤 가능, 패딩 적용) */}
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 custom-scrollbar">
         {sortedList.map((item, idx) => {
           const statusType = getViewStatus(item.status, item.title);
           const config = STATUS_CONFIG[statusType];
@@ -103,24 +106,37 @@ export default function LiveStatus() {
               target={!isOff ? "_blank" : undefined}
               rel={!isOff ? "noreferrer" : undefined}
               className={`
-                group relative flex items-center justify-between p-3 rounded-xl border transition-all duration-200
+                group relative flex items-center justify-between 
+                /* ✅ 카드 내부 패딩: px-3 py-2 */
+                px-3 py-2 rounded-xl border transition-all duration-200
                 ${config.wrapper}
-                ${!isOff ? 'hover:scale-[1.01] hover:shadow-md cursor-pointer' : ''}
+                ${!isOff ? 'hover:shadow-md cursor-pointer' : 'cursor-default'}
               `}
             >
-              {/* 왼쪽 영역: 이미지 + 텍스트 */}
               <div className="flex items-center gap-3 overflow-hidden flex-1">
                 
-                {/* 1. 프로필 이미지 영역 (크기 고정 및 축소 방지) */}
-                <div className="relative flex-shrink-0">
-                  <img 
-                    src={item.profileImg} 
-                    alt={item.name} 
-                    // ✅ w-10 h-10으로 크기 고정 (약 40px), flex-shrink-0 추가
-                    className={`w-10 h-10 rounded-full object-cover border border-white shadow-sm transition-transform ${!isOff ? 'group-hover:scale-105' : 'grayscale'}`} 
-                  />
-                  {config.isLive && (
-                    <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full ${config.dot} animate-pulse`}></span>
+                {/* 1. 프로필 이미지 + 그라데이션 링 */}
+                <div 
+                  className="relative flex-none transition-transform duration-300 group-hover:scale-105"
+                  style={{ width: '44px', height: '44px' }} // 링 포함 전체 크기
+                >
+                  <div 
+                    className="w-full h-full rounded-full flex items-center justify-center shadow-sm"
+                    style={{ 
+                      background: config.ringGradient, // ✅ 상태별 그라데이션 적용
+                      padding: '2px' // 링 두께
+                    }}
+                  >
+                    <img 
+                      src={item.profileImg} 
+                      alt={item.name} 
+                      className={`w-full h-full rounded-full object-cover bg-white block ${isOff ? 'grayscale' : ''}`}
+                    />
+                  </div>
+                  
+                  {/* Live 상태일 때만 우측 하단 뱃지 표시 */}
+                  {!isOff && statusType !== 'scheduled' && (
+                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
                   )}
                 </div>
 
@@ -140,7 +156,7 @@ export default function LiveStatus() {
                 </div>
               </div>
 
-              {/* 우측 화살표 (이동 가능할 때만) */}
+              {/* 우측 화살표 */}
               {!isOff && (
                 <div className="pl-2 text-gray-300 group-hover:text-purple-400 transition-colors flex-shrink-0">
                   <ChevronRight className="w-4 h-4" />
