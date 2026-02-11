@@ -735,6 +735,18 @@
   .border-pink-100 { border-color: var(--color-pink-100); }
   .border-pink-200 { border-color: var(--color-pink-200); }
 
+  .text-\[10px\] {
+    font-size: 10px;
+  }
+
+  .text-\[11px\] {
+    font-size: 11px;
+  }
+
+  .text-\[15px\] {
+    font-size: 15px;
+  }
+
   .hover-bg-pink-50:hover { background-color: var(--color-rose-50); }
   .hover-text-pink-600:hover { color: var(--color-pink-600); }
 
