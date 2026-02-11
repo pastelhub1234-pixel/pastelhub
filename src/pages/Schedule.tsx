@@ -66,7 +66,7 @@ export default function Schedule() {
     }
   };
 
-  // Code 1 스타일: 이벤트 종류별 화려한 색상
+  // Code 1 스타일: 이벤트 종류별 화려한 색상 유지
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
@@ -85,18 +85,18 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [수정 2] Flex 사용으로 가로 배치 고정 */}
+      {/* ✅ [수정 2] Flex 사용으로 가로 배치 고정 및 전체 크기 조절 */}
       <div className="min-w-[1100px] max-w-[1500px] w-full h-[600px] flex gap-6">
         
         {/* =======================
             1. [Left] Details Panel
-            ✅ w-[320px] flex-none: 너비 고정 (글자가 길어져도 안 늘어남)
+            ✅ w-[320px] flex-none: 너비를 픽셀로 고정하여 글자 길이에 영향받지 않음
            ======================= */}
         <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               {/* ✅ [수정 3] 상자는 작게(w-20), 아이콘은 크게(text-6xl) */}
+               {/* ✅ [수정 3] 상자는 조금 줄이고(w-20), 아이콘은 키움(text-6xl) */}
                <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
@@ -148,7 +148,7 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ flex-1: 남은 공간 채우기
+            ✅ flex-1: 남은 공간 채우기 (1:2:1 비율 유지에 기여)
            ======================= */}
         <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
@@ -210,9 +210,9 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ w-[300px] flex-none: 너비 고정
+            ✅ w-[320px] flex-none: 너비 고정 (1:2:1 비율 유지)
            ======================= */}
-        <div className="w-[300px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
