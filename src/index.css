@@ -1217,6 +1217,14 @@
     margin-bottom: calc(var(--spacing) * 6);
   }
 
+  .mr-3 {
+    margin-right: calc(var(--spacing) * 3);
+  }
+
+  .max-w-\[75\%\] {
+    max-width: 75%;
+  }
+  
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
