@@ -1345,6 +1345,10 @@
     height: 100%;
   }
 
+    .h-[80%] {
+      height: 80%;
+    }
+
   .max-h-\[80vh\] {
     max-height: 80vh;
   }
