@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { MapPin, X, ChevronRight, Check } from "lucide-react";
-import { cn } from "../lib/utils"; 
+import { cn } from "../lib/utils";
 
+// 데이터는 기존과 동일하게 유지
 export const REGION_DATA: Record<string, string[]> = {
   전체: [],
   서울: ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
@@ -54,82 +55,85 @@ export function RegionSelector({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/30 backdrop-blur-[2px] p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        // ✅ [수정 1] 위치 및 크기 조정
-        // -mt-20: 중앙보다 살짝 위로 올림
-        // max-w-md: 너비를 기존 lg보다 작게 설정
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-md -mt-20 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 border border-white/20"
+        // ✅ [수정] 모달 크기 확대 (max-w-lg), 둥근 모서리 강조 (rounded-3xl)
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/5"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 헤더 */}
-        {/* ✅ [수정 2] 패딩 축소 (px-5 py-4 -> px-4 py-3) */}
-        <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-white">
-          <h3 className="font-bold text-slate-800 flex items-center gap-2 text-base">
-            <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center">
-              <MapPin className="w-4 h-4 text-violet-500" />
+        {/* 1. 헤더 */}
+        <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white z-10">
+          <h3 className="font-extrabold text-slate-800 flex items-center gap-2.5 text-lg">
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+              <MapPin className="w-5 h-5" />
             </div>
             지역 선택
           </h3>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-slate-600 transition-colors"
+            className="p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* 컨텐츠 (2단 컬럼) */}
-        {/* ✅ [수정 3] 높이 축소 (min-h-[320px] -> h-[280px]) */}
-        <div className="flex-1 flex overflow-hidden h-[280px] bg-slate-50/50">
+        {/* 2. 컨텐츠 영역 (좌우 분할) */}
+        {/* ✅ [수정] 높이 고정 (h-[400px]) - 스크롤 영역 확보 */}
+        <div className="flex-1 flex overflow-hidden h-[400px] bg-white">
           
-          {/* 1. 시/도 선택 */}
-          <div className="w-[38%] bg-white border-r border-slate-100 overflow-y-auto custom-scrollbar">
+          {/* [좌측] 시/도 리스트 (35% 너비) */}
+          <div className="w-[35%] bg-slate-50 border-r border-slate-100 overflow-y-auto custom-scrollbar">
             {MAIN_REGIONS.map((region) => (
               <button
                 key={region}
                 onClick={() => {
                   setTempMain(region);
                   setTempSub("");
+                  // 하위 지역이 없거나 '전체'인 경우 자동 선택
                   if (region === "전체" || REGION_DATA[region].length === 0) {
                     setTempSub("전체");
                   }
                 }}
                 className={cn(
-                  // ✅ [수정 4] 리스트 패딩 축소 (py-3.5 -> py-2.5)
-                  "w-full text-left px-4 py-2.5 text-sm font-medium transition-all flex justify-between items-center border-l-4",
+                  "w-full text-left px-5 py-3.5 text-sm font-medium transition-all flex justify-between items-center relative",
                   tempMain === region
-                    ? "bg-violet-50 text-violet-700 border-l-violet-500"
-                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-700 border-l-transparent"
+                    ? "bg-white text-indigo-700 font-bold shadow-sm z-10" // 선택됨: 흰색 배경 + 그림자
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-700" // 기본
                 )}
               >
+                {/* 선택 시 좌측 인디케이터 바 */}
+                {tempMain === region && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
+                )}
                 {region}
                 {tempMain === region && (
-                  <ChevronRight className="w-3.5 h-3.5 text-violet-400" />
+                  <ChevronRight className="w-4 h-4 text-indigo-500" />
                 )}
               </button>
             ))}
           </div>
 
-          {/* 2. 시/군/구 선택 */}
-          <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
+          {/* [우측] 시/군/구 리스트 (65% 너비) */}
+          <div className="flex-1 overflow-y-auto bg-white p-5 custom-scrollbar">
             {tempMain !== "전체" ? (
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {/* 전체 선택 버튼 */}
                 <button
                   onClick={() => setTempSub("전체")}
                   className={cn(
-                    // ✅ [수정 5] 버튼 패딩 축소 (py-2.5 -> py-2)
-                    "px-2 py-2 rounded-xl text-xs font-medium border text-center transition-all flex items-center justify-center gap-1 shadow-sm",
+                    "px-2 py-2.5 rounded-xl text-xs font-bold border text-center transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95",
                     tempSub === "전체" || tempSub === ""
-                      ? "bg-violet-500 border-violet-500 text-white shadow-violet-200"
-                      : "bg-white border-slate-200 text-slate-500 hover:border-violet-200 hover:text-violet-600 hover:bg-white"
+                      ? "bg-indigo-600 border-indigo-600 text-white shadow-indigo-200"
+                      : "bg-white border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50"
                   )}
                 >
-                  {tempSub === "전체" && <Check className="w-3 h-3" />}
+                  {tempSub === "전체" && <Check className="w-3.5 h-3.5" />}
                   전체
                 </button>
+
+                {/* 세부 지역 리스트 */}
                 {REGION_DATA[tempMain]?.map(
                   (sub) =>
                     sub !== "전체" && (
@@ -137,36 +141,37 @@ export function RegionSelector({
                         key={sub}
                         onClick={() => setTempSub(sub)}
                         className={cn(
-                          "px-2 py-2 rounded-xl text-xs font-medium border text-center transition-all flex items-center justify-center gap-1 shadow-sm",
+                          "px-2 py-2.5 rounded-xl text-xs font-bold border text-center transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95",
                           tempSub === sub
-                            ? "bg-violet-500 border-violet-500 text-white shadow-violet-200"
-                            : "bg-white border-slate-200 text-slate-500 hover:border-violet-200 hover:text-violet-600 hover:bg-white"
+                            ? "bg-indigo-600 border-indigo-600 text-white shadow-indigo-200"
+                            : "bg-white border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50"
                         )}
                       >
-                        {tempSub === sub && <Check className="w-3 h-3" />}
+                        {tempSub === sub && <Check className="w-3.5 h-3.5" />}
                         {sub}
                       </button>
                     )
                 )}
               </div>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center text-slate-400 text-xs gap-2">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
-                  <MapPin className="w-5 h-5 text-slate-300" />
+              // 시/도 미선택 시 안내
+              <div className="h-full flex flex-col items-center justify-center text-slate-400 text-sm gap-3">
+                <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100">
+                  <MapPin className="w-6 h-6 text-slate-300" />
                 </div>
-                <p>좌측에서 시/도를 선택해주세요</p>
+                <p>좌측에서 지역을 먼저 선택해주세요</p>
               </div>
             )}
           </div>
         </div>
 
-        {/* 푸터 */}
-        <div className="px-4 py-3 border-t border-slate-100 flex justify-between items-center bg-white">
-          <div className="text-xs text-slate-500">
-            선택:{" "}
-            <span className="font-bold text-violet-600 ml-1">
+        {/* 3. 푸터 */}
+        <div className="px-6 py-4 border-t border-slate-100 flex justify-between items-center bg-slate-50/50">
+          <div className="text-sm text-slate-500">
+            선택된 지역:{" "}
+            <span className="font-bold text-indigo-600 ml-1.5 bg-indigo-50 px-2 py-0.5 rounded text-xs border border-indigo-100">
               {tempMain}
-              {tempSub && tempSub !== "전체" ? ` ${tempSub}` : ""}
+              {tempSub && tempSub !== "전체" ? ` · ${tempSub}` : ""}
             </span>
           </div>
           <button
@@ -175,7 +180,7 @@ export function RegionSelector({
               onClose();
             }}
             disabled={!tempMain}
-            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
           >
             선택 완료
           </button>
