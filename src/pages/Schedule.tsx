@@ -33,6 +33,14 @@ export default function Schedule() {
 
   const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentDate);
 
+  // ✅ [핵심 수정] 항상 42개(6주 * 7일)의 셀을 생성하여 높이 고정
+  const totalSlots = 42; 
+  const calendarCells = [
+    ...Array(startingDayOfWeek).fill(null), // 시작 전 빈칸
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1), // 날짜
+    ...Array(totalSlots - (startingDayOfWeek + daysInMonth)).fill(null) // 남은 빈칸 채우기
+  ];
+
   const previousMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     setSelectedEvent(null);
@@ -43,8 +51,8 @@ export default function Schedule() {
     setSelectedEvent(null);
   };
 
-  const getEventsForDate = (day: number) => {
-    if (!schedules) return null;
+  const getEventsForDate = (day: number | null) => {
+    if (!day || !schedules) return null;
     return schedules.find((item) => {
       const itemDate = new Date(item.date);
       return (
@@ -83,12 +91,11 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [수정] 높이를 h-[640px]로 고정하여 6주차 달력이 와도 크기가 변하지 않게 함 */}
+      {/* 전체 컨테이너 높이 고정 (h-[640px]) */}
       <div className="min-w-[1100px] max-w-[1500px] w-full h-[640px] flex gap-6">
         
         {/* =======================
             1. [Left] Details Panel
-            ✅ 높이 고정(h-full) 및 텍스트 줄바꿈 유지
            ======================= */}
         <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
@@ -143,7 +150,7 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ 높이 고정으로 6주가 되어도 찌그러지지 않음
+            ✅ grid-rows-6으로 6줄 고정 -> 비율/높이 절대 변하지 않음
            ======================= */}
         <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
@@ -173,30 +180,34 @@ export default function Schedule() {
 
           {/* Days Grid */}
           <div className="flex-1 px-2 pb-2">
-            {/* ✅ gap-4 유지하되, 컨테이너 높이를 키워서 공간 확보 */}
-            <div className="grid grid-cols-7 gap-4 h-full content-start p-2">
-              {Array.from({ length: startingDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
+            {/* ✅ grid-rows-6 고정: 무조건 6줄로 나누어 렌더링 */}
+            <div className="grid grid-cols-7 grid-rows-6 gap-4 h-full content-start p-2">
+              {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
-                const isToday = new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
-                const isSelected = selectedEvent && new Date(selectedEvent.date).getDate() === day && new Date(selectedEvent.date).getMonth() === currentDate.getMonth();
+                const isToday = day && new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
+                const isSelected = selectedEvent && day && new Date(selectedEvent.date).getDate() === day && new Date(selectedEvent.date).getMonth() === currentDate.getMonth();
 
                 return (
                   <button
-                    key={day}
-                    onClick={() => event && setSelectedEvent(event)}
+                    key={i}
+                    onClick={() => day && event && setSelectedEvent(event)}
+                    disabled={!day} // 빈 칸 비활성화
                     className={`
-                      w-full aspect-square rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300
-                      ${event 
+                      w-full h-full rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300
+                      ${day && event 
                         ? `${getEventColor(event.type).split(' ')[0]} ${getEventColor(event.type).split(' ')[1]} hover:scale-105 shadow-sm hover:shadow-md cursor-pointer` 
-                        : 'hover:bg-gray-50 text-gray-400'}
+                        : 'hover:bg-gray-50/50 text-gray-400'}
                       ${isToday ? 'ring-2 ring-purple-400 ring-offset-2 z-10' : ''}
                       ${isSelected ? 'ring-2 ring-gray-400 ring-offset-2 z-10 scale-95' : ''}
+                      ${!day ? 'invisible' : ''} // 날짜 없는 칸은 숨김 처리 (공간은 유지)
                     `}
                   >
-                    <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
-                    {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
+                    {day && (
+                      <>
+                        <span className={`text-lg mb-1 ${event ? 'font-bold' : ''}`}>{day}</span>
+                        {event && <span className="text-xl group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
+                      </>
+                    )}
                   </button>
                 );
               })}
@@ -206,7 +217,6 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ 높이 고정 (h-full)
            ======================= */}
         <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
