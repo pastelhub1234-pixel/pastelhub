@@ -83,18 +83,17 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ✅ [수정] h-[600px]로 높이를 강제 고정하여 레이아웃이 늘어나지 않게 함 */}
-      <div className="min-w-[1100px] max-w-[1500px] w-full h-[600px] flex gap-6">
+      {/* ✅ [수정] 높이를 h-[640px]로 고정하여 6주차 달력이 와도 크기가 변하지 않게 함 */}
+      <div className="min-w-[1100px] max-w-[1500px] w-full h-[640px] flex gap-6">
         
         {/* =======================
             1. [Left] Details Panel
-            ✅ h-full: 부모 높이(600px)를 꽉 채움
+            ✅ 높이 고정(h-full) 및 텍스트 줄바꿈 유지
            ======================= */}
         <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full py-4">
                
-               {/* 아이콘 영역 */}
                <div className="w-20 h-20 flex-shrink-0 aspect-square mx-auto bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-6xl mb-6 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
@@ -103,7 +102,6 @@ export default function Schedule() {
                 {selectedEvent.type}
               </div>
 
-              {/* 텍스트 영역 (줄바꿈 허용) */}
               <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-2 w-full break-keep whitespace-pre-wrap">
                 {selectedEvent.title}
               </h2>
@@ -112,7 +110,6 @@ export default function Schedule() {
                 {selectedEvent.description}
               </p>
 
-              {/* ✅ [수정] mt-auto를 사용하여 항상 맨 아래에 고정 */}
               <div className="w-full bg-white/60 rounded-3xl p-6 text-left border border-white/80 space-y-5 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
@@ -146,7 +143,7 @@ export default function Schedule() {
 
         {/* =======================
             2. [Center] Calendar
-            ✅ h-full로 높이 고정
+            ✅ 높이 고정으로 6주가 되어도 찌그러지지 않음
            ======================= */}
         <div className="flex-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-[32px] p-8 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
           {/* Header */}
@@ -176,6 +173,7 @@ export default function Schedule() {
 
           {/* Days Grid */}
           <div className="flex-1 px-2 pb-2">
+            {/* ✅ gap-4 유지하되, 컨테이너 높이를 키워서 공간 확보 */}
             <div className="grid grid-cols-7 gap-4 h-full content-start p-2">
               {Array.from({ length: startingDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
               {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -208,9 +206,9 @@ export default function Schedule() {
 
         {/* =======================
             3. [Right] Upcoming Panel
-            ✅ h-full로 높이 고정
+            ✅ 높이 고정 (h-full)
            ======================= */}
-        <div className="w-[300px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
+        <div className="w-[320px] flex-none bg-white/70 backdrop-blur-xl rounded-[32px] p-6 shadow-sm border border-white/60 flex flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
