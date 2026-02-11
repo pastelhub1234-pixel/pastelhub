@@ -174,7 +174,7 @@ export default function Schedule() {
 
           {/* Weekdays */}
           <div className="grid grid-cols-7 mb-2 px-2 flex-shrink-0">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
               <div key={day} className="text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
                 {day}
               </div>
@@ -194,9 +194,8 @@ export default function Schedule() {
                     key={i}
                     onClick={() => day && event && setSelectedEvent(event)}
                     disabled={!day} 
-                    // ✅ [수정] h-[85%] self-center: 버튼 높이를 줄이고 그리드 셀 중앙에 배치 (위아래 길이 축소)
                     className={`
-                      w-full h-[85%] self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                      w-full h-[80%] self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
                         : 'hover:bg-gray-50/50 text-gray-400'}
