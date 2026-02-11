@@ -45,7 +45,7 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
 
         {/* 텍스트 메시지: text-[15px], leading-snug 적용 및 강제 줄바꿈(break-all) 추가 */}
         {msg.type === "TEXT" && (
-          <div className="bg-white px-4 py-2.5 rounded-2xl text-[15px] leading-snug shadow-sm whitespace-pre-wrap break-all text-gray-800">
+          <div className="bg-white px-4 py-2.5 rounded-2xl text-[13px] leading-snug shadow-sm whitespace-pre-wrap break-all text-gray-800">
             {msg.content}
           </div>
         )}
@@ -58,7 +58,7 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
         )}
 
         {/* 시간: text-[11px], text-gray-500 적용 */}
-        <span className="text-[11px] text-gray-500 mt-1 ml-1">
+        <span className="text-[5px] text-gray-500 mt-1 ml-1">
           {formatTime(msg.time)}
         </span>
       </div>
