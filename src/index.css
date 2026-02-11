@@ -887,6 +887,35 @@
     background-color: color-mix(in srgb, var(--color-pink-50) 60%, transparent);
   }
 
+  .ring-pink-200 { box-shadow: 0 0 0 1px #FBCFE8 inset !important; }
+  .ring-purple-200 { box-shadow: 0 0 0 1px #E9D5FF inset !important; }
+  .ring-blue-200 { box-shadow: 0 0 0 1px #BFDBFE inset !important; }
+  .bg-yellow-100 { background-color: #FEF3C7 !important; }
+  .text-yellow-700 { color: #B45309 !important; }
+  .ring-yellow-200 { box-shadow: 0 0 0 1px #FDE68A inset !important; }
+  .ring-green-200 { box-shadow: 0 0 0 1px #BBF7D0 inset !important; }
+
+  .bg-gray-50 { background-color: #F9FAFB !important; }
+  .text-gray-400 { color: #9CA3AF !important; }
+  .text-gray-500 { color: #6B7280 !important; }
+  .text-gray-800 { color: #1F2937 !important; }
+  .border-gray-100 { border-color: #F3F4F6 !important; }
+
+  .glass-panel {
+    /* 반투명 흰색 배경 */
+    background: rgba(255, 255, 255, 0.75);
+    
+    /* 블러 효과 (뒤쪽 배경 흐리게) */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    
+    /* 얇은 테두리로 유리 느낌 강조 */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    
+    /* 부드러운 그림자 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  }
+
   @supports (color: color-mix(in lab, red, red)) {
     .bg-pink-50\/60 {
       background-color: color-mix(in oklab, var(--color-pink-50) 60%, transparent);
