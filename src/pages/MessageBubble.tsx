@@ -38,7 +38,7 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
       </div>
 
       {/* 메시지 영역: 분석하신 max-w-[75%] 적용 및 줄바꿈 최적화 */}
-      <div className="flex flex-col min-w-0 max-w-[75%]">
+      <div className="flex flex-col max-w-[75%]">
         {/* 이름: text-xs, text-gray-700, font-medium 적용 */}
         <span className="text-xs text-gray-700 mb-1 font-medium">{msg.name}</span>
 
