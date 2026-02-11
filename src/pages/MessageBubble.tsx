@@ -5,7 +5,6 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ msg }: MessageBubbleProps) {
-  // 날짜 표시: 분석하신 코드의 색상(gray-700)과 배경(gray-300/50) 적용
   if (msg.type === "date") {
     return (
       <div className="flex justify-center my-4">
@@ -58,7 +57,7 @@ export function MessageBubble({ msg }: MessageBubbleProps) {
         )}
 
         {/* 시간: text-[11px], text-gray-500 적용 */}
-        <span className="text-xs text-gray-500 mt-1 ml-1">
+        <span className="text-xs text-gray-300 mt-1 ml-1">
           {formatTime(msg.time)}
         </span>
       </div>
