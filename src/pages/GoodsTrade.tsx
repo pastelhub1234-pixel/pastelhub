@@ -5,11 +5,10 @@ import {
 } from 'lucide-react';
 import { useJsonData } from "../hooks/useJsonData"; 
 import { cn, formatDate } from '../lib/utils';
-// ✅ 빌드 에러 방지를 위해 파일명 소문자 확인
 import { RegionSelector } from './region-selector';
 import { TradeItem } from "../types";
 
-export function GoodsTrade() {
+export default function GoodsTrade() {
   const { data: trades, isLoading } = useJsonData<TradeItem[]>('goodstrade');
 
   // --- State ---
