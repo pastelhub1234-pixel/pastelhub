@@ -10,7 +10,6 @@ const STATUS_CONFIG = {
     ringGradient: 'linear-gradient(to bottom right, #00ffa3, #00c7a9)',
     bgStyle: 'bg-emerald-50/30 border-emerald-100',
     badge: 'bg-emerald-100 text-emerald-600',
-    dotColor: 'bg-[#00ffa3]',
     icon: <Tv className="w-3 h-3 mr-1" />,
     label: 'CHZZK',
   },
@@ -18,7 +17,6 @@ const STATUS_CONFIG = {
     ringGradient: 'linear-gradient(to bottom right, #ec4899, #a855f7)',
     bgStyle: 'bg-purple-50/30 border-purple-100',
     badge: 'bg-purple-100 text-purple-600',
-    dotColor: 'bg-purple-500',
     icon: <Mic className="w-3 h-3 mr-1" />,
     label: 'SPACE',
   },
@@ -26,7 +24,6 @@ const STATUS_CONFIG = {
     ringGradient: 'linear-gradient(to bottom right, #fbbf24, #f59e0b)',
     bgStyle: 'bg-amber-50/10 border-amber-50',
     badge: 'bg-amber-100 text-amber-600',
-    dotColor: 'bg-amber-400',
     icon: <Calendar className="w-3 h-3 mr-1" />,
     label: '방송예정',
   },
@@ -34,7 +31,6 @@ const STATUS_CONFIG = {
     ringGradient: 'linear-gradient(to bottom right, #e2e8f0, #cbd5e1)',
     bgStyle: 'bg-white/50 border-transparent opacity-60',
     badge: 'bg-gray-100 text-gray-400',
-    dotColor: 'bg-gray-300',
     icon: <Moon className="w-3 h-3 mr-1" />,
     label: 'OFF',
   },
@@ -90,8 +86,6 @@ export default function LiveStatus() {
           const config = STATUS_CONFIG[statusType];
           const isOff = statusType === 'off';
           const Component = isOff ? 'div' : 'a';
-          
-          // ✅ 방송 중(Live)인지 체크: Scheduled, Off 제외
           const isLive = statusType === 'chzzk' || statusType === 'space';
 
           return (
@@ -109,10 +103,27 @@ export default function LiveStatus() {
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 
-                {/* 1. 프로필 이미지 Wrapper */}
+                {/* ✅ 프로필 이미지 Wrapper 
+                   - relative: 애니메이션 위치 기준점
+                   - 크기: w-10 (모바일) / w-12 (PC)
+                */}
                 <div className="relative flex-none w-10 h-10 sm:w-12 sm:h-12">
+                  
+                  {/* ✨ 1. [NEW] 링 애니메이션 효과 (Live일 때만)
+                      - absolute inset-0: 부모 크기에 딱 맞게 겹침
+                      - animate-ping: 밖으로 퍼져나가는 효과
+                      - -z-10: 실제 프로필 뒤에서 터지도록 설정
+                  */}
+                  {isLive && (
+                    <div 
+                      className="absolute inset-0 rounded-full opacity-75 animate-ping"
+                      style={{ background: config.ringGradient }}
+                    />
+                  )}
+
+                  {/* 2. 실제 프로필 링 (고정) */}
                   <div 
-                    className="w-full h-full rounded-full flex items-center justify-center p-[2px] transition-transform duration-300 group-hover:scale-105"
+                    className="relative z-10 w-full h-full rounded-full flex items-center justify-center p-[2px] transition-transform duration-300 group-hover:scale-105"
                     style={{ background: config.ringGradient }}
                   >
                     <img 
@@ -121,27 +132,6 @@ export default function LiveStatus() {
                       className={`w-full h-full rounded-full object-cover bg-white block border-[1.5px] border-white ${isOff ? 'grayscale' : ''}`}
                     />
                   </div>
-                  
-                  {/* ✅ 2. 상태 표시 점 (Live일 때만 노출) 
-                     - translate 제거하여 위치를 안쪽으로 당김
-                     - border-white를 사용하여 프로필과 경계 구분
-                  */}
-                  {isLive && (
-                    <div className="absolute bottom-0 right-0 z-10">
-                       {/* Pulse 애니메이션 */}
-                       <span 
-                         className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${config.dotColor}`} 
-                       ></span>
-                       {/* 실제 점 */}
-                       <span 
-                         className={`relative inline-flex rounded-full border-2 border-white ${config.dotColor}`}
-                         // 점 크기: 모바일(10px), PC(12px) - 살짝 작게 조정하여 밀착감 향상
-                         style={{ width: '10px', height: '10px' }}
-                         // PC에서는 점 크기를 CSS 클래스로 조금 키워도 됨 (선택사항)
-                         // className 내부에 sm:w-3 sm:h-3 등을 추가하여 반응형 처리 가능
-                       ></span>
-                    </div>
-                  )}
                 </div>
 
                 {/* 3. 텍스트 정보 */}
