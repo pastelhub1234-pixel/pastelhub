@@ -1316,6 +1316,12 @@
     height: calc(var(--spacing) * 24);
   }
 
+  .h-28 { height: calc(var(--spacing) * 28); }
+  .w-28 { width: calc(var(--spacing) * 28); }
+  .h-\[820px\] { 
+    height: 820px !important; 
+  }
+
   .h-\[50vh\] {
     height: 50vh;
   }
