@@ -75,17 +75,17 @@ export default function Schedule() {
 
   const getEventColor = (type: ScheduleItem['type']) => {
     switch (type) {
-      case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
-      case 'album': return 'bg-purple-100 text-purple-600 ring-purple-200';
-      case 'concert': return 'bg-blue-100 text-blue-600 ring-blue-200';
-      case 'broadcast': return 'bg-yellow-100 text-yellow-700 ring-yellow-200';
-      default: return 'bg-green-100 text-green-600 ring-green-200';
+      case 'birthday': return 'w-16 h-16 bg-pink-100 text-pink-600 ring-pink-200';
+      case 'album': return 'w-16 h-16 bg-purple-100 text-purple-600 ring-purple-200';
+      case 'concert': return 'w-16 h-16 bg-blue-100 text-blue-600 ring-blue-200';
+      case 'broadcast': return 'w-16 h-16 bg-yellow-100 text-yellow-700 ring-yellow-200';
+      default: return 'w-16 h-16 bg-green-100 text-green-600 ring-green-200';
     }
   };
 
   return (
     // ✅ [수정 1] h-screen(화면 전체 높이), items-center(수직 중앙 정렬), overflow-hidden(스크롤 방지)
-    <div className="w-full h-screen p-4 flex justify-center items-center overflow-hidden">
+    <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -93,7 +93,7 @@ export default function Schedule() {
 
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
-        style={{ height: '600px' }} // 높이를 600px 정도로 고정 (화면 중앙에 적당한 크기로 위치)
+        style={{ height: '560px' }}
       >
         
         {/* =======================
